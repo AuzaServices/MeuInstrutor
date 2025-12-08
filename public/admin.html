@@ -12,9 +12,9 @@
   </header>
 
   <main>
-    <!-- Lista de instrutores -->
+    <!-- Lista de instrutores pendentes -->
     <section class="lista-instrutores">
-      <h2>Solicitações de Cadastro</h2>
+      <h2>Solicitações Pendentes</h2>
       <table>
         <thead>
           <tr>
@@ -29,71 +29,107 @@
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody id="tabelaInstrutores">
-          <!-- Vai ser preenchido via JavaScript -->
+        <tbody id="tabelaPendentes">
+          <!-- Preenchido via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Lista de instrutores aceitos -->
+    <section class="lista-instrutores">
+      <h2>Instrutores Aceitos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Comprovante</th>
+            <th>CNH</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAceitos">
+          <!-- Preenchido via JS -->
         </tbody>
       </table>
     </section>
   </main>
 
   <script>
-  async function carregarInstrutores() {
-    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores");
-    const instrutores = await resposta.json();
+    async function carregarInstrutores() {
+      const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
+      const instrutores = await resposta.json();
 
-    const tabela = document.getElementById("tabelaInstrutores");
-    tabela.innerHTML = "";
+      const tabelaPendentes = document.getElementById("tabelaPendentes");
+      const tabelaAceitos = document.getElementById("tabelaAceitos");
+      tabelaPendentes.innerHTML = "";
+      tabelaAceitos.innerHTML = "";
 
-instrutores.forEach(instrutor => {
-  let acoes = "";
+      instrutores.forEach(instrutor => {
+        if (instrutor.status === "aceito") {
+          tabelaAceitos.innerHTML += `
+            <tr>
+              <td>${instrutor.nome}</td>
+              <td>${instrutor.cpf}</td>
+              <td>${instrutor.endereco}</td>
+              <td>${instrutor.cidade}</td>
+              <td>${instrutor.estado}</td>
+              <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+              <td><img src="${instrutor.cnh}" width="80"></td>
+              <td>${instrutor.categorias}</td>
+              <td style="color:green; font-weight:bold;">✔ Aceito</td>
+              <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
+            </tr>
+          `;
+        } else {
+          tabelaPendentes.innerHTML += `
+            <tr>
+              <td>${instrutor.nome}</td>
+              <td>${instrutor.cpf}</td>
+              <td>${instrutor.endereco}</td>
+              <td>${instrutor.cidade}</td>
+              <td>${instrutor.estado}</td>
+              <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+              <td><img src="${instrutor.cnh}" width="80"></td>
+              <td>${instrutor.categorias}</td>
+              <td>
+                <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+                <button class="excluir" data-id="${instrutor.id}">Recusar</button>
+              </td>
+            </tr>
+          `;
+        }
+      });
+    }
 
-  if (instrutor.status === "aceito") {
-    // Já aceito → mostra símbolo ✔ verde e botão excluir
-    acoes = `
-      <span style="color:green; font-weight:bold;">✔ Aceito</span>
-      <button onclick="excluirInstrutor(${instrutor.id})">Excluir</button>
-    `;
-  } else {
-    // Pendente → mostra botões aceitar/recusar
-    acoes = `
-      <button onclick="aceitarInstrutor(${instrutor.id})">Aceitar</button>
-      <button onclick="recusarInstrutor(${instrutor.id})">Recusar</button>
-    `;
-  }
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabela = document.querySelector("main");
 
-  tabela.innerHTML += `
-    <tr>
-      <td>${instrutor.nome}</td>
-      <td>${instrutor.cpf}</td>
-      <td>${instrutor.endereco}</td>
-      <td>${instrutor.cidade}</td>
-      <td>${instrutor.estado}</td>
-      <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-      <td><img src="${instrutor.cnh}" width="80"></td>
-      <td>${instrutor.categorias}</td>
-      <td>${acoes}</td>
-    </tr>
-  `;
-});
-  }
+      tabela.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("admitir")) {
+          const id = e.target.dataset.id;
+          const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
+          const resultado = await resposta.json();
+          alert(resultado.message);
+          carregarInstrutores();
+        }
 
-  async function aceitarInstrutor(id) {
-    await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
-    carregarInstrutores();
-  }
+        if (e.target.classList.contains("excluir")) {
+          const id = e.target.dataset.id;
+          const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+          const resultado = await resposta.json();
+          alert(resultado.message);
+          carregarInstrutores();
+        }
+      });
 
-  async function recusarInstrutor(id) {
-    await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-    carregarInstrutores();
-  }
-
-  async function excluirInstrutor(id) {
-    await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-    carregarInstrutores();
-  }
-
-  // Carregar ao abrir
-  carregarInstrutores();
-</script>
+      carregarInstrutores();
+    });
+  </script>
 </body>
 </html>
