@@ -38,7 +38,7 @@
 
   <script>
     async function carregarInstrutores() {
-      const resposta = await fetch("http://localhost:3000/instrutores");
+      const resposta = await fetch("https://meuinstrutor.onrender.com//instrutores");
       const instrutores = await resposta.json();
 
       const tabela = document.getElementById("tabelaInstrutores");
@@ -65,12 +65,12 @@
     }
 
     async function aceitarInstrutor(id) {
-      await fetch(`http://localhost:3000/instrutores/aceitar/${id}`, { method: "PUT" });
+      await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
       carregarInstrutores();
     }
 
     async function recusarInstrutor(id) {
-      await fetch(`http://localhost:3000/instrutores/recusar/${id}`, { method: "PUT" });
+      await fetch(`https://meuinstrutor.onrender.com/instrutores/recusar/${id}`, { method: "PUT" });
       carregarInstrutores();
     }
 

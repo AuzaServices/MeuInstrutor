@@ -57,7 +57,7 @@ async function buscarInstrutor(event) {
   const sexo = document.getElementById("sexo").value;
 
   try {
-    const resposta = await fetch(`http://localhost:3000/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
+    const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
     const instrutores = await resposta.json();
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
@@ -161,7 +161,7 @@ async function cadastrarInstrutor(event) {
   formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
-    const resposta = await fetch("http://localhost:3000/instrutores", {
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
       method: "POST",
       body: formData
     });
