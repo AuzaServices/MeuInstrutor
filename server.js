@@ -129,6 +129,17 @@ app.get("/instrutores/aceitos", (req, res) => {
   });
 });
 
+// 📌 Listar todos os instrutores (pendentes e aceitos)
+app.get("/instrutores/todos", (req, res) => {
+  db.query("SELECT * FROM instrutores", (err, results) => {
+    if (err) {
+      console.error("❌ Erro ao listar todos:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json(results);
+  });
+});
+
 /* ========================= START ========================= */
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
