@@ -13,6 +13,9 @@ app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// 🔑 Servir arquivos da pasta public
+app.use(express.static(path.join(__dirname, "public")));
+
 // Configuração do banco de dados
 const db = mysql.createConnection({
   host: "sql5.freesqldatabase.com",
@@ -108,7 +111,6 @@ app.get("/instrutores/aceitos", (req, res) => {
 });
 
 /* ========================= START ========================= */
-
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
