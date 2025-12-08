@@ -16,16 +16,14 @@ function carregarFormularioAluno() {
           </select>
         </div>
       </div>
+      ...
     </form>
     <div id="resultado"></div>
   `;
 
-  // 🔑 Agora o elemento existe, então funciona
+  // 🔑 Agora sim: carrega estados e adiciona listener
   carregarEstados();
-  const selectEstado = document.getElementById("estado");
-  if (selectEstado) {
-    selectEstado.addEventListener("change", carregarCidades);
-  }
+  document.getElementById("estado").addEventListener("change", carregarCidades);
 }
 
 // Busca de instrutor (única versão, com filtros extras)
