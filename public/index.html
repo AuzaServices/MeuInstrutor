@@ -350,21 +350,33 @@ async function carregarEstadosInstrutor() {
 }
 
 // Carregar cidades via API IBGE
-async function carregarCidadesInstrutor() {
-  const estadoId = document.getElementById("estadoInstrutor").selectedIndex;
-  const estado = document.getElementById("estadoInstrutor").options[estadoId].text;
+async function carregarEstadosInstrutor() {
+  try {
+    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+    const estados = await resp.json();
+    const selectEstado = document.getElementById("estadoInstrutor");
 
+    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+    estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    estados.forEach(estado => {
+      const option = document.createElement("option");
+      option.value = estado.id;   // usa o ID do estado
+      option.textContent = estado.nome;
+      selectEstado.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar estados:", error);
+  }
+}
+
+async function carregarCidadesInstrutor() {
+  const estadoId = document.getElementById("estadoInstrutor").value;
   if (!estadoId) return;
 
   try {
-    // Pega o ID do estado selecionado
-    const respEstados = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-    const estados = await respEstados.json();
-    const estadoSelecionado = estados.find(e => e.nome === estado);
-
-    if (!estadoSelecionado) return;
-
-    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado.id}/municipios`);
+    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
     const cidades = await resp.json();
     const selectCidade = document.getElementById("cidadeInstrutor");
 
@@ -382,12 +394,6 @@ async function carregarCidadesInstrutor() {
     console.error("Erro ao carregar cidades:", error);
   }
 }
-
-// Inicializar selects quando abrir etapa 2
-document.addEventListener("DOMContentLoaded", () => {
-  carregarEstadosInstrutor();
-  document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
-});
 
   </script>
 </body>
