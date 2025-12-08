@@ -38,7 +38,7 @@
 
   <script>
     async function carregarInstrutores() {
-      const resposta = await fetch("https://meuinstrutor.onrender.com//instrutores");
+      const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores");
       const instrutores = await resposta.json();
 
       const tabela = document.getElementById("tabelaInstrutores");
