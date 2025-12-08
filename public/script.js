@@ -75,11 +75,15 @@ function carregarFormularioInstrutor() {
   area.innerHTML = `
     <h3>Cadastro de Instrutor</h3>
     <form id="formInstrutor">
-      <div class="etapa" id="etapa1">
-        <label>Nome completo:</label>
-        <input type="text" id="nome" required>
-        <button type="button" onclick="proximaEtapa(2)">Próximo</button>
-      </div>
+<div class="etapa" id="etapa1">
+  <label>Nome completo:</label>
+  <input type="text" id="nome" required>
+
+<label>CPF:</label>
+<input type="text" id="cpf" maxlength="14" required>
+
+  <button type="button" onclick="proximaEtapa(2)">Próximo</button>
+</div>
 
       <div class="etapa" id="etapa2" style="display:none;">
         <h4>Endereço</h4>
@@ -193,3 +197,4 @@ document.addEventListener("DOMContentLoaded", () => {
     btnInstrutor.addEventListener("click", carregarFormularioInstrutor);
   }
 });
+
