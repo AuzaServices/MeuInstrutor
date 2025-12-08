@@ -37,45 +37,63 @@
   </main>
 
   <script>
-    async function carregarInstrutores() {
-      const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores");
-      const instrutores = await resposta.json();
+  async function carregarInstrutores() {
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores");
+    const instrutores = await resposta.json();
 
-      const tabela = document.getElementById("tabelaInstrutores");
-      tabela.innerHTML = "";
+    const tabela = document.getElementById("tabelaInstrutores");
+    tabela.innerHTML = "";
 
-      instrutores.forEach(instrutor => {
-        tabela.innerHTML += `
-          <tr>
-            <td>${instrutor.nome}</td>
-            <td>${instrutor.cpf}</td>
-            <td>${instrutor.endereco}</td>
-            <td>${instrutor.cidade}</td>
-            <td>${instrutor.estado}</td>
-            <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-            <td><img src="${instrutor.cnh}" width="80"></td>
-            <td>${instrutor.categorias}</td>
-            <td>
-              <button onclick="aceitarInstrutor(${instrutor.id})">Aceitar</button>
-              <button onclick="recusarInstrutor(${instrutor.id})">Recusar</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
+instrutores.forEach(instrutor => {
+  let acoes = "";
 
-    async function aceitarInstrutor(id) {
-      await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
-      carregarInstrutores();
-    }
+  if (instrutor.status === "aceito") {
+    // Já aceito → mostra símbolo ✔ verde e botão excluir
+    acoes = `
+      <span style="color:green; font-weight:bold;">✔ Aceito</span>
+      <button onclick="excluirInstrutor(${instrutor.id})">Excluir</button>
+    `;
+  } else {
+    // Pendente → mostra botões aceitar/recusar
+    acoes = `
+      <button onclick="aceitarInstrutor(${instrutor.id})">Aceitar</button>
+      <button onclick="recusarInstrutor(${instrutor.id})">Recusar</button>
+    `;
+  }
 
-async function recusarInstrutor(id) {
-  await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-  carregarInstrutores();
-}
+  tabela.innerHTML += `
+    <tr>
+      <td>${instrutor.nome}</td>
+      <td>${instrutor.cpf}</td>
+      <td>${instrutor.endereco}</td>
+      <td>${instrutor.cidade}</td>
+      <td>${instrutor.estado}</td>
+      <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+      <td><img src="${instrutor.cnh}" width="80"></td>
+      <td>${instrutor.categorias}</td>
+      <td>${acoes}</td>
+    </tr>
+  `;
+});
+  }
 
-    // Carregar ao abrir
+  async function aceitarInstrutor(id) {
+    await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
     carregarInstrutores();
-  </script>
+  }
+
+  async function recusarInstrutor(id) {
+    await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+    carregarInstrutores();
+  }
+
+  async function excluirInstrutor(id) {
+    await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+    carregarInstrutores();
+  }
+
+  // Carregar ao abrir
+  carregarInstrutores();
+</script>
 </body>
 </html>
