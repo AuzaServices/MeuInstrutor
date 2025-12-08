@@ -130,23 +130,30 @@
         <button type="button" onclick="proximaEtapa(2)">Próximo</button>
       </div>
 
-      <div class="etapa" id="etapa2" style="display:none;">
-        <h4>Endereço</h4>
-        <label>CEP:</label>
-        <input type="text" id="cep" required>
-        <label>Rua:</label>
-        <input type="text" id="rua" required>
-        <label>Número:</label>
-        <input type="text" id="numero" required>
-        <label>Bairro:</label>
-        <input type="text" id="bairro" required>
-        <label>Cidade:</label>
-        <input type="text" id="cidadeInstrutor" required>
-        <label>Estado:</label>
-        <input type="text" id="estadoInstrutor" required>
-        <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-        <button type="button" onclick="proximaEtapa(3)">Próximo</button>
-      </div>
+<div class="etapa" id="etapa2" style="display:none;">
+  <h4>Endereço</h4>
+  <label>CEP:</label>
+  <input type="text" id="cep" required>
+  <label>Rua:</label>
+  <input type="text" id="rua" required>
+  <label>Número:</label>
+  <input type="text" id="numero" required>
+  <label>Bairro:</label>
+  <input type="text" id="bairro" required>
+
+  <label>Estado:</label>
+  <select id="estadoInstrutor" required>
+    <option value="">Selecione o estado</option>
+  </select>
+
+  <label>Cidade:</label>
+  <select id="cidadeInstrutor" required>
+    <option value="">Selecione a cidade</option>
+  </select>
+
+  <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+  <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+</div>
 
       <div class="etapa" id="etapa3" style="display:none;">
         <h4>Documentos</h4>
@@ -318,6 +325,68 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.classList.remove("active");
     }
   });
+});
+
+// Carregar estados via API IBGE
+async function carregarEstadosInstrutor() {
+  try {
+    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+    const estados = await resp.json();
+    const selectEstado = document.getElementById("estadoInstrutor");
+
+    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+    estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    estados.forEach(estado => {
+      const option = document.createElement("option");
+      option.value = estado.nome; // ou estado.sigla se preferir
+      option.textContent = estado.nome;
+      selectEstado.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar estados:", error);
+  }
+}
+
+// Carregar cidades via API IBGE
+async function carregarCidadesInstrutor() {
+  const estadoId = document.getElementById("estadoInstrutor").selectedIndex;
+  const estado = document.getElementById("estadoInstrutor").options[estadoId].text;
+
+  if (!estadoId) return;
+
+  try {
+    // Pega o ID do estado selecionado
+    const respEstados = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+    const estados = await respEstados.json();
+    const estadoSelecionado = estados.find(e => e.nome === estado);
+
+    if (!estadoSelecionado) return;
+
+    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado.id}/municipios`);
+    const cidades = await resp.json();
+    const selectCidade = document.getElementById("cidadeInstrutor");
+
+    selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+    cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    cidades.forEach(cidade => {
+      const option = document.createElement("option");
+      option.value = cidade.nome;
+      option.textContent = cidade.nome;
+      selectCidade.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar cidades:", error);
+  }
+}
+
+// Inicializar selects quando abrir etapa 2
+document.addEventListener("DOMContentLoaded", () => {
+  carregarEstadosInstrutor();
+  document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
 });
 
   </script>
