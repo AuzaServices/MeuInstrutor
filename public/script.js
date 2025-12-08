@@ -158,10 +158,18 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("nome", document.getElementById("nome").value);
   formData.append("cpf", document.getElementById("cpf").value);
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
-  formData.append("telefone", document.getElementById("telefone").value);
+
+  // 🔎 Validação do telefone
+  const telefone = document.getElementById("telefone").value;
+  if (!/\(\d{2}\)9\d{4}-\d{4}/.test(telefone)) {
+    alert("Telefone inválido. Use o formato (99)91234-5678");
+    return;
+  }
+  formData.append("telefone", telefone);
+
   formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-  formData.append("estado", document.getElementById("estadoInstrutor").value);
+  formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
   formData.append("cnh", document.getElementById("cnh").files[0]);
   formData.append("categorias", categoriasSelecionadas.join(","));
