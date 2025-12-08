@@ -61,51 +61,51 @@
   </main>
 
   <script>
-    async function carregarInstrutores() {
-      const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
-      const instrutores = await resposta.json();
+async function carregarInstrutores() {
+  const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
+  const instrutores = await resposta.json();
 
-      const tabelaPendentes = document.getElementById("tabelaPendentes");
-      const tabelaAceitos = document.getElementById("tabelaAceitos");
-      tabelaPendentes.innerHTML = "";
-      tabelaAceitos.innerHTML = "";
+  const tabelaPendentes = document.getElementById("tabelaPendentes");
+  const tabelaAceitos = document.getElementById("tabelaAceitos");
+  tabelaPendentes.innerHTML = "";
+  tabelaAceitos.innerHTML = "";
 
-      instrutores.forEach(instrutor => {
-        if (instrutor.status === "aceito") {
-          tabelaAceitos.innerHTML += `
-            <tr>
-              <td>${instrutor.nome}</td>
-              <td>${instrutor.cpf}</td>
-              <td>${instrutor.endereco}</td>
-              <td>${instrutor.cidade}</td>
-              <td>${instrutor.estado}</td>
-              <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-              <td><img src="${instrutor.cnh}" width="80"></td>
-              <td>${instrutor.categorias}</td>
-              <td style="color:green; font-weight:bold;">✔ Aceito</td>
-              <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
-            </tr>
-          `;
-        } else {
-          tabelaPendentes.innerHTML += `
-            <tr>
-              <td>${instrutor.nome}</td>
-              <td>${instrutor.cpf}</td>
-              <td>${instrutor.endereco}</td>
-              <td>${instrutor.cidade}</td>
-              <td>${instrutor.estado}</td>
-              <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-              <td><img src="${instrutor.cnh}" width="80"></td>
-              <td>${instrutor.categorias}</td>
-              <td>
-                <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
-                <button class="excluir" data-id="${instrutor.id}">Recusar</button>
-              </td>
-            </tr>
-          `;
-        }
-      });
+  instrutores.forEach(instrutor => {
+    if (instrutor.status === "aceito") {
+      tabelaAceitos.innerHTML += `
+        <tr>
+          <td>${instrutor.nome}</td>
+          <td>${instrutor.cpf}</td>
+          <td>${instrutor.endereco}</td>
+          <td>${instrutor.cidade}</td>
+          <td>${instrutor.estado}</td>
+          <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+          <td><img src="${instrutor.cnh}" width="80"></td>
+          <td>${instrutor.categorias}</td>
+          <td style="color:green; font-weight:bold;">✔ Aceito</td>
+          <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
+        </tr>
+      `;
+    } else {
+      tabelaPendentes.innerHTML += `
+        <tr>
+          <td>${instrutor.nome}</td>
+          <td>${instrutor.cpf}</td>
+          <td>${instrutor.endereco}</td>
+          <td>${instrutor.cidade}</td>
+          <td>${instrutor.estado}</td>
+          <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+          <td><img src="${instrutor.cnh}" width="80"></td>
+          <td>${instrutor.categorias}</td>
+          <td>
+            <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+            <button class="excluir" data-id="${instrutor.id}">Recusar</button>
+          </td>
+        </tr>
+      `;
     }
+  });
+}
 
     document.addEventListener("DOMContentLoaded", () => {
       const tabela = document.querySelector("main");
