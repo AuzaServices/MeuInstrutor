@@ -158,6 +158,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("nome", document.getElementById("nome").value);
   formData.append("cpf", document.getElementById("cpf").value);
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
+  formData.append("telefone", document.getElementById("telefone").value);
   formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
   formData.append("estado", document.getElementById("estadoInstrutor").value);

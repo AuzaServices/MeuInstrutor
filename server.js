@@ -85,7 +85,8 @@ app.post("/instrutores", upload.fields([{ name: "comprovante" }, { name: "cnh" }
   console.log("BODY:", req.body);
   console.log("FILES:", req.files);
 
-  const { nome, cpf, endereco, cidade, estado, categorias } = req.body;
+  const { nome, cpf, endereco, cidade, estado, categorias, telefone } = req.body;
+
 
   if (!req.files || !req.files["comprovante"] || !req.files["cnh"]) {
     return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
@@ -94,17 +95,18 @@ app.post("/instrutores", upload.fields([{ name: "comprovante" }, { name: "cnh" }
   const comprovante = req.files["comprovante"][0].path;
   const cnh = req.files["cnh"][0].path;
 
-  db.query(
-    "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, comprovante_residencia, cnh, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
-    [nome, cpf, endereco, cidade, estado, comprovante, cnh, categorias],
-    (err) => {
-      if (err) {
-        console.error("❌ Erro no INSERT:", err);
-        return res.status(500).json({ error: err });
-      }
-      res.json({ message: "Cadastro enviado para análise!" });
+db.query(
+  "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
+  [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, categorias],
+  (err) => {
+    if (err) {
+      console.error("❌ Erro no INSERT:", err);
+      return res.status(500).json({ error: err });
     }
-  );
+    res.json({ message: "Cadastro enviado para análise!" });
+  }
+);
+
 });
 
 // 📌 Listar instrutores aceitos com filtro
