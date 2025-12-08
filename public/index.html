@@ -170,13 +170,45 @@
     </form>
   `;
 
-      document.getElementById("formInstrutor").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const nome = document.getElementById("nome").value;
-        const cidade = document.getElementById("cidadeInstrutor").value;
-        const estado = document.getElementById("estadoInstrutor").value;
-        alert(`Instrutor ${nome} cadastrado com sucesso em ${cidade}/${estado}!`);
-      });
+document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const categoriasSelecionadas = [];
+  document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
+    categoriasSelecionadas.push(el.value);
+  });
+
+  const formData = new FormData();
+  formData.append("nome", document.getElementById("nome").value);
+  formData.append("cpf", document.getElementById("cpf").value);
+  formData.append("sexo", document.getElementById("sexoInstrutor").value);
+  formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
+  formData.append("cidade", document.getElementById("cidadeInstrutor").value);
+  formData.append("estado", document.getElementById("estadoInstrutor").value);
+  formData.append("comprovante", document.getElementById("comprovante").files[0]);
+  formData.append("cnh", document.getElementById("cnh").files[0]);
+  formData.append("categorias", categoriasSelecionadas.join(","));
+
+  try {
+    console.log("Disparando fetch...");
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro no servidor: " + resposta.status);
+    }
+
+    const resultado = await resposta.json();
+    alert(resultado.message);
+    document.getElementById("formInstrutor").reset();
+    proximaEtapa(1);
+  } catch (error) {
+    console.error("Erro ao cadastrar instrutor:", error);
+    alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
+  }
+});
 
       aplicarMascaraCPF();
     }
