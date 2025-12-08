@@ -86,7 +86,7 @@ function carregarFormularioInstrutor() {
   area.innerHTML = `
     <div class="formulario">
       <h3>Cadastro de Instrutor</h3>
-      <form id="formInstrutor">
+      <form id="formInstrutor" onsubmit="cadastrarInstrutor(event)">
         <div class="etapa" id="etapa1">
           <label>Nome completo:</label>
           <input type="text" id="nome" required>
