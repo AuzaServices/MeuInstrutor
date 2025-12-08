@@ -136,8 +136,14 @@
   </select>
 
   <!-- Novo campo de telefone -->
-  <label>Telefone:</label>
-  <input type="tel" id="telefone" placeholder="(99) 99999-9999" required>
+<label>Telefone:</label>
+<input 
+  type="tel" 
+  id="telefone" 
+  placeholder="(99)91234-5678" 
+  required 
+  pattern="\(\d{2}\)9\d{4}-\d{4}" 
+  title="Formato esperado: (XX)9XXXX-XXXX">
 
   <button type="button" onclick="proximaEtapa(2)">Próximo</button>
 </div>
@@ -211,7 +217,8 @@
         formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
         formData.append("cidade", document.getElementById("cidadeInstrutor").value);
         formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);
-               formData.append("comprovante", document.getElementById("comprovante").files[0]);
+        formData.append("telefone", document.getElementById("telefone").value);
+        formData.append("comprovante", document.getElementById("comprovante").files[0]);
         formData.append("cnh", document.getElementById("cnh").files[0]);
         formData.append("categorias", categoriasSelecionadas.join(","));
 
