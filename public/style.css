@@ -239,3 +239,125 @@ footer {
   margin-top: 10px;
   margin-right: 10px;
 }
+
+/* Cabeçalho padrão */
+header.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #000000;
+  color: #fff;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo img {
+  height: 40px;
+}
+
+nav.menu {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+nav.menu a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav.menu .btn.amarelo {
+  background: #f1930f;
+  color: #000;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Responsividade */
+/* Cabeçalho padrão (desktop) */
+header.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #000000;
+  color: #fff;
+  position: relative; /* 🔑 isso faz o nav.menu absoluto ficar preso ao header */
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo img {
+  height: 40px;
+}
+
+header .logo span {
+  font-size: 22px; /* tamanho normal no desktop */
+  font-weight: bold;
+}
+
+.menu-toggle {
+  display: none; /* escondido no desktop */
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  header.topo {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  header .logo span {
+    font-size: 16px; /* menor no mobile */
+  }
+
+  .menu-toggle {
+    display: block; /* aparece no mobile */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  nav.menu {
+    flex-direction: column;
+    gap: 15px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 0 15px;
+    box-sizing: border-box;
+    z-index: 999;
+
+    /* estado inicial escondido */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  nav.menu.active {
+    max-height: 500px; /* altura suficiente para caber os links */
+    opacity: 1;
+    transform: translateY(0);
+    padding: 15px; /* volta o padding quando ativo */
+  }
+}
