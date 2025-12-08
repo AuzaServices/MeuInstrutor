@@ -67,12 +67,15 @@ app.put("/instrutores/aceitar/:id", (req, res) => {
   });
 });
 
-// 📌 Recusar instrutor
-app.put("/instrutores/recusar/:id", (req, res) => {
+// 📌 Excluir instrutor (Recusar)
+app.delete("/instrutores/:id", (req, res) => {
   const { id } = req.params;
-  db.query("UPDATE instrutores SET status = 'recusado' WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Instrutor recusado com sucesso!" });
+  db.query("DELETE FROM instrutores WHERE id = ?", [id], (err) => {
+    if (err) {
+      console.error("❌ Erro ao excluir:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "Instrutor excluído com sucesso!" });
   });
 });
 

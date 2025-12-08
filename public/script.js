@@ -57,19 +57,15 @@ async function buscarInstrutor(event) {
   const sexo = document.getElementById("sexo").value;
 
   try {
-    const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
+    const resposta = await fetch(`http://localhost:3000/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
     const instrutores = await resposta.json();
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
     html += "<ul>";
 
-    instrutores.forEach(i => {
-      // filtro adicional por categoria e sexo
-      if ((categoria === "" || i.categorias.includes(categoria)) &&
-          (sexo === "" || i.sexo === sexo)) {
-        html += `<li><strong>${i.nome}</strong> - Categoria ${i.categorias}, Cidade ${i.cidade}/${i.estado}</li>`;
-      }
+    instrutores.forEach(instrutor => {
+      html += `<li><strong>${instrutor.nome}</strong> - Categoria ${instrutor.categorias}, Endereço: ${instrutor.endereco}</li>`;
     });
 
     html += "</ul>";
