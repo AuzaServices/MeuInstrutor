@@ -150,7 +150,7 @@ function carregarFormularioInstrutor() {
 }
 
 // Cadastro de instrutor integrado ao backend
-async function cadastrarInstrutor(event) {
+document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const categoriasSelecionadas = [];
@@ -170,11 +170,7 @@ async function cadastrarInstrutor(event) {
   formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
-    console.log("Enviando cadastro...");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
+    console.log("Disparando fetch...");
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
       method: "POST",
       body: formData
@@ -192,7 +188,7 @@ async function cadastrarInstrutor(event) {
     console.error("Erro ao cadastrar instrutor:", error);
     alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
   }
-}
+});
 
 // ================= NAVEGAÇÃO ENTRE ETAPAS =================
 function proximaEtapa(n) {
