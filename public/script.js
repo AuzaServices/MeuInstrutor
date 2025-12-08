@@ -118,9 +118,9 @@ function carregarFormularioInstrutor() {
         <div class="etapa" id="etapa3" style="display:none;">
           <h4>Documentos</h4>
           <label>Comprovante de residência:</label>
-          <input type="file" id="comprovante" required>
+          <input type="file" id="comprovante" name="comprovante" required>
           <label>CNH (obrigatória):</label>
-          <input type="file" id="cnh" required>
+          <input type="file" id="cnh" name="cnh" required>
 
           <h4>Categorias que sabe ensinar:</h4>
           <div class="categorias">
@@ -165,14 +165,18 @@ async function cadastrarInstrutor(event) {
       method: "POST",
       body: formData
     });
+
+    if (!resposta.ok) {
+      throw new Error("Erro no servidor: " + resposta.status);
+    }
+
     const resultado = await resposta.json();
     alert(resultado.message);
   } catch (error) {
     console.error("Erro ao cadastrar instrutor:", error);
-    alert("Erro ao cadastrar instrutor.");
+    alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
   }
 }
-
 // ================= NAVEGAÇÃO ENTRE ETAPAS =================
 function proximaEtapa(n) {
   document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
