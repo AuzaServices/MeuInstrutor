@@ -81,65 +81,74 @@ function carregarFormularioInstrutor() {
   const area = document.getElementById("form-area");
   area.innerHTML = `
     <div class="formulario">
-      <h3>Cadastro de Instrutor</h3>
-      <form id="formInstrutor" onsubmit="cadastrarInstrutor(event)">
-        <div class="etapa" id="etapa1">
-          <label>Nome completo:</label>
-          <input type="text" id="nome" required>
+  <h3>Cadastro de Instrutor</h3>
+  <form id="formInstrutor" onsubmit="cadastrarInstrutor(event)">
+    <div class="etapa" id="etapa1">
+      <label>Nome completo:</label>
+      <input type="text" id="nome" required>
 
-          <label>CPF:</label>
-          <input type="text" id="cpf" maxlength="14" required>
+      <label>CPF:</label>
+      <input type="text" id="cpf" maxlength="14" required>
 
-          <!-- Campo Sexo -->
-          <label>Sexo:</label>
-          <select id="sexoInstrutor" required>
-            <option value="">Selecione</option>
-            <option value="M">Masculino</option>
-            <option value="F">Feminino</option>
-          </select>
+      <!-- Campo Sexo -->
+      <label>Sexo:</label>
+      <select id="sexoInstrutor" required>
+        <option value="">Selecione</option>
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+      </select>
 
-          <button type="button" onclick="proximaEtapa(2)">Próximo</button>
-        </div>
+      <!-- Campo Telefone -->
+      <label>Telefone:</label>
+      <input 
+        type="tel" 
+        id="telefone" 
+        name="telefone" 
+        placeholder="(99)91234-5678" 
+        title="Formato esperado: (XX)9XXXX-XXXX">
 
-        <div class="etapa" id="etapa2" style="display:none;">
-          <h4>Endereço</h4>
-          <label>CEP:</label>
-          <input type="text" id="cep" required>
-          <label>Rua:</label>
-          <input type="text" id="rua" required>
-          <label>Número:</label>
-          <input type="text" id="numero" required>
-          <label>Bairro:</label>
-          <input type="text" id="bairro" required>
-          <label>Cidade:</label>
-          <input type="text" id="cidadeInstrutor" required>
-          <label>Estado:</label>
-          <input type="text" id="estadoInstrutor" required>
-          <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-          <button type="button" onclick="proximaEtapa(3)">Próximo</button>
-        </div>
-
-        <div class="etapa" id="etapa3" style="display:none;">
-          <h4>Documentos</h4>
-          <label>Comprovante de residência:</label>
-          <input type="file" id="comprovante" name="comprovante" required>
-          <label>CNH (obrigatória):</label>
-          <input type="file" id="cnh" name="cnh" required>
-
-          <h4>Categorias que sabe ensinar:</h4>
-          <div class="categorias">
-            <label><input type="checkbox" name="categoria" value="A"> A</label>
-            <label><input type="checkbox" name="categoria" value="B"> B</label>
-            <label><input type="checkbox" name="categoria" value="C"> C</label>
-            <label><input type="checkbox" name="categoria" value="D"> D</label>
-            <label><input type="checkbox" name="categoria" value="E"> E</label>
-          </div>
-
-          <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-          <button type="submit">Enviar</button>
-        </div>
-      </form>
+      <button type="button" onclick="proximaEtapa(2)">Próximo</button>
     </div>
+
+    <div class="etapa" id="etapa2" style="display:none;">
+      <h4>Endereço</h4>
+      <label>CEP:</label>
+      <input type="text" id="cep" required>
+      <label>Rua:</label>
+      <input type="text" id="rua" required>
+      <label>Número:</label>
+      <input type="text" id="numero" required>
+      <label>Bairro:</label>
+      <input type="text" id="bairro" required>
+      <label>Cidade:</label>
+      <input type="text" id="cidadeInstrutor" required>
+      <label>Estado:</label>
+      <input type="text" id="estadoInstrutor" required>
+      <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+      <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+    </div>
+
+    <div class="etapa" id="etapa3" style="display:none;">
+      <h4>Documentos</h4>
+      <label>Comprovante de residência:</label>
+      <input type="file" id="comprovante" name="comprovante" required>
+      <label>CNH (obrigatória):</label>
+      <input type="file" id="cnh" name="cnh" required>
+
+      <h4>Categorias que sabe ensinar:</h4>
+      <div class="categorias">
+        <label><input type="checkbox" name="categoria" value="A"> A</label>
+        <label><input type="checkbox" name="categoria" value="B"> B</label>
+        <label><input type="checkbox" name="categoria" value="C"> C</label>
+        <label><input type="checkbox" name="categoria" value="D"> D</label>
+        <label><input type="checkbox" name="categoria" value="E"> E</label>
+      </div>
+
+      <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+</div>
   `;
 
   document.getElementById("formInstrutor").addEventListener("submit", cadastrarInstrutor);
