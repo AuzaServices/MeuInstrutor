@@ -15,10 +15,9 @@
   </div>
   <button class="menu-toggle">☰</button>
   <nav class="menu">
-    <a href="#">Início</a>
-    <a href="#">Nossa Jornada</a>
-    <a href="#">Encontre Seu Instrutor</a>
-    <a href="#">Fale Conosco</a>
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre nós</a>
+    <a href="contato.html">Fale Conosco</a>
     <button class="btn amarelo" id="btnInstrutor">Sou Instrutor</button>
   </nav> 
 </header>
@@ -139,15 +138,28 @@
             <button type="button" onclick="voltarEtapa(1)">Voltar</button>
             <button type="button" onclick="proximaEtapa(3)">Próximo</button>
           </div>
-          <div class="etapa" id="etapa3" style="display:none;">
-            <h4>Documentos</h4>
-            <label>Comprovante de residência:</label>
-            <input type="file" id="comprovante" required>
-            <label>CNH (obrigatória):</label>
-            <input type="file" id="cnh" required>
-            <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-            <button type="submit">Enviar</button>
-          </div>
+<div class="etapa" id="etapa3" style="display:none;">
+  <h4>Documentos</h4>
+
+  <label>Comprovante de residência:</label>
+  <input type="file" id="comprovante" required>
+
+  <label>CNH (obrigatória):</label>
+  <input type="file" id="cnh" required>
+
+  <!-- Seleção de categorias -->
+<h4>Categorias que sabe ensinar:</h4>
+<div class="categorias">
+  <label><input type="checkbox" name="categoria" value="A"> A</label>
+  <label><input type="checkbox" name="categoria" value="B"> B</label>
+  <label><input type="checkbox" name="categoria" value="C"> C</label>
+  <label><input type="checkbox" name="categoria" value="D"> D</label>
+  <label><input type="checkbox" name="categoria" value="E"> E</label>
+</div>
+
+  <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+  <button type="submit">Enviar</button>
+</div>
         </form>
       `;
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Administração</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Painel de Administração</h1>
+  </header>
+
+  <main>
+    <!-- Lista de instrutores -->
+    <section class="lista-instrutores">
+      <h2>Solicitações de Cadastro</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Comprovante</th>
+            <th>CNH</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaInstrutores">
+          <!-- Vai ser preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    async function carregarInstrutores() {
+      const resposta = await fetch("http://localhost:3000/instrutores");
+      const instrutores = await resposta.json();
+
+      const tabela = document.getElementById("tabelaInstrutores");
+      tabela.innerHTML = "";
+
+      instrutores.forEach(instrutor => {
+        tabela.innerHTML += `
+          <tr>
+            <td>${instrutor.nome}</td>
+            <td>${instrutor.cpf}</td>
+            <td>${instrutor.endereco}</td>
+            <td>${instrutor.cidade}</td>
+            <td>${instrutor.estado}</td>
+            <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+            <td><img src="${instrutor.cnh}" width="80"></td>
+            <td>${instrutor.categorias}</td>
+            <td>
+              <button onclick="aceitarInstrutor(${instrutor.id})">Aceitar</button>
+              <button onclick="recusarInstrutor(${instrutor.id})">Recusar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    async function aceitarInstrutor(id) {
+      await fetch(`http://localhost:3000/instrutores/aceitar/${id}`, { method: "PUT" });
+      carregarInstrutores();
+    }
+
+    async function recusarInstrutor(id) {
+      await fetch(`http://localhost:3000/instrutores/recusar/${id}`, { method: "PUT" });
+      carregarInstrutores();
+    }
+
+    // Carregar ao abrir
+    carregarInstrutores();
+  </script>
+</body>
+</html>

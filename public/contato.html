@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fale Conosco - Instrutor Pro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topo">
+    <div class="logo">
+      <img src="logo.png" alt="Instrutor Pro" />
+      <span>Instrutor Pro</span>
+    </div>
+    <button class="menu-toggle">☰</button>
+    <nav class="menu">
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="contato.html">Fale Conosco</a>
+      <button class="btn amarelo" id="btnInstrutor">Sou Instrutor</button>
+    </nav> 
+  </header>
+
+  <main>
+    <h1>Fale Conosco</h1>
+    <p>Aqui você pode contar a história da plataforma, missão, valores e objetivos.</p>
+  </main>
+
+  <footer>
+    © 2025 Instrutor Pro - Todos os direitos reservados
+  </footer>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".menu-toggle");
+  const menu = document.querySelector("nav.menu");
+
+  // abre/fecha ao clicar no hambúrguer
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation(); // evita fechar imediatamente
+    menu.classList.toggle("active");
+  });
+
+  // fecha ao clicar fora do menu
+  document.addEventListener("click", (e) => {
+    if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.classList.remove("active");
+    }
+  });
+});
+  </script>
+</body>
+</html>

@@ -361,3 +361,23 @@ header .logo span {
     padding: 15px; /* volta o padding quando ativo */
   }
 }
+
+.categorias {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.categorias label {
+  background: #f4f4f4;
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.categorias input {
+  margin-right: 5px;
+}
