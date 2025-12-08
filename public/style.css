@@ -90,7 +90,7 @@ body {
 .fundo-busca .imagem {
   flex: 0.4;
   margin-top: 25px;
-  background: url('img.png') no-repeat center center;
+  background: url('/public/img.png') no-repeat center center;
   background-size: cover;
 }
 
