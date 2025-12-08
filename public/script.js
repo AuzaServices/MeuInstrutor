@@ -4,22 +4,31 @@ function escolha(tipo) {
 
   if (tipo === "aluno") {
     area.innerHTML = `
-<h3>Buscar Instrutor</h3>
-<form onsubmit="buscarInstrutor(event)">
-  <div class="linha-horizontal">
-    <div class="campo">
-      <label for="estado">Estado:</label>
-      <select id="estado" required></select>
-    </div>
-    <div class="campo">
-      <label for="cidade">Cidade:</label>
-      <select id="cidade" required></select>
-    </div>
-  </div>
-  <button type="submit">Buscar</button>
-</form>
-<div id="resultado"></div>
+      <h3>Buscar Instrutor</h3>
+      <form onsubmit="buscarInstrutor(event)">
+        <div class="linha-horizontal">
+          <div class="campo">
+            <label for="estado">Estado:</label>
+            <select id="estado" required>
+              <option value="">Selecione o estado</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="cidade">Cidade:</label>
+            <select id="cidade" required>
+              <option value="">Selecione a cidade</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit">Buscar</button>
+      </form>
+      <div id="resultado"></div>
     `;
+
+    // Carregar estados assim que o formulário do aluno for renderizado
+    carregarEstados();
+    document.getElementById("estado").addEventListener("change", carregarCidades);
+
   } else {
     area.innerHTML = `
       <h3>Cadastro de Instrutor</h3>
@@ -53,89 +62,17 @@ function escolha(tipo) {
   }
 }
 
+// Cadastro de instrutor
 function cadastrarInstrutor(event) {
   event.preventDefault();
   const nome = document.getElementById("nome").value;
   const cidade = document.getElementById("cidadeInstrutor").value;
   const estado = document.getElementById("estadoInstrutor").value;
 
-  // Aqui futuramente enviaremos para o banco de dados
   alert(`Instrutor ${nome} cadastrado com sucesso em ${cidade}/${estado}!`);
 }
 
-function buscarInstrutor(event) {
-  event.preventDefault();
-  const estado = document.getElementById("estado").value;
-  const cidade = document.getElementById("cidade").value;
-
-  document.getElementById("resultado").innerHTML = `
-    <p>Instrutor disponível em ${cidade}, ${estado}:</p>
-    <strong>João Pereira</strong> - 8 anos de experiência
-  `;
-}
-
-function cadastrarInstrutor(event) {
-  event.preventDefault();
-  const nome = document.getElementById("nome").value;
-  alert(`Instrutor ${nome} cadastrado com sucesso!`);
-}
-
-function buscarInstrutor(event) {
-  event.preventDefault();
-  const estado = document.getElementById("estado").value;
-  const cidade = document.getElementById("cidade").value;
-
-  // Simulação de resultado
-  document.getElementById("resultado").innerHTML = `
-    <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
-    <ul>
-      <li><strong>João Pereira</strong> - 8 anos de experiência</li>
-      <li><strong>Maria Silva</strong> - 10 anos de experiência</li>
-    </ul>
-  `;
-}
-
-// Carregar estados ao iniciar
-async function carregarEstados() {
-  const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-  const estados = await resp.json();
-  const selectEstado = document.getElementById("estado");
-
-  estados.sort((a, b) => a.nome.localeCompare(b.nome)); // ordenar alfabeticamente
-
-  estados.forEach(estado => {
-    const option = document.createElement("option");
-    option.value = estado.id; // ID oficial do IBGE
-    option.textContent = estado.nome;
-    selectEstado.appendChild(option);
-  });
-}
-
-// Carregar cidades ao selecionar estado
-async function carregarCidades() {
-  const estadoId = document.getElementById("estado").value;
-  const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
-  const cidades = await resp.json();
-  const selectCidade = document.getElementById("cidade");
-
-  selectCidade.innerHTML = ""; // limpar antes de preencher
-
-  cidades.sort((a, b) => a.nome.localeCompare(b.nome));
-
-  cidades.forEach(cidade => {
-    const option = document.createElement("option");
-    option.value = cidade.nome;
-    option.textContent = cidade.nome;
-    selectCidade.appendChild(option);
-  });
-}
-
-// Vincular eventos
-document.addEventListener("DOMContentLoaded", () => {
-  carregarEstados();
-  document.getElementById("estado").addEventListener("change", carregarCidades);
-});
-
+// Busca de instrutor
 function buscarInstrutor(event) {
   event.preventDefault();
   const estado = document.getElementById("estado").selectedOptions[0].text;
@@ -148,4 +85,43 @@ function buscarInstrutor(event) {
       <li><strong>Maria Silva</strong> - 10 anos de experiência</li>
     </ul>
   `;
+}
+
+// Carregar estados via IBGE
+async function carregarEstados() {
+  const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+  const estados = await resp.json();
+  const selectEstado = document.getElementById("estado");
+
+  selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+  estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+  estados.forEach(estado => {
+    const option = document.createElement("option");
+    option.value = estado.id;
+    option.textContent = estado.nome;
+    selectEstado.appendChild(option);
+  });
+}
+
+// Carregar cidades via IBGE
+async function carregarCidades() {
+  const estadoId = document.getElementById("estado").value;
+  if (!estadoId) return;
+
+  const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
+  const cidades = await resp.json();
+  const selectCidade = document.getElementById("cidade");
+
+  selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+  cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+  cidades.forEach(cidade => {
+    const option = document.createElement("option");
+    option.value = cidade.nome;
+    option.textContent = cidade.nome;
+    selectCidade.appendChild(option);
+  });
 }
