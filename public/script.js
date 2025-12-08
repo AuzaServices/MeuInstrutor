@@ -94,6 +94,14 @@ function carregarFormularioInstrutor() {
           <label>CPF:</label>
           <input type="text" id="cpf" maxlength="14" required>
 
+          <!-- Campo Sexo -->
+          <label>Sexo:</label>
+          <select id="sexoInstrutor" required>
+            <option value="">Selecione</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select>
+
           <button type="button" onclick="proximaEtapa(2)">Próximo</button>
         </div>
 
@@ -153,6 +161,7 @@ async function cadastrarInstrutor(event) {
   const formData = new FormData();
   formData.append("nome", document.getElementById("nome").value);
   formData.append("cpf", document.getElementById("cpf").value);
+  formData.append("sexo", document.getElementById("sexoInstrutor").value);
   formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
   formData.append("estado", document.getElementById("estadoInstrutor").value);
@@ -161,6 +170,11 @@ async function cadastrarInstrutor(event) {
   formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
+    console.log("Enviando cadastro...");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
       method: "POST",
       body: formData
@@ -172,11 +186,14 @@ async function cadastrarInstrutor(event) {
 
     const resultado = await resposta.json();
     alert(resultado.message);
+    document.getElementById("formInstrutor").reset();
+    proximaEtapa(1);
   } catch (error) {
     console.error("Erro ao cadastrar instrutor:", error);
     alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
   }
 }
+
 // ================= NAVEGAÇÃO ENTRE ETAPAS =================
 function proximaEtapa(n) {
   document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
