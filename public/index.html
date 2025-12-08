@@ -8,19 +8,19 @@
 </head>
 <body>
   <!-- Cabeçalho -->
-<header class="topo">
-  <div class="logo">
-    <img src="logo.png" alt="Instrutor Pro" />
-    <span>Instrutor Pro</span>
-  </div>
-  <button class="menu-toggle">☰</button>
-  <nav class="menu">
-    <a href="index.html">Início</a>
-    <a href="sobre.html">Sobre nós</a>
-    <a href="contato.html">Fale Conosco</a>
-    <button class="btn amarelo" id="btnInstrutor">Sou Instrutor</button>
-  </nav> 
-</header>
+  <header class="topo">
+    <div class="logo">
+      <img src="logo.png" alt="Instrutor Pro" />
+      <span>Instrutor Pro</span>
+    </div>
+    <button class="menu-toggle">☰</button>
+    <nav class="menu">
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre nós</a>
+      <a href="contato.html">Fale Conosco</a>
+      <button class="btn amarelo" id="btnInstrutor">Sou Instrutor</button>
+    </nav> 
+  </header>
 
   <!-- Seção principal -->
   <section class="fundo-busca">
@@ -85,139 +85,151 @@
         <div id="resultado"></div>
       `;
 
-      // 🔑 Carregar estados e listener de cidades
-      carregarEstados();
-      document.getElementById("estado").addEventListener("change", carregarCidades);
+      carregarEstadosAluno();
+      document.getElementById("estado").addEventListener("change", carregarCidadesAluno);
     }
 
-    function buscarInstrutor(event) {
+    async function buscarInstrutor(event) {
       event.preventDefault();
       const estado = document.getElementById("estado").selectedOptions[0].text;
       const cidade = document.getElementById("cidade").value;
       const categoria = document.getElementById("categoria").value;
       const sexo = document.getElementById("sexo").value;
 
-      document.getElementById("resultado").innerHTML = `
-        <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
-        <p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>
-        <ul>
-          <li><strong>João Pereira</strong> - Categoria B, 8 anos de experiência</li>
-          <li><strong>Maria Silva</strong> - Categoria D, 10 anos de experiência</li>
-        </ul>
-      `;
+      try {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
+        const instrutores = await resposta.json();
+
+        let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
+        html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
+        html += "<ul>";
+
+        instrutores.forEach(instrutor => {
+          html += `<li><strong>${instrutor.nome}</strong> - Categoria ${instrutor.categorias}, Endereço: ${instrutor.endereco}</li>`;
+        });
+
+        html += "</ul>";
+        document.getElementById("resultado").innerHTML = html;
+      } catch (error) {
+        console.error("Erro ao buscar instrutores:", error);
+        document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
+      }
     }
 
     // Formulário de instrutor
     function carregarFormularioInstrutor() {
-  document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
-  document.getElementById("form-area").innerHTML = `
-    <form id="formInstrutor">
-      <div class="etapa" id="etapa1">
-        <label>Nome completo:</label>
-        <input type="text" id="nome" required>
+      document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
+      document.getElementById("form-area").innerHTML = `
+        <form id="formInstrutor">
+          <div class="etapa" id="etapa1">
+            <label>Nome completo:</label>
+            <input type="text" id="nome" required>
 
-        <label>CPF:</label>
-        <input type="text" id="cpf" maxlength="14" required>
+            <label>CPF:</label>
+            <input type="text" id="cpf" maxlength="14" required>
 
-        <!-- Campo Sexo -->
-        <label>Sexo:</label>
-        <select id="sexoInstrutor" required>
-          <option value="">Selecione</option>
-          <option value="M">Masculino</option>
-          <option value="F">Feminino</option>
-        </select>
+            <label>Sexo:</label>
+            <select id="sexoInstrutor" required>
+              <option value="">Selecione</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
 
-        <button type="button" onclick="proximaEtapa(2)">Próximo</button>
-      </div>
+            <button type="button" onclick="proximaEtapa(2)">Próximo</button>
+          </div>
 
-<div class="etapa" id="etapa2" style="display:none;">
-  <h4>Endereço</h4>
-  <label>CEP:</label>
-  <input type="text" id="cep" required>
-  <label>Rua:</label>
-  <input type="text" id="rua" required>
-  <label>Número:</label>
-  <input type="text" id="numero" required>
-  <label>Bairro:</label>
-  <input type="text" id="bairro" required>
+          <div class="etapa" id="etapa2" style="display:none;">
+            <h4>Endereço</h4>
+            <label>CEP:</label>
+            <input type="text" id="cep" required>
+            <label>Rua:</label>
+            <input type="text" id="rua" required>
+            <label>Número:</label>
+            <input type="text" id="numero" required>
+            <label>Bairro:</label>
+            <input type="text" id="bairro" required>
 
-  <label>Estado:</label>
-  <select id="estadoInstrutor" required>
-    <option value="">Selecione o estado</option>
-  </select>
+            <label>Estado:</label>
+            <select id="estadoInstrutor" required>
+              <option value="">Selecione o estado</option>
+            </select>
 
-  <label>Cidade:</label>
-  <select id="cidadeInstrutor" required>
-    <option value="">Selecione a cidade</option>
-  </select>
+            <label>Cidade:</label>
+            <select id="cidadeInstrutor" required>
+              <option value="">Selecione a cidade</option>
+            </select>
 
-  <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-  <button type="button" onclick="proximaEtapa(3)">Próximo</button>
-</div>
+            <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+            <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+          </div>
 
-      <div class="etapa" id="etapa3" style="display:none;">
-        <h4>Documentos</h4>
-        <label>Comprovante de residência:</label>
-        <input type="file" id="comprovante" name="comprovante" required>
-        <label>CNH (obrigatória):</label>
-        <input type="file" id="cnh" name="cnh" required>
+          <div class="etapa" id="etapa3" style="display:none;">
+            <h4>Documentos</h4>
+            <label>Comprovante de residência:</label>
+            <input type="file" id="comprovante" name="comprovante" required>
+            <label>CNH (obrigatória):</label>
+            <input type="file" id="cnh" name="cnh" required>
 
-        <h4>Categorias que sabe ensinar:</h4>
-        <div class="categorias">
-          <label><input type="checkbox" name="categoria" value="A"> A</label>
-          <label><input type="checkbox" name="categoria" value="B"> B</label>
-          <label><input type="checkbox" name="categoria" value="C"> C</label>
-          <label><input type="checkbox" name="categoria" value="D"> D</label>
-          <label><input type="checkbox" name="categoria" value="E"> E</label>
-        </div>
+            <h4>Categorias que sabe ensinar:</h4>
+            <div class="categorias">
+              <label><input type="checkbox" name="categoria" value="A"> A</label>
+              <label><input type="checkbox" name="categoria" value="B"> B</label>
+              <label><input type="checkbox" name="categoria" value="C"> C</label>
+              <label><input type="checkbox" name="categoria" value="D"> D</label>
+              <label><input type="checkbox" name="categoria" value="E"> E</label>
+            </div>
 
-        <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-        <button type="submit">Enviar</button>
-      </div>
-    </form>
-  `;
+            <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+            <button type="submit">Enviar</button>
+          </div>
+        </form>
+      `;
 
-document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const categoriasSelecionadas = [];
-  document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
-    categoriasSelecionadas.push(el.value);
-  });
-
-  const formData = new FormData();
-  formData.append("nome", document.getElementById("nome").value);
-  formData.append("cpf", document.getElementById("cpf").value);
-  formData.append("sexo", document.getElementById("sexoInstrutor").value);
-  formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
-  formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-  formData.append("estado", document.getElementById("estadoInstrutor").value);
-  formData.append("comprovante", document.getElementById("comprovante").files[0]);
-  formData.append("cnh", document.getElementById("cnh").files[0]);
-  formData.append("categorias", categoriasSelecionadas.join(","));
-
-  try {
-    console.log("Disparando fetch...");
-    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
-      method: "POST",
-      body: formData
-    });
-
-    if (!resposta.ok) {
-      throw new Error("Erro no servidor: " + resposta.status);
-    }
-
-    const resultado = await resposta.json();
-    alert(resultado.message);
-    document.getElementById("formInstrutor").reset();
-    proximaEtapa(1);
-  } catch (error) {
-    console.error("Erro ao cadastrar instrutor:", error);
-    alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
-  }
-});
+      // Inicializar selects IBGE para instrutor
+      carregarEstadosInstrutor();
+      document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
 
       aplicarMascaraCPF();
+
+      document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const categoriasSelecionadas = [];
+        document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
+          categoriasSelecionadas.push(el.value);
+        });
+
+        const formData = new FormData();
+        formData.append("nome", document.getElementById("nome").value);
+        formData.append("cpf", document.getElementById("cpf").value);
+        formData.append("sexo", document.getElementById("sexoInstrutor").value);
+        formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
+        formData.append("cidade", document.getElementById("cidadeInstrutor").value);
+        formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);
+               formData.append("comprovante", document.getElementById("comprovante").files[0]);
+        formData.append("cnh", document.getElementById("cnh").files[0]);
+        formData.append("categorias", categoriasSelecionadas.join(","));
+
+        try {
+          console.log("Disparando fetch...");
+          const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
+            method: "POST",
+            body: formData
+          });
+
+          if (!resposta.ok) {
+            throw new Error("Erro no servidor: " + resposta.status);
+          }
+
+          const resultado = await resposta.json();
+          alert(resultado.message);
+          document.getElementById("formInstrutor").reset();
+          proximaEtapa(1); // volta para a primeira etapa
+        } catch (error) {
+          console.error("Erro ao cadastrar instrutor:", error);
+          alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
+        }
+      });
     }
 
     // Navegação entre etapas
@@ -235,8 +247,8 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Carregar estados via API IBGE
-    async function carregarEstados() {
+    // Carregar estados/cidades para aluno
+    async function carregarEstadosAluno() {
       try {
         const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
         const estados = await resp.json();
@@ -257,8 +269,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       }
     }
 
-    // Carregar cidades via API IBGE
-    async function carregarCidades() {
+    async function carregarCidadesAluno() {
       const estadoId = document.getElementById("estado").value;
       if (!estadoId) return;
 
@@ -282,13 +293,53 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       }
     }
 
-    // Inicializa com o formulário de aluno
-    document.addEventListener("DOMContentLoaded", () => {
-      carregarFormularioAluno();
-      document.getElementById("btnInstrutor").addEventListener("click", carregarFormularioInstrutor);
-    });
+    // Carregar estados/cidades para instrutor
+    async function carregarEstadosInstrutor() {
+      try {
+        const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+        const estados = await resp.json();
+        const selectEstado = document.getElementById("estadoInstrutor");
 
-    // Máscara de CPF (só ativa quando o campo existe)
+        selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+        estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        estados.forEach(estado => {
+          const option = document.createElement("option");
+          option.value = estado.id;
+          option.textContent = estado.nome;
+          selectEstado.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar estados (instrutor):", error);
+      }
+    }
+
+    async function carregarCidadesInstrutor() {
+      const estadoId = document.getElementById("estadoInstrutor").value;
+      if (!estadoId) return;
+
+      try {
+        const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
+        const cidades = await resp.json();
+        const selectCidade = document.getElementById("cidadeInstrutor");
+
+        selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+        cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        cidades.forEach(cidade => {
+          const option = document.createElement("option");
+          option.value = cidade.nome;
+          option.textContent = cidade.nome;
+          selectCidade.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar cidades (instrutor):", error);
+      }
+    }
+
+    // Máscara de CPF
     function aplicarMascaraCPF() {
       const cpfInput = document.getElementById("cpf");
       if (!cpfInput) return;
@@ -309,92 +360,25 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       });
     }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".menu-toggle");
-  const menu = document.querySelector("nav.menu");
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", () => {
+      carregarFormularioAluno();
+      document.getElementById("btnInstrutor").addEventListener("click", carregarFormularioInstrutor);
 
-  // abre/fecha ao clicar no hambúrguer
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita fechar imediatamente
-    menu.classList.toggle("active");
-  });
+      const toggle = document.querySelector(".menu-toggle");
+      const menu = document.querySelector("nav.menu");
 
-  // fecha ao clicar fora do menu
-  document.addEventListener("click", (e) => {
-    if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
-      menu.classList.remove("active");
-    }
-  });
-});
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("active");
+      });
 
-// Carregar estados via API IBGE
-async function carregarEstadosInstrutor() {
-  try {
-    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-    const estados = await resp.json();
-    const selectEstado = document.getElementById("estadoInstrutor");
-
-    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
-
-    estados.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    estados.forEach(estado => {
-      const option = document.createElement("option");
-      option.value = estado.nome; // ou estado.sigla se preferir
-      option.textContent = estado.nome;
-      selectEstado.appendChild(option);
+      document.addEventListener("click", (e) => {
+        if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          menu.classList.remove("active");
+        }
+      });
     });
-  } catch (error) {
-    console.error("Erro ao carregar estados:", error);
-  }
-}
-
-// Carregar cidades via API IBGE
-async function carregarEstadosInstrutor() {
-  try {
-    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-    const estados = await resp.json();
-    const selectEstado = document.getElementById("estadoInstrutor");
-
-    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
-
-    estados.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    estados.forEach(estado => {
-      const option = document.createElement("option");
-      option.value = estado.id;   // usa o ID do estado
-      option.textContent = estado.nome;
-      selectEstado.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Erro ao carregar estados:", error);
-  }
-}
-
-async function carregarCidadesInstrutor() {
-  const estadoId = document.getElementById("estadoInstrutor").value;
-  if (!estadoId) return;
-
-  try {
-    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
-    const cidades = await resp.json();
-    const selectCidade = document.getElementById("cidadeInstrutor");
-
-    selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
-
-    cidades.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    cidades.forEach(cidade => {
-      const option = document.createElement("option");
-      option.value = cidade.nome;
-      option.textContent = cidade.nome;
-      selectCidade.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Erro ao carregar cidades:", error);
-  }
-}
-
   </script>
 </body>
 </html>
