@@ -1,7 +1,6 @@
-// Renderiza o formulário de aluno
 function carregarFormularioAluno() {
-  const area = document.getElementById("form-area");
-  area.innerHTML = `
+  document.getElementById("titulo-form").innerText = "Buscar Instrutor";
+  document.getElementById("form-area").innerHTML = `
     <form onsubmit="buscarInstrutor(event)">
       <div class="linha-horizontal">
         <div class="campo">
@@ -17,36 +16,12 @@ function carregarFormularioAluno() {
           </select>
         </div>
       </div>
-
-      <div class="linha-horizontal">
-        <div class="campo">
-          <label for="categoria">Categoria CNH:</label>
-          <select id="categoria" required>
-            <option value="">Selecione a categoria</option>
-            <option value="ACC">ACC</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="E">E</option>
-          </select>
-        </div>
-        <div class="campo">
-          <label for="sexo">Sexo:</label>
-          <select id="sexo" required>
-            <option value="">Selecione</option>
-            <option value="Feminino">Feminino</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Sem preferencia">Sem preferência</option>
-          </select>
-        </div>
-      </div>
-
-      <button type="submit">Buscar</button>
+      ...
     </form>
     <div id="resultado"></div>
   `;
 
+  // 🔑 Aqui você garante que os selects sejam preenchidos
   carregarEstados();
   document.getElementById("estado").addEventListener("change", carregarCidades);
 }
