@@ -433,13 +433,89 @@ header .logo span {
 }
 
 .fundo-busca {
-  display: flex;           /* mantém imagem e formulário lado a lado */
-  align-items: flex-start; /* evita que a imagem estique junto */
+  display: flex;
+  align-items: flex-start;
 }
 
 .fundo-busca .imagem {
-  flex: 0 0 400px;         /* largura fixa da imagem */
-  height: 500px;           /* altura fixa */
+  width: 100%;
+  max-width: 500px;   /* largura máxima no desktop */
+  height: 500px;      /* altura fixa */
+  background: url("img.png") no-repeat center center;
+  background-size: cover;
+  flex-shrink: 0;     /* impede a imagem de encolher */
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 768px) {
+  .fundo-busca {
+    flex-direction: column;   /* imagem fica em cima do formulário */
+    align-items: center;
+  }
+
+  .fundo-busca .imagem {
+    width: 100%;              /* ocupa toda a largura da tela */
+    max-width: none;          /* remove limite de largura */
+    height: 250px;            /* altura menor no mobile */
+  }
+
+  .formulario {
+    width: 100%;              /* formulário ocupa toda a largura */
+  }
+}
+
+.fundo-busca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-bloco {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.formulario {
+  flex: 1;
+  min-width: 300px;
+}
+
+.imagem {
+  width: 400px;
+  height: 500px;
   background: url("sua-imagem.jpg") no-repeat center center;
-  background-size: cover;  /* mantém proporção e cobre o espaço */
+  background-size: cover;
+  flex-shrink: 0;
+}
+
+#resultado {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+  .form-bloco {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imagem {
+    width: 100%;
+    height: 250px;
+    max-width: none;
+  }
+
+  .formulario {
+    width: 100%;
+  }
+
+  #resultado {
+    margin-top: 20px;
+  }
 }
