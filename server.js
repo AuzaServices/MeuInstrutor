@@ -80,7 +80,6 @@ app.delete("/instrutores/:id", (req, res) => {
 });
 
 // 📌 Cadastro de instrutor
-// 📌 Cadastro de instrutor
 app.post(
   "/instrutores",
   upload.fields([
@@ -100,9 +99,10 @@ app.post(
       return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
     }
 
-    const comprovante = req.files["comprovante"][0].path;
-    const cnh = req.files["cnh"][0].path;
-    const selfie = req.files["selfie"][0].path; // 🔥 pega o caminho da selfie
+    // 🔎 salva apenas o filename, não o path
+    const comprovante = req.files["comprovante"][0].filename;
+    const cnh = req.files["cnh"][0].filename;
+    const selfie = req.files["selfie"][0].filename;
 
     db.query(
       "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
@@ -136,6 +136,14 @@ app.get("/instrutores/aceitos", (req, res) => {
 
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err });
+
+    // 🔎 monta URLs completas para imagens
+    results.forEach(instrutor => {
+      instrutor.comprovante_residencia = `/uploads/${instrutor.comprovante_residencia}`;
+      instrutor.cnh = `/uploads/${instrutor.cnh}`;
+      instrutor.selfie = `/uploads/${instrutor.selfie}`;
+    });
+
     res.json(results);
   });
 });
@@ -147,6 +155,13 @@ app.get("/instrutores/todos", (req, res) => {
       console.error("❌ Erro ao listar todos:", err);
       return res.status(500).json({ error: err });
     }
+
+    results.forEach(instrutor => {
+      instrutor.comprovante_residencia = `/uploads/${instrutor.comprovante_residencia}`;
+      instrutor.cnh = `/uploads/${instrutor.cnh}`;
+      instrutor.selfie = `/uploads/${instrutor.selfie}`;
+    });
+
     res.json(results);
   });
 });
