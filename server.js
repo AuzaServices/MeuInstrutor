@@ -182,6 +182,60 @@ app.get("/instrutores/todos", (req, res) => {
   });
 });
 
+// Atualizar Selfie
+app.put("/instrutores/:id/selfie", upload.single("selfie"), (req, res) => {
+  const { id } = req.params;
+  if (!req.file) {
+    return res.status(400).json({ error: "Nenhuma selfie enviada" });
+  }
+
+  const selfie = req.file.filename;
+
+  db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [selfie, id], (err) => {
+    if (err) {
+      console.error("❌ Erro ao atualizar selfie:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "Selfie atualizada com sucesso!" });
+  });
+});
+
+// Atualizar Comprovante
+app.put("/instrutores/:id/comprovante", upload.single("comprovante"), (req, res) => {
+  const { id } = req.params;
+  if (!req.file) {
+    return res.status(400).json({ error: "Nenhum comprovante enviado" });
+  }
+
+  const comprovante = req.file.filename;
+
+  db.query("UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?", [comprovante, id], (err) => {
+    if (err) {
+      console.error("❌ Erro ao atualizar comprovante:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "Comprovante atualizado com sucesso!" });
+  });
+});
+
+// Atualizar CNH
+app.put("/instrutores/:id/cnh", upload.single("cnh"), (req, res) => {
+  const { id } = req.params;
+  if (!req.file) {
+    return res.status(400).json({ error: "Nenhuma CNH enviada" });
+  }
+
+  const cnh = req.file.filename;
+
+  db.query("UPDATE instrutores SET cnh = ? WHERE id = ?", [cnh, id], (err) => {
+    if (err) {
+      console.error("❌ Erro ao atualizar CNH:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "CNH atualizada com sucesso!" });
+  });
+});
+
 /* ========================= START ========================= */
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

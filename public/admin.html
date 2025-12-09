@@ -16,25 +16,23 @@
     <section class="lista-instrutores">
       <h2>Solicitações Pendentes</h2>
       <table>
-<thead>
-  <tr>
-    <th>Nome Completo</th>
-    <th>CPF</th>
-    <th>Endereço</th>
-    <th>Cidade</th>
-    <th>Estado</th>
-    <th>Telefone</th>
-    <th>Selfie</th> <!-- 🔥 nova coluna -->
-    <th>Comprovante</th>
-    <th>CNH</th>
-    <th>Categoria</th>
-    <th>Status</th>
-    <th>Ações</th>
-  </tr>
-</thead>
-        <tbody id="tabelaPendentes">
-          <!-- Preenchido via JS -->
-        </tbody>
+        <thead>
+          <tr>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Telefone</th>
+            <th>Selfie</th>
+            <th>Comprovante</th>
+            <th>CNH</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaPendentes"></tbody>
       </table>
     </section>
 
@@ -42,103 +40,149 @@
     <section class="lista-instrutores">
       <h2>Instrutores Aceitos</h2>
       <table>
-<thead>
-  <tr>
-    <th>Nome Completo</th>
-    <th>CPF</th>
-    <th>Endereço</th>
-    <th>Cidade</th>
-    <th>Estado</th>
-    <th>Telefone</th>
-    <th>Selfie</th> <!-- 🔥 nova coluna -->
-    <th>Comprovante</th>
-    <th>CNH</th>
-    <th>Categoria</th>
-    <th>Status</th>
-    <th>Ações</th>
-  </tr>
-</thead>
-        <tbody id="tabelaAceitos">
-          <!-- Preenchido via JS -->
-        </tbody>
+        <thead>
+          <tr>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Telefone</th>
+            <th>Selfie</th>
+            <th>Comprovante</th>
+            <th>CNH</th>
+            <th>Categoria</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAceitos"></tbody>
       </table>
     </section>
   </main>
 
   <script>
-async function carregarInstrutores() {
-  const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
-  const instrutores = await resposta.json();
+  async function carregarInstrutores() {
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
+    if (!resposta.ok) {
+      alert("Erro ao carregar instrutores");
+      return;
+    }
+    const instrutores = await resposta.json();
 
-  const tabelaPendentes = document.getElementById("tabelaPendentes");
-  const tabelaAceitos = document.getElementById("tabelaAceitos");
-  tabelaPendentes.innerHTML = "";
-  tabelaAceitos.innerHTML = "";
+    const tabelaPendentes = document.getElementById("tabelaPendentes");
+    const tabelaAceitos = document.getElementById("tabelaAceitos");
+    tabelaPendentes.innerHTML = "";
+    tabelaAceitos.innerHTML = "";
 
-instrutores.forEach(instrutor => {
-  if (instrutor.status === "aceito") {
-    tabelaAceitos.innerHTML += `
-      <tr>
-        <td>${instrutor.nome}</td>
-        <td>${instrutor.cpf}</td>
-        <td>${instrutor.endereco}</td>
-        <td>${instrutor.cidade}</td>
-        <td>${instrutor.estado}</td>
-        <td>${instrutor.telefone}</td>
-<td><img src="${instrutor.selfie}" width="80"></td>
-<td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-<td><img src="${instrutor.cnh}" width="80"></td>
-        <td>${instrutor.categorias}</td>
-        <td style="color:green; font-weight:bold;">✔ Aceito</td>
-        <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
-      </tr>
-    `;
-  } else {
-    tabelaPendentes.innerHTML += `
-      <tr>
-        <td>${instrutor.nome}</td>
-        <td>${instrutor.cpf}</td>
-        <td>${instrutor.endereco}</td>
-        <td>${instrutor.cidade}</td>
-        <td>${instrutor.estado}</td>
-        <td>${instrutor.telefone}</td>
-<td><img src="${instrutor.selfie}" width="80"></td>
-<td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-<td><img src="${instrutor.cnh}" width="80"></td>
-        <td>${instrutor.categorias}</td>
-        <td>
-          <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
-          <button class="excluir" data-id="${instrutor.id}">Recusar</button>
-        </td>
-      </tr>
-    `;
-  }
-});
-}
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const tabela = document.querySelector("main");
-
-      tabela.addEventListener("click", async (e) => {
-        if (e.target.classList.contains("admitir")) {
-          const id = e.target.dataset.id;
-          const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
-          const resultado = await resposta.json();
-          alert(resultado.message);
-          carregarInstrutores();
-        }
-
-        if (e.target.classList.contains("excluir")) {
-          const id = e.target.dataset.id;
-          const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-          const resultado = await resposta.json();
-          alert(resultado.message);
-          carregarInstrutores();
-        }
-      });
-
-      carregarInstrutores();
+    instrutores.forEach(instrutor => {
+      const linha = `
+        <tr>
+          <td>${instrutor.nome}</td>
+          <td>${instrutor.cpf}</td>
+          <td>${instrutor.endereco}</td>
+          <td>${instrutor.cidade}</td>
+          <td>${instrutor.estado}</td>
+          <td>${instrutor.telefone}</td>
+          <td>
+            <img src="${instrutor.selfie}" width="80"><br>
+            <input type="file" class="upload-selfie" data-id="${instrutor.id}">
+            <button class="atualizar-selfie" data-id="${instrutor.id}">Mudar Selfie</button>
+          </td>
+          <td>
+            <img src="${instrutor.comprovante_residencia}" width="80"><br>
+            <input type="file" class="upload-comprovante" data-id="${instrutor.id}">
+            <button class="atualizar-comprovante" data-id="${instrutor.id}">Mudar Comprovante</button>
+          </td>
+          <td>
+            <img src="${instrutor.cnh}" width="80"><br>
+            <input type="file" class="upload-cnh" data-id="${instrutor.id}">
+            <button class="atualizar-cnh" data-id="${instrutor.id}">Mudar CNH</button>
+          </td>
+          <td>${instrutor.categorias}</td>
+          <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
+            ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
+          </td>
+          <td>
+            ${instrutor.status === "aceito"
+              ? `<button class="excluir" data-id="${instrutor.id}">Excluir</button>`
+              : `<button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+                 <button class="excluir" data-id="${instrutor.id}">Recusar</button>`}
+          </td>
+        </tr>
+      `;
+      if (instrutor.status === "aceito") {
+        tabelaAceitos.innerHTML += linha;
+      } else {
+        tabelaPendentes.innerHTML += linha;
+      }
     });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabela = document.querySelector("main");
+
+    tabela.addEventListener("click", async (e) => {
+      const id = e.target.dataset.id;
+
+      // Aceitar
+      if (e.target.classList.contains("admitir")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
+
+      // Excluir
+      if (e.target.classList.contains("excluir")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
+
+      // Atualizar Selfie
+      if (e.target.classList.contains("atualizar-selfie")) {
+        const input = document.querySelector(`.upload-selfie[data-id="${id}"]`);
+        const file = input.files[0];
+        if (!file) { alert("Selecione uma selfie primeiro!"); return; }
+        const formData = new FormData();
+        formData.append("selfie", file);
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/selfie`, { method: "PUT", body: formData });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
+
+      // Atualizar Comprovante
+      if (e.target.classList.contains("atualizar-comprovante")) {
+        const input = document.querySelector(`.upload-comprovante[data-id="${id}"]`);
+        const file = input.files[0];
+        if (!file) { alert("Selecione um comprovante primeiro!"); return; }
+        const formData = new FormData();
+        formData.append("comprovante", file);
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/comprovante`, { method: "PUT", body: formData });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
+
+      // Atualizar CNH
+      if (e.target.classList.contains("atualizar-cnh")) {
+        const input = document.querySelector(`.upload-cnh[data-id="${id}"]`);
+        const file = input.files[0];
+        if (!file) { alert("Selecione uma CNH primeiro!"); return; }
+        const formData = new FormData();
+        formData.append("cnh", file);
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/cnh`, { method: "PUT", body: formData });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
+    });
+
+    carregarInstrutores();
+  });
   </script>
 </body>
 </html>
