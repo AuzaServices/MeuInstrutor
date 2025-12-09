@@ -80,34 +80,43 @@ app.delete("/instrutores/:id", (req, res) => {
 });
 
 // 📌 Cadastro de instrutor
-app.post("/instrutores", upload.fields([{ name: "comprovante" }, { name: "cnh" }]), (req, res) => {
-  console.log("📥 Recebendo cadastro...");
-  console.log("BODY:", req.body);
-  console.log("FILES:", req.files);
+// 📌 Cadastro de instrutor
+app.post(
+  "/instrutores",
+  upload.fields([
+    { name: "comprovante" },
+    { name: "cnh" },
+    { name: "selfie" } // 🔥 novo campo para selfie
+  ]),
+  (req, res) => {
+    console.log("📥 Recebendo cadastro...");
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
 
-  const { nome, cpf, endereco, cidade, estado, categorias, telefone } = req.body;
+    const { nome, cpf, endereco, cidade, estado, categorias, telefone } = req.body;
 
-
-  if (!req.files || !req.files["comprovante"] || !req.files["cnh"]) {
-    return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
-  }
-
-  const comprovante = req.files["comprovante"][0].path;
-  const cnh = req.files["cnh"][0].path;
-
-db.query(
-  "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
-  [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, categorias],
-  (err) => {
-    if (err) {
-      console.error("❌ Erro no INSERT:", err);
-      return res.status(500).json({ error: err });
+    // valida arquivos obrigatórios
+    if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
+      return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
     }
-    res.json({ message: "Cadastro enviado para análise!" });
+
+    const comprovante = req.files["comprovante"][0].path;
+    const cnh = req.files["cnh"][0].path;
+    const selfie = req.files["selfie"][0].path; // 🔥 pega o caminho da selfie
+
+    db.query(
+      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
+      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categorias],
+      (err) => {
+        if (err) {
+          console.error("❌ Erro no INSERT:", err);
+          return res.status(500).json({ error: err });
+        }
+        res.json({ message: "Cadastro enviado para análise!" });
+      }
+    );
   }
 );
-
-});
 
 // 📌 Listar instrutores aceitos com filtro
 app.get("/instrutores/aceitos", (req, res) => {

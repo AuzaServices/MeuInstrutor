@@ -57,18 +57,31 @@ async function buscarInstrutor(event) {
   const sexo = document.getElementById("sexo").value;
 
   try {
-    const resposta = await fetch(`http://localhost:3000/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
+    const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
     const instrutores = await resposta.json();
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
-    html += "<ul>";
+    html += `<div class="cards-container">`;
 
     instrutores.forEach(instrutor => {
-      html += `<li><strong>${instrutor.nome}</strong> - Categoria ${instrutor.categorias}, Endereço: ${instrutor.endereco}</li>`;
+      const nomes = instrutor.nome.split(" ");
+      const primeiroNome = nomes[0] || "";
+      const segundoNome = nomes[1] || "";
+
+      const telefone = instrutor.telefone.replace(/\D/g, "");
+      const linkWhats = `https://wa.me/55${telefone}`;
+
+      html += `
+        <div class="card-instrutor">
+          <img src="${instrutor.foto}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+          <h3>${primeiroNome} ${segundoNome}</h3>
+          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
+        </div>
+      `;
     });
 
-    html += "</ul>";
+    html += `</div>`;
     document.getElementById("resultado").innerHTML = html;
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
@@ -175,7 +188,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
     return;
   }
   formData.append("telefone", telefone);
-
+  formData.append("selfie", document.getElementById("selfie").files[0]);
   formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
   formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);

@@ -16,20 +16,22 @@
     <section class="lista-instrutores">
       <h2>Solicitações Pendentes</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Nome Completo</th>
-            <th>CPF</th>
-            <th>Endereço</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>Telefone</th>
-            <th>Comprovante</th>
-            <th>CNH</th>
-            <th>Categoria</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
+<thead>
+  <tr>
+    <th>Nome Completo</th>
+    <th>CPF</th>
+    <th>Endereço</th>
+    <th>Cidade</th>
+    <th>Estado</th>
+    <th>Telefone</th>
+    <th>Selfie</th> <!-- 🔥 nova coluna -->
+    <th>Comprovante</th>
+    <th>CNH</th>
+    <th>Categoria</th>
+    <th>Status</th>
+    <th>Ações</th>
+  </tr>
+</thead>
         <tbody id="tabelaPendentes">
           <!-- Preenchido via JS -->
         </tbody>
@@ -40,21 +42,22 @@
     <section class="lista-instrutores">
       <h2>Instrutores Aceitos</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Nome Completo</th>
-            <th>CPF</th>
-            <th>Endereço</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>Telefone</th>
-            <th>Comprovante</th>
-            <th>CNH</th>
-            <th>Categoria</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
+<thead>
+  <tr>
+    <th>Nome Completo</th>
+    <th>CPF</th>
+    <th>Endereço</th>
+    <th>Cidade</th>
+    <th>Estado</th>
+    <th>Telefone</th>
+    <th>Selfie</th> <!-- 🔥 nova coluna -->
+    <th>Comprovante</th>
+    <th>CNH</th>
+    <th>Categoria</th>
+    <th>Status</th>
+    <th>Ações</th>
+  </tr>
+</thead>
         <tbody id="tabelaAceitos">
           <!-- Preenchido via JS -->
         </tbody>
@@ -72,43 +75,45 @@ async function carregarInstrutores() {
   tabelaPendentes.innerHTML = "";
   tabelaAceitos.innerHTML = "";
 
-  instrutores.forEach(instrutor => {
-    if (instrutor.status === "aceito") {
-      tabelaAceitos.innerHTML += `
-        <tr>
-          <td>${instrutor.nome}</td>
-          <td>${instrutor.cpf}</td>
-          <td>${instrutor.endereco}</td>
-          <td>${instrutor.cidade}</td>
-          <td>${instrutor.estado}</td>
-          <td>${instrutor.telefone}</td>
-          <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-          <td><img src="${instrutor.cnh}" width="80"></td>
-          <td>${instrutor.categorias}</td>
-          <td style="color:green; font-weight:bold;">✔ Aceito</td>
-          <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
-        </tr>
-      `;
-    } else {
-      tabelaPendentes.innerHTML += `
-        <tr>
-          <td>${instrutor.nome}</td>
-          <td>${instrutor.cpf}</td>
-          <td>${instrutor.endereco}</td>
-          <td>${instrutor.cidade}</td>
-          <td>${instrutor.estado}</td>
-          <td>${instrutor.telefone}</td>
-          <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
-          <td><img src="${instrutor.cnh}" width="80"></td>
-          <td>${instrutor.categorias}</td>
-          <td>
-            <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
-            <button class="excluir" data-id="${instrutor.id}">Recusar</button>
-          </td>
-        </tr>
-      `;
-    }
-  });
+instrutores.forEach(instrutor => {
+  if (instrutor.status === "aceito") {
+    tabelaAceitos.innerHTML += `
+      <tr>
+        <td>${instrutor.nome}</td>
+        <td>${instrutor.cpf}</td>
+        <td>${instrutor.endereco}</td>
+        <td>${instrutor.cidade}</td>
+        <td>${instrutor.estado}</td>
+        <td>${instrutor.telefone}</td>
+        <td><img src="${instrutor.selfie}" width="80"></td> <!-- 🔥 selfie -->
+        <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+        <td><img src="${instrutor.cnh}" width="80"></td>
+        <td>${instrutor.categorias}</td>
+        <td style="color:green; font-weight:bold;">✔ Aceito</td>
+        <td><button class="excluir" data-id="${instrutor.id}">Excluir</button></td>
+      </tr>
+    `;
+  } else {
+    tabelaPendentes.innerHTML += `
+      <tr>
+        <td>${instrutor.nome}</td>
+        <td>${instrutor.cpf}</td>
+        <td>${instrutor.endereco}</td>
+        <td>${instrutor.cidade}</td>
+        <td>${instrutor.estado}</td>
+        <td>${instrutor.telefone}</td>
+        <td><img src="${instrutor.selfie}" width="80"></td> <!-- 🔥 selfie -->
+        <td><img src="${instrutor.comprovante_residencia}" width="80"></td>
+        <td><img src="${instrutor.cnh}" width="80"></td>
+        <td>${instrutor.categorias}</td>
+        <td>
+          <button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+          <button class="excluir" data-id="${instrutor.id}">Recusar</button>
+        </td>
+      </tr>
+    `;
+  }
+});
 }
 
     document.addEventListener("DOMContentLoaded", () => {
