@@ -125,18 +125,25 @@ app.post(
 
 // 📌 Listar instrutores aceitos com filtro
 app.get("/instrutores/aceitos", (req, res) => {
-  const { cidade, estado } = req.query;
+  const { cidade, estado, sexo, categorias } = req.query;
 
-  let sql = "SELECT * FROM instrutores WHERE status = 'aceito'";
-  const params = [];
-
-  if (cidade) {
-    sql += " AND cidade = ?";
-    params.push(cidade);
+  // cidade e estado são obrigatórios
+  if (!cidade || !estado) {
+    return res.status(400).json({ error: "Cidade e estado são obrigatórios" });
   }
-  if (estado) {
-    sql += " AND estado = ?";
-    params.push(estado);
+
+  let sql = "SELECT * FROM instrutores WHERE status = 'aceito' AND cidade = ? AND estado = ?";
+  const params = [cidade, estado];
+
+  // pente fino opcional
+  if (sexo) {
+    sql += " AND sexo = ?";
+    params.push(sexo);
+  }
+
+  if (categorias) {
+    sql += " AND categorias LIKE ?";
+    params.push(`%${categorias}%`);
   }
 
   db.query(sql, params, (err, results) => {
