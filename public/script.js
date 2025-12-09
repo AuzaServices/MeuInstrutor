@@ -64,22 +64,22 @@ async function buscarInstrutor(event) {
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
     html += `<div class="cards-container">`;
 
-    instrutores.forEach(instrutor => {
-      const nomes = instrutor.nome.split(" ");
-      const primeiroNome = nomes[0] || "";
-      const segundoNome = nomes[1] || "";
+instrutores.forEach(instrutor => {
+  const nomes = instrutor.nome.split(" ");
+  const primeiroNome = nomes[0] || "";
+  const segundoNome = nomes[1] || "";
 
-      const telefone = instrutor.telefone.replace(/\D/g, "");
-      const linkWhats = `https://wa.me/55${telefone}`;
+  const telefone = instrutor.telefone.replace(/\D/g, "");
+  const linkWhats = `https://wa.me/55${telefone}`;
 
-      html += `
-        <div class="card-instrutor">
-          <img src="${instrutor.foto}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-          <h3>${primeiroNome} ${segundoNome}</h3>
-          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
-        </div>
-      `;
-    });
+  html += `
+    <div class="card-instrutor">
+      <img src="https://meuinstrutor.onrender.com/${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+      <h3>${primeiroNome} ${segundoNome}</h3>
+      <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
+    </div>
+  `;
+});
 
     html += `</div>`;
     document.getElementById("resultado").innerHTML = html;
