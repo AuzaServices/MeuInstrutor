@@ -57,3 +57,49 @@ form input, form select {
   padding: 8px;
   box-sizing: border-box;
 }
+
+/* Botão genérico minimalista */
+.btn-minimal {
+  background-color: #4CAF50; /* verde discreto */
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-minimal:hover {
+  background-color: #45a049;
+}
+
+/* Botão secundário (para mudar foto) */
+.btn-secondary {
+  background-color: #2196F3; /* azul discreto */
+}
+
+.btn-secondary:hover {
+  background-color: #1976D2;
+}
+
+/* Input file escondido */
+.input-file {
+  display: none;
+}
+
+/* Label que substitui o input file */
+.label-file {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.label-file:hover {
+  background-color: #e0e0e0;
+}

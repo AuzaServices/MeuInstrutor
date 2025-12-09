@@ -84,21 +84,26 @@
           <td>${instrutor.cidade}</td>
           <td>${instrutor.estado}</td>
           <td>${instrutor.telefone}</td>
-          <td>
-            <img src="${instrutor.selfie}" width="80"><br>
-            <input type="file" class="upload-selfie" data-id="${instrutor.id}">
-            <button class="atualizar-selfie" data-id="${instrutor.id}">Mudar Selfie</button>
-          </td>
-          <td>
-            <img src="${instrutor.comprovante_residencia}" width="80"><br>
-            <input type="file" class="upload-comprovante" data-id="${instrutor.id}">
-            <button class="atualizar-comprovante" data-id="${instrutor.id}">Mudar Comprovante</button>
-          </td>
-          <td>
-            <img src="${instrutor.cnh}" width="80"><br>
-            <input type="file" class="upload-cnh" data-id="${instrutor.id}">
-            <button class="atualizar-cnh" data-id="${instrutor.id}">Mudar CNH</button>
-          </td>
+<td>
+  <img src="${instrutor.selfie}" width="80"><br>
+  <input type="file" id="selfie-${instrutor.id}" class="input-file upload-selfie" data-id="${instrutor.id}">
+  <label for="selfie-${instrutor.id}" class="btn-minimal">Escolher</label>
+  <button class="btn-minimal btn-secondary atualizar-selfie" data-id="${instrutor.id}">Mudar</button>
+</td>
+
+<td>
+  <img src="${instrutor.comprovante_residencia}" width="80"><br>
+  <input type="file" id="comprovante-${instrutor.id}" class="input-file upload-comprovante" data-id="${instrutor.id}">
+  <label for="comprovante-${instrutor.id}" class="btn-minimal">Escolher</label>
+  <button class="btn-minimal btn-secondary atualizar-comprovante" data-id="${instrutor.id}">Mudar</button>
+</td>
+
+<td>
+  <img src="${instrutor.cnh}" width="80"><br>
+  <input type="file" id="cnh-${instrutor.id}" class="input-file upload-cnh" data-id="${instrutor.id}">
+  <label for="cnh-${instrutor.id}" class="btn-minimal">Escolher</label>
+  <button class="btn-minimal btn-secondary atualizar-cnh" data-id="${instrutor.id}">Mudar</button>
+</td>
           <td>${instrutor.categorias}</td>
           <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
             ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
