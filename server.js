@@ -109,13 +109,16 @@ app.post(
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
 
-    // normaliza sexo e categorias
-    let sexoNormalizado = sexo.toLowerCase(); // "feminino", "masculino", "sem preferencia"
-    if (sexoNormalizado === "sem preferencia") {
-      sexoNormalizado = null; // não filtra por sexo
+    // 🔎 Aqui entra a normalização do sexo
+    let sexoNormalizado = req.body.sexo;
+    if (sexoNormalizado === "M") sexoNormalizado = "masculino";
+    if (sexoNormalizado === "F") sexoNormalizado = "feminino";
+    if (sexoNormalizado && sexoNormalizado.toLowerCase() === "sem-preferencia") {
+      sexoNormalizado = null; // ignora filtro
     }
 
-    const categoriasNormalizadas = categorias.replace(/\s+/g, "").toUpperCase(); // "A,B,D"
+    // normaliza categorias (sem espaços, em maiúsculo)
+    const categoriasNormalizadas = categorias.replace(/\s+/g, "").toUpperCase();
 
     db.query(
       "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
