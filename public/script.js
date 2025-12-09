@@ -76,6 +76,7 @@ instrutores.forEach(instrutor => {
     <div class="card-instrutor">
       <img src="https://meuinstrutor.onrender.com/${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
       <h3>${primeiroNome} ${segundoNome}</h3>
+      <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
       <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
     </div>
   `;
