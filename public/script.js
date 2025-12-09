@@ -184,7 +184,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   // 🔎 Validação do telefone
   const telefone = document.getElementById("telefone").value;
   if (!/\(\d{2}\)9\d{4}-\d{4}/.test(telefone)) {
-    alert("Telefone inválido. Use o formato (99)91234-5678");
+    alert("Telefone inválido. Use o formato (XX)9XXXX-XXXX");
     return;
   }
   formData.append("telefone", telefone);
