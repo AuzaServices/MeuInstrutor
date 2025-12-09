@@ -85,7 +85,7 @@ app.post(
   upload.fields([
     { name: "comprovante" },
     { name: "cnh" },
-    { name: "selfie" } // 🔥 novo campo para selfie
+    { name: "selfie" }
   ]),
   (req, res) => {
     console.log("📥 Recebendo cadastro...");
@@ -94,12 +94,17 @@ app.post(
 
     const { nome, cpf, endereco, cidade, estado, categorias, telefone } = req.body;
 
+    // valida campos obrigatórios
+    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias) {
+      return res.status(400).json({ error: "Campos obrigatórios não enviados" });
+    }
+
     // valida arquivos obrigatórios
     if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
       return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
     }
 
-    // 🔎 salva apenas o filename, não o path
+    // salva apenas o filename
     const comprovante = req.files["comprovante"][0].filename;
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
@@ -137,7 +142,6 @@ app.get("/instrutores/aceitos", (req, res) => {
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err });
 
-    // 🔎 monta URLs completas para imagens (tratando nulos)
     results.forEach(instrutor => {
       if (instrutor.comprovante_residencia) {
         instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
