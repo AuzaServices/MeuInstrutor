@@ -431,3 +431,15 @@ header .logo span {
 .btn-whatsapp:hover {
   background: #1ebe5d;
 }
+
+.fundo-busca {
+  display: flex;           /* mantém imagem e formulário lado a lado */
+  align-items: flex-start; /* evita que a imagem estique junto */
+}
+
+.fundo-busca .imagem {
+  flex: 0 0 400px;         /* largura fixa da imagem */
+  height: 500px;           /* altura fixa */
+  background: url("sua-imagem.jpg") no-repeat center center;
+  background-size: cover;  /* mantém proporção e cobre o espaço */
+}
