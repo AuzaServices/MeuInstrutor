@@ -137,11 +137,17 @@ app.get("/instrutores/aceitos", (req, res) => {
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err });
 
-    // 🔎 monta URLs completas para imagens
+    // 🔎 monta URLs completas para imagens (tratando nulos)
     results.forEach(instrutor => {
-      instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
-      instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
-      instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+      if (instrutor.comprovante_residencia) {
+        instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+      }
+      if (instrutor.cnh) {
+        instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+      }
+      if (instrutor.selfie) {
+        instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+      }
     });
 
     res.json(results);
@@ -157,9 +163,15 @@ app.get("/instrutores/todos", (req, res) => {
     }
 
     results.forEach(instrutor => {
-      instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
-      instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
-      instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+      if (instrutor.comprovante_residencia) {
+        instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+      }
+      if (instrutor.cnh) {
+        instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+      }
+      if (instrutor.selfie) {
+        instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+      }
     });
 
     res.json(results);
