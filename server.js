@@ -139,9 +139,9 @@ app.get("/instrutores/aceitos", (req, res) => {
 
     // 🔎 monta URLs completas para imagens
     results.forEach(instrutor => {
-      instrutor.comprovante_residencia = `/uploads/${instrutor.comprovante_residencia}`;
-      instrutor.cnh = `/uploads/${instrutor.cnh}`;
-      instrutor.selfie = `/uploads/${instrutor.selfie}`;
+      instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+      instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+      instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
     });
 
     res.json(results);
@@ -157,9 +157,9 @@ app.get("/instrutores/todos", (req, res) => {
     }
 
     results.forEach(instrutor => {
-      instrutor.comprovante_residencia = `/uploads/${instrutor.comprovante_residencia}`;
-      instrutor.cnh = `/uploads/${instrutor.cnh}`;
-      instrutor.selfie = `/uploads/${instrutor.selfie}`;
+      instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+      instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+      instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
     });
 
     res.json(results);
