@@ -92,10 +92,10 @@ app.post(
     console.log("BODY:", req.body);
     console.log("FILES:", req.files);
 
-    const { nome, cpf, endereco, cidade, estado, categorias, telefone } = req.body;
+    const { nome, cpf, endereco, cidade, estado, categorias, telefone, sexo } = req.body;
 
     // valida campos obrigatórios
-    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias) {
+    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
       return res.status(400).json({ error: "Campos obrigatórios não enviados" });
     }
 
@@ -109,9 +109,17 @@ app.post(
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
 
+    // normaliza sexo e categorias
+    let sexoNormalizado = sexo.toLowerCase(); // "feminino", "masculino", "sem preferencia"
+    if (sexoNormalizado === "sem preferencia") {
+      sexoNormalizado = null; // não filtra por sexo
+    }
+
+    const categoriasNormalizadas = categorias.replace(/\s+/g, "").toUpperCase(); // "A,B,D"
+
     db.query(
-      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
-      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categorias],
+      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
+      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado],
       (err) => {
         if (err) {
           console.error("❌ Erro no INSERT:", err);
@@ -134,14 +142,16 @@ app.get("/instrutores/aceitos", (req, res) => {
   let sql = "SELECT * FROM instrutores WHERE status = 'aceito' AND cidade = ? AND estado = ?";
   const params = [cidade, estado];
 
-  if (sexo) {
+  // aplica filtro de sexo apenas se não for "sem-preferencia"
+  if (sexo && sexo.toLowerCase() !== "sem-preferencia") {
     sql += " AND LOWER(sexo) = LOWER(?)";
     params.push(sexo);
   }
 
+  // aplica filtro de categorias se informado
   if (categorias) {
-    sql += " AND categorias LIKE ?";
-    params.push(`%${categorias}%`);
+    sql += " AND UPPER(categorias) LIKE ?";
+    params.push(`%${categorias.toUpperCase()}%`);
   }
 
   db.query(sql, params, (err, results) => {
