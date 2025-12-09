@@ -127,7 +127,6 @@ app.post(
 app.get("/instrutores/aceitos", (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
 
-  // cidade e estado são obrigatórios
   if (!cidade || !estado) {
     return res.status(400).json({ error: "Cidade e estado são obrigatórios" });
   }
@@ -135,9 +134,8 @@ app.get("/instrutores/aceitos", (req, res) => {
   let sql = "SELECT * FROM instrutores WHERE status = 'aceito' AND cidade = ? AND estado = ?";
   const params = [cidade, estado];
 
-  // pente fino opcional
   if (sexo) {
-    sql += " AND sexo = ?";
+    sql += " AND LOWER(sexo) = LOWER(?)";
     params.push(sexo);
   }
 
