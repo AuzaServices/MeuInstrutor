@@ -21,7 +21,6 @@ app.use(cors());
 app.use("/uploads", express.static(uploadsPath));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Configuração do banco de dados
 // Configuração do banco de dados usando Pool
 const db = mysql.createPool({
   host: "sql5.freesqldatabase.com",
@@ -29,8 +28,8 @@ const db = mysql.createPool({
   password: "p56QUxpyQI",
   database: "sql5802663",
   waitForConnections: true,
-  connectionLimit: 10,   // número máximo de conexões simultâneas
-  queueLimit: 0          // sem limite de fila
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 // Testa a conexão inicial
@@ -40,7 +39,7 @@ db.getConnection((err, connection) => {
     return;
   }
   console.log("✅ Conectado ao MySQL!");
-  connection.release(); // libera a conexão de volta para o pool
+  connection.release();
 });
 
 // Configuração do multer
@@ -86,8 +85,6 @@ app.delete("/instrutores/:id", (req, res) => {
 });
 
 // 📌 Cadastro de instrutor
-// 📌 Cadastro de instrutor
-// 📌 Cadastro de instrutor
 app.post(
   "/instrutores",
   upload.fields([
@@ -102,25 +99,20 @@ app.post(
 
     const { nome, cpf, endereco, cidade, estado, categorias, telefone, sexo } = req.body;
 
-    // valida campos obrigatórios
     if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
       return res.status(400).json({ error: "Campos obrigatórios não enviados" });
     }
 
-    // valida arquivos obrigatórios
     if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
       return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
     }
 
-    // salva apenas o filename
     const comprovante = req.files["comprovante"][0].filename;
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
 
-    // normaliza categorias (sem espaços, em maiúsculo)
     const categoriasNormalizadas = categorias ? categorias.replace(/\s+/g, "").toUpperCase() : null;
 
-    // normaliza sexo
     let sexoNormalizado = sexo;
     if (sexoNormalizado === "M") sexoNormalizado = "masculino";
     if (sexoNormalizado === "F") sexoNormalizado = "feminino";
@@ -128,10 +120,8 @@ app.post(
       sexoNormalizado = null;
     }
 
-    // gera data atual formatada para MySQL
     const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    // INSERT no banco
     db.query(
       "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
       [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado, dataCadastro],
@@ -157,13 +147,11 @@ app.get("/instrutores/aceitos", (req, res) => {
   let sql = "SELECT * FROM instrutores WHERE status = 'aceito' AND cidade = ? AND estado = ?";
   const params = [cidade, estado];
 
-  // aplica filtro de sexo apenas se não for "sem-preferencia"
   if (sexo && sexo.toLowerCase() !== "sem-preferencia") {
     sql += " AND LOWER(sexo) = LOWER(?)";
     params.push(sexo);
   }
 
-  // aplica filtro de categorias se informado
   if (categorias) {
     sql += " AND UPPER(categorias) LIKE ?";
     params.push(`%${categorias.toUpperCase()}%`);
@@ -197,13 +185,13 @@ app.get("/instrutores/todos", (req, res) => {
     }
 
     results.forEach(instrutor => {
-      if (instrutor.comprovante_residencia) {
+      if (instrutor.comprovante_residencia && instrutor.comprovante_residencia !== "NULL") {
         instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
       }
-      if (instrutor.cnh) {
+      if (instrutor.cnh && instrutor.cnh !== "NULL") {
         instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
       }
-      if (instrutor.selfie) {
+      if (instrutor.selfie && instrutor.selfie !== "NULL") {
         instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
       }
     });
@@ -230,6 +218,7 @@ app.put("/instrutores/:id/selfie", upload.single("selfie"), (req, res) => {
   });
 });
 
+// Atualizar Comprovante
 // Atualizar Comprovante
 app.put("/instrutores/:id/comprovante", upload.single("comprovante"), (req, res) => {
   const { id } = req.params;
