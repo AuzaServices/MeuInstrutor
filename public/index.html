@@ -270,31 +270,31 @@ async function buscarInstrutor(event) {
 
   try {
     const resposta = await fetch(
-  `https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}&sexo=${sexo}&categorias=${categoria}`
-);
+      `https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}&sexo=${sexo}&categorias=${categoria}`
+    );
     const instrutores = await resposta.json();
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
-    html += `<div class="cards-container">`;
+    html += `<div class="carousel-container">`; // ✅ usa carrossel
 
-instrutores.forEach(instrutor => {
-  const nomes = instrutor.nome.split(" ");
-  const primeiroNome = nomes[0] || "";
-  const segundoNome = nomes[1] || "";
+    instrutores.forEach(instrutor => {
+      const nomes = instrutor.nome.split(" ");
+      const primeiroNome = nomes[0] || "";
+      const segundoNome = nomes[1] || "";
 
-  const telefone = instrutor.telefone.replace(/\D/g, "");
-  const linkWhats = `https://wa.me/55${telefone}`;
+      const telefone = instrutor.telefone.replace(/\D/g, "");
+      const linkWhats = `https://wa.me/55${telefone}`;
 
-  html += `
-    <div class="card-instrutor">
-<img src="${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-      <h3>${primeiroNome} ${segundoNome}</h3>
-      <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
-      <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
-    </div>
-  `;
-});
+      html += `
+        <div class="card-instrutor">
+          <img src="${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+          <h3>${primeiroNome} ${segundoNome}</h3>
+          <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
+          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
+        </div>
+      `;
+    });
 
     html += `</div>`;
     document.getElementById("resultado").innerHTML = html;
@@ -303,7 +303,6 @@ instrutores.forEach(instrutor => {
     document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
   }
 }
-
     // Formulário de instrutor
     function carregarFormularioInstrutor() {
       document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
