@@ -1,3 +1,4 @@
+// ================= FORMULÁRIO DE ALUNO =================
 function carregarFormularioAluno() {
   document.getElementById("titulo-form").innerText = "Buscar Instrutor(a) Credênciado(a)";
   document.getElementById("form-area").innerHTML = `
@@ -46,7 +47,7 @@ function carregarFormularioAluno() {
   document.getElementById("estado").addEventListener("change", carregarCidadesAluno);
 }
 
-// Busca de instrutor integrada ao backend
+// ================= BUSCA DE INSTRUTOR =================
 async function buscarInstrutor(event) {
   event.preventDefault();
   const estado = document.getElementById("estado").selectedOptions[0].text;
@@ -55,30 +56,32 @@ async function buscarInstrutor(event) {
   const sexo = document.getElementById("sexo").value;
 
   try {
-    const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}`);
+    const resposta = await fetch(
+      `https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}&sexo=${sexo}&categorias=${categoria}`
+    );
     const instrutores = await resposta.json();
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
-    html += `<div class="cards-container">`;
+    html += `<div class="carousel-container">`; // ✅ carrossel horizontal
 
-instrutores.forEach(instrutor => {
-  const nomes = instrutor.nome.split(" ");
-  const primeiroNome = nomes[0] || "";
-  const segundoNome = nomes[1] || "";
+    instrutores.forEach(instrutor => {
+      const nomes = instrutor.nome.split(" ");
+      const primeiroNome = nomes[0] || "";
+      const segundoNome = nomes[1] || "";
 
-  const telefone = instrutor.telefone.replace(/\D/g, "");
-  const linkWhats = `https://wa.me/55${telefone}`;
+      const telefone = instrutor.telefone.replace(/\D/g, "");
+      const linkWhats = `https://wa.me/55${telefone}`;
 
-  html += `
-    <div class="card-instrutor">
-      <img src="https://meuinstrutor.onrender.com${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-      <h3>${primeiroNome} ${segundoNome}</h3>
-      <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
-      <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
-    </div>
-  `;
-});
+      html += `
+        <div class="card-instrutor">
+          <img src="${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+          <h3>${primeiroNome} ${segundoNome}</h3>
+          <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
+          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
+        </div>
+      `;
+    });
 
     html += `</div>`;
     document.getElementById("resultado").innerHTML = html;
