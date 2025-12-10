@@ -81,6 +81,7 @@ app.delete("/instrutores/:id", (req, res) => {
 
 // 📌 Cadastro de instrutor
 // 📌 Cadastro de instrutor
+// 📌 Cadastro de instrutor
 app.post(
   "/instrutores",
   upload.fields([
@@ -95,18 +96,36 @@ app.post(
 
     const { nome, cpf, endereco, cidade, estado, categorias, telefone, sexo } = req.body;
 
-    // validações...
+    // valida campos obrigatórios
+    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
+      return res.status(400).json({ error: "Campos obrigatórios não enviados" });
+    }
+
+    // valida arquivos obrigatórios
+    if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
+      return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
+    }
 
     // salva apenas o filename
     const comprovante = req.files["comprovante"][0].filename;
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
 
-    // normalizações...
+    // normaliza categorias (sem espaços, em maiúsculo)
+    const categoriasNormalizadas = categorias ? categorias.replace(/\s+/g, "").toUpperCase() : null;
 
-    // 🔎 É aqui que você coloca o INSERT atualizado
+    // normaliza sexo
+    let sexoNormalizado = sexo;
+    if (sexoNormalizado === "M") sexoNormalizado = "masculino";
+    if (sexoNormalizado === "F") sexoNormalizado = "feminino";
+    if (sexoNormalizado && sexoNormalizado.toLowerCase() === "sem-preferencia") {
+      sexoNormalizado = null;
+    }
+
+    // gera data atual formatada para MySQL
     const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
+    // INSERT no banco
     db.query(
       "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
       [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado, dataCadastro],
