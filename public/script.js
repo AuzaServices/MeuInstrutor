@@ -1,6 +1,5 @@
-// ================= FORMULÁRIO DE ALUNO =================
 function carregarFormularioAluno() {
-  document.getElementById("titulo-form").innerText = "Buscar Instrutor Credênciado";
+  document.getElementById("titulo-form").innerText = "Buscar Instrutor(a) Credênciado(a)";
   document.getElementById("form-area").innerHTML = `
     <form onsubmit="buscarInstrutor(event)">
       <div class="linha-horizontal">
@@ -19,9 +18,9 @@ function carregarFormularioAluno() {
       </div>
       <div class="linha-horizontal">
         <div class="campo">
-          <label for="categoria">Categoria:</label>
+          <label for="categoria">Categoria CNH:</label>
           <select id="categoria" required>
-            <option value="">Selecione</option>
+            <option value="">Selecione a categoria</option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
@@ -31,21 +30,20 @@ function carregarFormularioAluno() {
         </div>
         <div class="campo">
           <label for="sexo">Sexo:</label>
-          <select id="sexo" required>
+          <select id="sexo" name="sexo" required>
             <option value="">Selecione</option>
-            <option value="M">Masculino</option>
-            <option value="F">Feminino</option>
+            <option value="feminino">Feminino</option>
+            <option value="masculino">Masculino</option>
+            <option value="sem-preferencia">Sem preferência</option>
           </select>
         </div>
       </div>
       <button type="submit">Buscar</button>
     </form>
-    <div id="resultado"></div>
   `;
 
-  // Carrega estados e adiciona listener
-  carregarEstados();
-  document.getElementById("estado").addEventListener("change", carregarCidades);
+  carregarEstadosAluno();
+  document.getElementById("estado").addEventListener("change", carregarCidadesAluno);
 }
 
 // Busca de instrutor integrada ao backend
