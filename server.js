@@ -80,6 +80,7 @@ app.delete("/instrutores/:id", (req, res) => {
 });
 
 // 📌 Cadastro de instrutor
+// 📌 Cadastro de instrutor
 app.post(
   "/instrutores",
   upload.fields([
@@ -94,39 +95,25 @@ app.post(
 
     const { nome, cpf, endereco, cidade, estado, categorias, telefone, sexo } = req.body;
 
-    // valida campos obrigatórios
-    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
-      return res.status(400).json({ error: "Campos obrigatórios não enviados" });
-    }
-
-    // valida arquivos obrigatórios
-    if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
-      return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
-    }
+    // validações...
 
     // salva apenas o filename
     const comprovante = req.files["comprovante"][0].filename;
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
 
-    // 🔎 Aqui entra a normalização do sexo
-    let sexoNormalizado = req.body.sexo;
-    if (sexoNormalizado === "M") sexoNormalizado = "masculino";
-    if (sexoNormalizado === "F") sexoNormalizado = "feminino";
-    if (sexoNormalizado && sexoNormalizado.toLowerCase() === "sem-preferencia") {
-      sexoNormalizado = null; // ignora filtro
-    }
+    // normalizações...
 
-    // normaliza categorias (sem espaços, em maiúsculo)
-    const categoriasNormalizadas = categorias.replace(/\s+/g, "").toUpperCase();
+    // 🔎 É aqui que você coloca o INSERT atualizado
+    const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     db.query(
-      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
-      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado],
+      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
+      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado, dataCadastro],
       (err) => {
         if (err) {
-          console.error("❌ Erro no INSERT:", err);
-          return res.status(500).json({ error: err });
+          console.error("❌ Erro no INSERT:", err.sqlMessage);
+          return res.status(500).json({ error: err.sqlMessage });
         }
         res.json({ message: "Cadastro enviado para análise!" });
       }
