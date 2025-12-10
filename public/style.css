@@ -889,3 +889,46 @@ section {
   padding: 16px;
   text-align: center;
 }
+
+/* Mobile (padrão): carrossel com scroll lateral */
+.carousel-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+}
+
+.card-instrutor {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  text-align: center;
+}
+
+/* Desktop: grid com 5 colunas, sem scroll lateral */
+@media (min-width: 1024px) {
+  .carousel-container {
+    display: grid;                    /* troca para grid */
+    grid-template-columns: repeat(5, 1fr); /* 5 cards por linha */
+    gap: 20px;
+    overflow-x: visible;              /* remove scroll horizontal */
+    scroll-snap-type: none;
+    justify-items: stretch;
+  }
+
+  .card-instrutor {
+    flex: initial;        /* anula o flex do mobile */
+    width: auto;          /* ocupa a coluna inteira */
+  }
+
+  /* opcional: limite de largura da área de resultados */
+  .resultado-bloco {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+  }
+}
