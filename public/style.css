@@ -871,7 +871,7 @@ section {
   margin-bottom: 15px;
 }
 
-/* comportamento padrão (mobile): carrossel horizontal */
+/* carrossel */
 .carousel-container {
   display: flex;
   gap: 20px;
@@ -888,19 +888,4 @@ section {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 16px;
   text-align: center;
-}
-
-/* ✅ Desktop: acumula lado a lado e quebra linha */
-@media (min-width: 1024px) {
-  .carousel-container {
-    overflow-x: visible;   /* remove scroll lateral */
-    flex-wrap: wrap;       /* permite quebrar linha */
-    justify-content: center; /* centraliza os cards */
-    scroll-snap-type: none; /* desativa snap */
-  }
-
-  .card-instrutor {
-    flex: 1 1 280px;       /* ocupa espaço e quebra quando não couber */
-    max-width: 300px;      /* limite de largura */
-  }
 }
