@@ -524,10 +524,29 @@ header .logo span {
 /* Container dos cards */
 /* Seção dos resultados */
 #resultado {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
+  /* ❌ remova o display:grid daqui */
+}
+
+.carousel-container {
+  display: flex;
   gap: 20px;
+  overflow-x: auto;          /* rolagem horizontal */
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+}
+
+
+.card-instrutor {
+  flex: 0 0 280px;           /* largura fixa */
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  text-align: center;
 }
 
 /* Container dos cards */
@@ -541,15 +560,15 @@ header .logo span {
 
 /* Estilo dos cards individuais */
 .card-instrutor {
-  flex: 0 1 250px;   /* largura mínima de 250px */
-  max-width: 300px;  /* limite máximo */
+  flex: 0 0 280px;           /* largura fixa */
+  scroll-snap-align: start;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
   text-align: center;
-  transition: transform 0.2s ease;
 }
+
 
 .card-instrutor:hover {
   transform: translateY(-5px);
