@@ -773,3 +773,13 @@ section {
 .redes-sociais img:hover {
   transform: scale(1.2);
 }
+
+.redes-sociais i {
+  font-size: 28px;
+  color: #F98D2E; /* laranja */
+  transition: transform 0.3s ease;
+}
+
+.redes-sociais i:hover {
+  transform: scale(1.2);
+}
