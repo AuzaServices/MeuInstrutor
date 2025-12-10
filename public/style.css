@@ -872,7 +872,7 @@ section {
 }
 
 /* carrossel */
-/* Padrão (mobile): carrossel com scroll lateral */
+/* Mobile (padrão): carrossel com scroll lateral */
 .carousel-container {
   display: flex;
   gap: 16px;
@@ -892,21 +892,21 @@ section {
   text-align: center;
 }
 
-/* ✅ Desktop: grid com 5 colunas, quebra automática */
+/* ✅ Desktop: grid fixo com 5 colunas */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 cards por linha */
-    gap: 20px;
-    overflow-x: visible; /* remove scroll lateral */
-    scroll-snap-type: none;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); /* exatamente 5 por linha */
+    gap: 20px; 
+    max-width: 1200px;       /* limite da largura total */
+    margin: 40px auto 0;     /* centraliza na tela */
     padding: 20px;
+    overflow-x: visible;     /* remove scroll lateral */
+    scroll-snap-type: none;
   }
 
   .card-instrutor {
-    flex: initial; /* remove comportamento do carrossel */
-    width: 100%;   /* ocupa a coluna inteira */
+    flex: initial;   /* remove comportamento do carrossel */
+    width: 100%;     /* ocupa a coluna inteira */
   }
 }
