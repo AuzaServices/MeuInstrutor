@@ -831,3 +831,61 @@ section {
   padding: 16px;
   text-align: center;
 }
+
+.form-bloco {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* imagem à esquerda */
+.imagem {
+  width: 400px;
+  height: 500px;
+  background: url("sua-imagem.jpg") no-repeat center center;
+  background-size: cover;
+  flex-shrink: 0;
+}
+
+/* formulário à direita */
+.formulario {
+  flex: 1;
+  min-width: 300px;
+  padding: 40px;
+}
+
+/* resultados abaixo da imagem, não do formulário */
+.resultado-bloco {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
+  padding: 0 20px;
+  clear: both; /* força ficar abaixo */
+}
+
+#resultado h4, #resultado p {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* carrossel */
+.carousel-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+}
+
+.card-instrutor {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  text-align: center;
+}
