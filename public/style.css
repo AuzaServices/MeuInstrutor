@@ -561,3 +561,215 @@ header .logo span {
   object-fit: cover;
   margin-bottom: 15px;
 }
+
+/* Sessão de busca (sem container branco) */
+.fundo-busca {
+  width: 100%;
+  margin: 40px auto;
+  padding: 0;
+  background: none;   /* sem fundo */
+  box-shadow: none;   /* sem sombra */
+}
+
+/* Sessão: Como Funciona */
+.como-funciona {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.como-funciona h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #8A2BE2;
+}
+
+/* Sessão: Nossa Missão */
+.missao {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.missao h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #F98D2E;
+}
+
+/* Sessão: Requisitos */
+.requisitos {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  border-left: 6px solid #8A2BE2; /* destaque lateral */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.requisitos h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #8A2BE2;
+}
+
+/* Sessão: Transparência e Valores */
+.transparencia {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  border-left: 6px solid #0f9d58; /* verde para simbolizar confiança */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.transparencia h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #0f9d58;
+}
+
+.transparencia p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.institucional-section {
+  width: 100%; /* ocupa toda a largura */
+  background: #000000;
+  padding: 40px 60px;
+  border-top: 2px solid #ddd;
+}
+
+.institucional-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.institucional-col {
+  flex: 1;
+  color: #ffffff;
+  min-width: 250px;
+}
+
+.institucional-logo {
+  max-width: 180px;
+  margin-bottom: 15px;
+}
+
+.institucional-col h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ff892e;
+}
+
+.institucional-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.institucional-col ul li {
+  margin-bottom: 8px;
+}
+
+.institucional-col ul li a {
+  text-decoration: none;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.institucional-col ul li a:hover {
+  color: #ff892e;
+}
+
+/* Ícones sociais */
+.redes-sociais {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.redes-sociais a img {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+.redes-sociais a:hover img {
+  transform: scale(1.2);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .institucional-grid {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Ajuste global para sections */
+section {
+  width: 100%;           /* ocupa toda a largura */
+  padding: 40px 20px;    /* espaçamento interno */
+  box-sizing: border-box;
+}
+
+/* Grid institucional e similares */
+.institucional-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Colunas */
+.institucional-col {
+  flex: 1;
+  min-width: 280px;      /* aumenta o mínimo para não comprimir demais */
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .institucional-grid {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .institucional-col {
+    width: 100%;          /* ocupa toda a largura no mobile */
+    min-width: unset;     /* remove limite mínimo */
+    margin-bottom: 20px;
+  }
+
+  section {
+    padding: 30px 15px;   /* espaçamento mais leve no mobile */
+  }
+}
+
+.redes-sociais img {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.3s ease;
+}
+
+.redes-sociais img:hover {
+  transform: scale(1.2);
+}

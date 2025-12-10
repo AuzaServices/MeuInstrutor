@@ -1,6 +1,6 @@
 // ================= FORMULÁRIO DE ALUNO =================
 function carregarFormularioAluno() {
-  document.getElementById("titulo-form").innerText = "Buscar Instrutor";
+  document.getElementById("titulo-form").innerText = "Buscar Instrutor Credênciado";
   document.getElementById("form-area").innerHTML = `
     <form onsubmit="buscarInstrutor(event)">
       <div class="linha-horizontal">

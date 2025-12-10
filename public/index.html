@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Instrutor Pro</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
   <!-- Cabeçalho -->
@@ -23,35 +25,163 @@
   </header>
 
   <!-- Seção principal -->
-<section class="fundo-busca">
+<!-- Sessão de busca -->
+<section class="fundo-busca" data-aos="fade-up">
   <div class="form-bloco">
     <div class="imagem"></div>
     <div class="formulario">
-      <h2 id="titulo-form">Buscar Instrutor</h2>
+      <h2 id="titulo-form">Buscar Instrutor Credenciado</h2>
       <div id="form-area"></div>
     </div>
   </div>
+  <div id="resultado"></div>
 </section>
 
-<!-- Cards em seção separada -->
-<section id="resultado">
-  <h4>Instrutores disponíveis em Horizonte/Ceará:</h4>
-  <p>Filtro aplicado: Categoria A, Sexo sem preferência</p>
-  <div class="cards-container">
-    <!-- cards são inseridos aqui via JS -->
+<!-- Sessão: Como funciona -->
+<section class="como-funciona" data-aos="fade-right">
+  <h2>Como Funciona</h2>
+  <p>
+    O Instrutor Pro conecta pessoas que desejam aprender a dirigir com instrutores credenciados
+    em sua região. Basta selecionar estado, cidade, categoria da CNH e preferência de gênero
+    para encontrar rapidamente profissionais disponíveis. Nosso objetivo é simplificar o processo
+    e dar autonomia ao aluno para escolher quem vai acompanhá-lo nas aulas práticas.
+  </p>
+</section>
+
+<!-- Sessão: Nossa Missão -->
+<section class="missao" data-aos="zoom-in">
+  <h2>Nossa Missão</h2>
+  <p>
+    Servimos como ponte entre candidatos à CNH e instrutores credenciados, sejam homens ou mulheres.
+    Acreditamos que todos merecem acesso a profissionais qualificados, com transparência e segurança.
+    Nossa missão é democratizar o acesso ao ensino de direção, oferecendo praticidade e confiança
+    na escolha do instrutor.
+  </p>
+</section>
+
+<!-- Sessão: Requisitos para ser Instrutor -->
+<section class="requisitos" data-aos="fade-left">
+  <h2>Requisitos para ser Instrutor Credenciado</h2>
+  <p>
+    Para atuar como instrutor de trânsito autônomo no Brasil, é necessário cumprir alguns requisitos
+    estabelecidos pelo Contran e pelo Detran:
+  </p>
+  <ul>
+    <li>Ter no mínimo <strong>21 anos de idade</strong>.</li>
+    <li>Possuir <strong>CNH válida</strong> na categoria que deseja ensinar, há pelo menos 2 anos.</li>
+    <li>Não ter cometido infrações graves ou gravíssimas nos últimos 12 meses.</li>
+    <li>Concluir um <strong>curso específico de formação de instrutor</strong>, com conteúdo pedagógico,
+        técnico e prático sobre legislação de trânsito e condução responsável.</li>
+    <li>Ser cadastrado e autorizado pelo <strong>Detran</strong> do estado de atuação.</li>
+  </ul>
+  <p>
+    Esses critérios garantem que apenas profissionais qualificados possam oferecer aulas práticas,
+    assegurando a segurança e a qualidade do processo de formação de novos condutores.
+  </p>
+</section>
+
+<!-- Sessão: Transparência e Valores -->
+<section class="transparencia" data-aos="flip-up">
+  <h2>Transparência e Valores</h2>
+  <p>
+    No Instrutor Pro, prezamos pela transparência em todas as etapas. O instrutor tem total liberdade
+    para definir o valor que deseja cobrar por aula. A plataforma não interfere na negociação entre
+    cliente e instrutor no quesito de valores.
+  </p>
+  <p>
+    Para se manter visível na plataforma, é cobrada apenas uma taxa simbólica de <strong>R$ 19,90 por mês</strong>.
+    Todo o dinheiro arrecadado pelo instrutor durante o mês é <strong>100% dele</strong>, sem qualquer retenção
+    ou comissão por parte da plataforma.
+  </p>
+  <p>
+    Após o cadastro e envio dos documentos, nossa equipe leva em torno de <strong>24 horas</strong> para analisar
+    e verificar se está tudo de acordo. Logo após a aprovação, a empresa entrará em contato solicitando
+    o pagamento da taxa mensal de R$ 19,90. Com o pagamento confirmado, o instrutor passa a aparecer
+    nos filtros da cidade em que foi cadastrado, tornando-se visível para os alunos que buscam
+    profissionais credenciados.
+  </p>
+</section>
+
+<!-- Sessão: Conexões e Informações -->
+<!-- Sessão: Redes sociais e políticas -->
+<!-- Sessão Institucional / Contato -->
+<section id="contato" class="institucional-section scroll-reveal">
+  <div class="institucional-grid">
+    
+    <!-- Coluna 1: Logo e informações -->
+    <div class="institucional-col">
+      <img src="logo.png" alt="Logo Instrutor Pro" class="institucional-logo" />
+      <p>Instrutor Pro é a plataforma que conecta alunos a instrutores credenciados de forma prática, segura e transparente.</p>
+      <p><strong>Endereço:</strong> Av. Presidente Castelo Branco, 1152 — Horizonte, CE</p>
+      <p><strong>Tel:</strong> (85) 99134-0658</p>
+    </div>
+
+    <!-- Coluna 2: Menu rápido -->
+    <div class="institucional-col">
+      <h4>Menu rápido</h4>
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#cadastro">Cadastro</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+
+    <!-- Coluna 3: Institucional -->
+    <div class="institucional-col">
+      <h4>Institucional</h4>
+      <ul>
+        <li><a href="/politicas-de-privacidade" target="_blank">Política de Privacidade</a></li>
+        <li><a href="/termos-de-uso" target="_blank">Termos de Uso</a></li>
+        <li><a href="/trabalhe-conosco" target="_blank">Trabalhe Conosco</a></li>
+        <li><a href="/imprensa" target="_blank">Imprensa</a></li>
+      </ul>
+    </div>
   </div>
+
+  <!-- Ícones sociais -->
+<div class="redes-sociais">
+  <!-- WhatsApp -->
+  <a href="https://wa.me/5585991340658" target="_blank" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#F98D2E">
+      <path d="M12 0C5.373 0 0 5.373..."></path>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/instrutorpro" target="_blank" aria-label="Instagram">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#F98D2E">
+      <path d="M7.75 2h8.5A5.75..."></path>
+    </svg>
+  </a>
+
+  <!-- Facebook -->
+  <a href="https://facebook.com/instrutorpro" target="_blank" aria-label="Facebook">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#F98D2E">
+      <path d="M22 12c0-5.523..."></path>
+    </svg>
+  </a>
+
+  <!-- X (Twitter) -->
+  <a href="https://twitter.com/instrutorpro" target="_blank" aria-label="X">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#F98D2E">
+      <path d="M4.5 3h15a1.5..."></path>
+    </svg>
+  </a>
+</div>
 </section>
 
-  <!-- Rodapé -->
-  <footer>
-    © 2025 Instrutor Pro - Todos os direitos reservados
-  </footer>
+<!-- Footer principal -->
+<footer>
+  © 2025 Instrutor Pro - Todos os direitos reservados
+</footer>
 
   <!-- Script -->
   <script>
     // Formulário de aluno
     function carregarFormularioAluno() {
-      document.getElementById("titulo-form").innerText = "Buscar Instrutor";
+      document.getElementById("titulo-form").innerText = "Buscar Instrutor(a) Credênciado(a)";
       document.getElementById("form-area").innerHTML = `
         <form onsubmit="buscarInstrutor(event)">
           <div class="linha-horizontal">
@@ -73,7 +203,6 @@
               <label for="categoria">Categoria CNH:</label>
               <select id="categoria" required>
                 <option value="">Selecione a categoria</option>
-                <option value="ACC">ACC</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
                 <option value="C">C</option>
@@ -445,6 +574,13 @@ function aplicarMascaraTelefone() {
     telInput.value = value;
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  AOS.init({
+    duration: 1000, // duração da animação
+    once: true      // anima só uma vez
+  });
+});
 
   </script>
 </body>
