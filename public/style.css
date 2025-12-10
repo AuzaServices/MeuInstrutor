@@ -814,12 +814,6 @@ section {
   margin-bottom: 15px;
 }
 
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
 .carousel-container {
   display: flex;
   gap: 20px;
