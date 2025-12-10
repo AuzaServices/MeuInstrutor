@@ -39,6 +39,10 @@
   <div id="resultado"></div>
 </section>
 
+<h2 style="text-align:center; margin-bottom:10px; font-size:22px; font-weight:600; color:#333;">
+  Saiba o que muda na formação de novos motoristas
+</h2>
+
 <div class="video-container">
   <iframe 
     src="https://www.youtube.com/embed/MQsEbHDy9O8"
@@ -53,13 +57,13 @@
 <style>
   .video-container {
     width: 100%;        
-    margin: 40px auto;
-    max-width: 1000px;  /* limite no desktop para não ocupar toda a tela */
+    margin: 30px auto;   /* menos espaço em cima/baixo */
+    max-width: 900px;    /* limite no desktop para não ocupar toda a tela */
   }
 
   .video-container iframe {
     width: 100%;
-    height: 400px;      /* altura menor no desktop */
+    height: 360px;       /* altura ajustada no desktop */
     border-radius: 8px;
     border: none;
     display: block;
@@ -67,7 +71,7 @@
 
   @media (max-width: 768px) {
     .video-container iframe {
-      height: 250px;    /* altura menor só no mobile */
+      height: 240px;     /* altura menor só no mobile */
     }
   }
 </style>
