@@ -61,9 +61,14 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
-    html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
-    html += `<div class="carousel-container">`; // ✅ carrossel horizontal
+let html = `
+  <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
+  <p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>
+`;
+html += `<div class="carousel-container">`;  // só os cards aqui
+// …cards…
+html += `</div>`;
+document.getElementById("resultado").innerHTML = html;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
