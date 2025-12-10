@@ -22,19 +22,25 @@ app.use("/uploads", express.static(uploadsPath));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Configuração do banco de dados
-const db = mysql.createConnection({
+// Configuração do banco de dados usando Pool
+const db = mysql.createPool({
   host: "sql5.freesqldatabase.com",
   user: "sql5802663",
   password: "p56QUxpyQI",
-  database: "sql5802663"
+  database: "sql5802663",
+  waitForConnections: true,
+  connectionLimit: 10,   // número máximo de conexões simultâneas
+  queueLimit: 0          // sem limite de fila
 });
 
-db.connect((err) => {
+// Testa a conexão inicial
+db.getConnection((err, connection) => {
   if (err) {
-    console.error("Erro ao conectar no MySQL:", err);
+    console.error("❌ Erro ao conectar no MySQL:", err);
     return;
   }
   console.log("✅ Conectado ao MySQL!");
+  connection.release(); // libera a conexão de volta para o pool
 });
 
 // Configuração do multer

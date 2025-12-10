@@ -524,10 +524,10 @@ header .logo span {
 /* Container dos cards */
 /* Seção dos resultados */
 #resultado {
-  width: 100%;
-  max-width: 1200px;
-  margin: 60px auto 0 auto;
-  text-align: center;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 /* Container dos cards */
