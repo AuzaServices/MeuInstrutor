@@ -39,6 +39,40 @@
   <div id="resultado"></div>
 </section>
 
+<div class="video-container">
+  <iframe 
+    src="https://www.youtube.com/embed/MQsEbHDy9O8"
+    title="Contran aprova fim de aulas obrigatórias em autoescolas"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<style>
+  .video-container {
+    width: 100%;        
+    margin: 40px auto;
+    max-width: 1000px;  /* limite no desktop para não ocupar toda a tela */
+  }
+
+  .video-container iframe {
+    width: 100%;
+    height: 400px;      /* altura menor no desktop */
+    border-radius: 8px;
+    border: none;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .video-container iframe {
+      height: 250px;    /* altura menor só no mobile */
+    }
+  }
+</style>
+
+
 <!-- Sessão: Como funciona -->
 <section class="como-funciona" data-aos="fade-right">
   <h2>Como Funciona</h2>
