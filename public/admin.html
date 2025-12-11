@@ -27,6 +27,7 @@
             <th>Selfie</th>
             <th>Comprovante</th>
             <th>CNH</th>
+            <th>Certificado</th>
             <th>Categoria</th>
             <th>Status</th>
             <th>Ações</th>
@@ -51,6 +52,7 @@
             <th>Selfie</th>
             <th>Comprovante</th>
             <th>CNH</th>
+            <th>Certificado</th>
             <th>Categoria</th>
             <th>Status</th>
             <th>Ações</th>
@@ -103,6 +105,13 @@
   <input type="file" id="cnh-${instrutor.id}" class="input-file upload-cnh" data-id="${instrutor.id}">
   <label for="cnh-${instrutor.id}" class="btn-minimal">Escolher</label>
   <button class="btn-minimal btn-secondary atualizar-cnh" data-id="${instrutor.id}">Mudar</button>
+</td>
+
+<td>
+  <img src="${instrutor.certificado}" width="80"><br>
+  <input type="file" id="certificado-${instrutor.id}" class="input-file upload-certificado" data-id="${instrutor.id}">
+  <label for="certificado-${instrutor.id}" class="btn-minimal">Escolher</label>
+  <button class="btn-minimal btn-secondary atualizar-certificado" data-id="${instrutor.id}">Mudar</button>
 </td>
           <td>${instrutor.categorias}</td>
           <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
@@ -184,6 +193,22 @@
         alert(resultado.message);
         carregarInstrutores();
       }
+
+      // Atualizar Certificado
+if (e.target.classList.contains("atualizar-certificado")) {
+  const input = document.querySelector(`.upload-certificado[data-id="${id}"]`);
+  const file = input.files[0];
+  if (!file) { alert("Selecione um certificado primeiro!"); return; }
+  const formData = new FormData();
+  formData.append("certificado", file);
+  const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/certificado`, { 
+    method: "PUT", 
+    body: formData 
+  });
+  const resultado = await resposta.json();
+  alert(resultado.message);
+  carregarInstrutores();
+}
     });
 
     carregarInstrutores();

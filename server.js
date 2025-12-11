@@ -90,7 +90,8 @@ app.post(
   upload.fields([
     { name: "comprovante" },
     { name: "cnh" },
-    { name: "selfie" }
+    { name: "selfie" },
+    { name: "certificado" }
   ]),
   (req, res) => {
     console.log("📥 Recebendo cadastro...");
@@ -110,6 +111,8 @@ app.post(
     const comprovante = req.files["comprovante"][0].filename;
     const cnh = req.files["cnh"][0].filename;
     const selfie = req.files["selfie"][0].filename;
+    const certificado = req.files["certificado"][0].filename;
+
 
     const categoriasNormalizadas = categorias ? categorias.replace(/\s+/g, "").toUpperCase() : null;
 
@@ -122,10 +125,10 @@ app.post(
 
     const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    db.query(
-      "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
-      [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, categoriasNormalizadas, sexoNormalizado, dataCadastro],
-      (err) => {
+db.query(
+  "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
+  [nome, cpf, endereco, cidade, estado, telefone, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, dataCadastro],
+  (err) => {
         if (err) {
           console.error("❌ Erro no INSERT:", err.sqlMessage);
           return res.status(500).json({ error: err.sqlMessage });
@@ -170,6 +173,9 @@ app.get("/instrutores/aceitos", (req, res) => {
       if (instrutor.selfie) {
         instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
       }
+      if (instrutor.certificado) {
+  instrutor.certificado = `https://meuinstrutor.onrender.com/uploads/${instrutor.certificado}`;
+}
     });
 
     res.json(results);
@@ -194,6 +200,9 @@ app.get("/instrutores/todos", (req, res) => {
       if (instrutor.selfie && instrutor.selfie !== "NULL") {
         instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
       }
+      if (instrutor.certificado) {
+  instrutor.certificado = `https://meuinstrutor.onrender.com/uploads/${instrutor.certificado}`;
+}
     });
 
     res.json(results);
@@ -252,6 +261,23 @@ app.put("/instrutores/:id/cnh", upload.single("cnh"), (req, res) => {
       return res.status(500).json({ error: err });
     }
     res.json({ message: "CNH atualizada com sucesso!" });
+  });
+});
+
+app.put("/instrutores/:id/certificado", upload.single("certificado"), (req, res) => {
+  const { id } = req.params;
+  if (!req.file) {
+    return res.status(400).json({ error: "Nenhum certificado enviado" });
+  }
+
+  const certificado = req.file.filename;
+
+  db.query("UPDATE instrutores SET certificado = ? WHERE id = ?", [certificado, id], (err) => {
+    if (err) {
+      console.error("❌ Erro ao atualizar certificado:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "Certificado atualizado com sucesso!" });
   });
 });
 
