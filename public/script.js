@@ -61,14 +61,11 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-let html = `
-  <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
-  <p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>
-`;
-html += `<div class="carousel-container">`;  // só os cards aqui
-// …cards…
-html += `</div>`;
-document.getElementById("resultado").innerHTML = html;
+    let html = `
+      <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
+      <p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>
+      <div class="carousel-container">
+    `;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
@@ -88,8 +85,9 @@ document.getElementById("resultado").innerHTML = html;
       `;
     });
 
-    html += `</div>`;
+    html += `</div>`; // fecha o container só no final
     document.getElementById("resultado").innerHTML = html;
+
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
     document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
