@@ -928,15 +928,16 @@ input[type="file"] {
 }
 
 /* Ícone verde de confirmação (inicialmente escondido) */
-.custom-file-label::after {
-  content: "✔"; /* pode trocar por ➤ ou outra seta */
-  color: #2ecc71; /* verde profissional */
-  font-size: 18px;
-  margin-left: 10px;
-  display: none;
-}
 
 /* Quando tiver arquivo selecionado, mostra a seta verde */
 .custom-file-label.uploaded::after {
   display: inline;
+}
+
+.upload-check {
+  margin-left: 10px;
+  color: #2ecc71; /* verde profissional */
+  font-size: 18px;
+  font-weight: bold;
+  display: none; /* escondido por padrão */
 }

@@ -373,11 +373,13 @@ function carregarFormularioInstrutor() {
           <i class="fa-solid fa-upload"></i> Selecionar Foto de Perfil
         </label>
         <input type="file" id="selfie" name="selfie" accept="image/*" capture="user" required>
+        <span class="upload-check" id="check-selfie"></span>
 
         <label for="comprovante" class="custom-file-label">
           <i class="fa-solid fa-upload"></i> Selecionar Comprovante de Residência
         </label>
         <input type="file" id="comprovante" name="comprovante" required>
+        <span class="upload-check" id="check-comprovante"></span>
 
         <button type="button" onclick="voltarEtapa(2)">Voltar</button>
         <button type="button" onclick="proximaEtapa(4)">Próximo</button>
@@ -391,11 +393,13 @@ function carregarFormularioInstrutor() {
           <i class="fa-solid fa-upload"></i> Selecionar CNH Válida
         </label>
         <input type="file" id="cnh" name="cnh" required>
+        <span class="upload-check" id="check-cnh"></span>
 
         <label for="certificado" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Selecionar Certificado de Instrutor de Trânsito
+          <i class="fa-solid fa-upload"></i> Certificado de Instrutor de Trânsito
         </label>
         <input type="file" id="certificado" name="certificado" required>
+        <span class="upload-check" id="check-certificado"></span>
 
         <h4>Especializações de ensino:</h4>
         <div class="categorias">
@@ -418,6 +422,35 @@ function carregarFormularioInstrutor() {
     </form>
   `;
 
+  // 🔑 Ativa a seta verde fora do botão
+  document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const checkSpan = document.getElementById('check-' + this.id);
+      if (this.files.length > 0) {
+        checkSpan.textContent = "✔"; // seta verde aparece fora
+        checkSpan.style.display = "inline";
+      } else {
+        checkSpan.textContent = "";
+        checkSpan.style.display = "none";
+      }
+    });
+  });
+
+  // 🔑 Ativa a seta verde após upload
+document.querySelectorAll('input[type="file"]').forEach(input => {
+  input.addEventListener('change', function() {
+    const checkSpan = document.getElementById('check-' + this.id);
+    if (this.files.length > 0) {
+      checkSpan.textContent = "✔"; // seta verde aparece fora do botão
+      checkSpan.style.display = "inline";
+    } else {
+      checkSpan.textContent = "";
+      checkSpan.style.display = "none";
+    }
+  });
+});
+  
+  
       // Inicializar selects IBGE para instrutor
       carregarEstadosInstrutor();
       document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
