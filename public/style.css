@@ -873,7 +873,27 @@ section {
 
 /* carrossel */
 /* Mobile (padrão): carrossel com scroll lateral */
+.carousel-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+}
 
+/* Card padrão */
+.card-instrutor {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  text-align: center;
+}
+
+/* ✅ Desktop: grid fixo com 5 colunas */
+@media (min-width: 1024px) {
   .carousel-container {
     display: grid !important;
     grid-template-columns: repeat(5, 1fr) !important;
@@ -889,22 +909,5 @@ section {
   .card-instrutor {
     flex: initial !important;
     width: auto !important;
-  }
-
-/* ✅ Desktop: grid fixo com 5 colunas */
-@media (min-width: 1024px) {
-  .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    max-width: 1200px;
-    margin: 40px auto 0; /* 🔑 centraliza */
-    padding: 20px;
-    justify-items: center; /* 🔑 garante que cada card fique centralizado */
-  }
-
-  .card-instrutor {
-    flex: initial;   /* remove comportamento do carrossel */
-    width: 100%;     /* ocupa a coluna inteira */
   }
 }
