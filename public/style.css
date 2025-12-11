@@ -805,7 +805,7 @@ section {
 }
 
 .resultado-bloco {
-  margin-top: 100px;
+  margin-top: 40px;
   padding: 0 20px;
 }
 
@@ -933,4 +933,24 @@ input[type="file"] {
   font-size: 18px;
   font-weight: bold;
   display: none;
+}
+
+.fundo-resultados {
+  width: 100%;
+  max-width: 1200px;
+  margin: 80px auto 0;   /* empurra bem para baixo */
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.resultado-bloco h4 {
+  color: #8A2BE2;
+  margin-bottom: 10px;
+  text-align: left; /* mais à esquerda */
+}
+
+#resultado {
+  margin-top: 20px;
 }
