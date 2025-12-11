@@ -411,7 +411,7 @@ async function buscarInstrutor(event) {
         formData.append("cpf", document.getElementById("cpf").value);
         formData.append("sexo", document.getElementById("sexoInstrutor").value);
         formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-        formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);
+        formData.append("estado", document.getElementById("estadoInstrutor").value);
         formData.append("telefone", document.getElementById("telefone").value);
         formData.append("selfie", document.getElementById("selfie").files[0]);
         formData.append("comprovante", document.getElementById("comprovante").files[0]);
