@@ -493,13 +493,6 @@ header .logo span {
   flex-shrink: 0;
 }
 
-#resultado {
-  width: 100%;
-  max-width: 1000px;   /* controla largura */
-  margin-top: 100px;   /* desce mais */
-  margin-left: 40px;   /* desloca para a esquerda */
-}
-
 /* Responsivo para mobile */
 @media (max-width: 768px) {
   .form-bloco {
@@ -524,12 +517,6 @@ header .logo span {
 
 /* Container dos cards */
 /* Seção dos resultados */
-#resultado {
-  width: 100%;
-  max-width: 1000px;   /* controla largura */
-  margin-top: 100px;   /* desce mais */
-  margin-left: 40px;   /* desloca para a esquerda */
-}
 
 .carousel-container {
   display: flex;
@@ -805,16 +792,6 @@ section {
   transform: scale(1.2);
 }
 
-.resultado-bloco {
-  margin-top: 40px;
-  padding: 0 20px;
-}
-
-#resultado h4, #resultado p {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
 .card-instrutor {
   flex: 0 0 280px;   /* largura fixa de cada card */
   scroll-snap-align: start;
@@ -860,7 +837,7 @@ section {
 }
 
 #resultado h4, #resultado p {
-  text-align: center;
+  text-align: left;
   margin-bottom: 15px;
 }
 
@@ -937,19 +914,22 @@ input[type="file"] {
 }
 
 .fundo-resultados {
+  display: block;
   width: 100%;
-  max-width: 1200px;
-  margin-top: 120px;   /* desce bem */
+  max-width: 1000px;
+  margin-top: 120px;   /* controla distância do formulário */
   margin-left: 40px;   /* desloca para a esquerda */
+  background: #fff;
   padding: 20px;
-  background: #fff;    /* opcional: fundo branco */
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 768px) {
-  .fundo-resultados {
-    margin: 40px auto 0;   /* centraliza no mobile */
-    padding: 15px;
-  }
+.resultado-bloco {
+  padding: 0 20px;
+}
+
+#resultado {
+  width: 100%;
+  max-width: 1000px;
 }
