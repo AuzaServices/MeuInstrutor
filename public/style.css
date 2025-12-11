@@ -873,24 +873,23 @@ section {
 
 /* carrossel */
 /* Mobile (padrão): carrossel com scroll lateral */
-.carousel-container {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 10px;
-}
 
-/* Card padrão */
-.card-instrutor {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 16px;
-  text-align: center;
-}
+  .carousel-container {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 20px !important;
+    max-width: 1200px !important;
+    margin: 40px auto 0 !important; /* centraliza */
+    padding: 20px !important;
+    overflow-x: visible !important; /* 🔑 remove scroll lateral */
+    scroll-snap-type: none !important;
+    justify-items: center; /* 🔑 centraliza os cards dentro das colunas */
+  }
+
+  .card-instrutor {
+    flex: initial !important;
+    width: auto !important;
+  }
 
 /* ✅ Desktop: grid fixo com 5 colunas */
 @media (min-width: 1024px) {
