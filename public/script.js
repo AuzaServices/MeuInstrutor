@@ -203,6 +203,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
 
   const formData = new FormData();
   formData.append("nome", document.getElementById("nome").value);
+  formData.append("email", document.getElementById("email").value);
   formData.append("cpf", document.getElementById("cpf").value);
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
 
