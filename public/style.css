@@ -525,9 +525,9 @@ header .logo span {
 /* Seção dos resultados */
 #resultado {
   width: 100%;
-  max-width: 1200px;
-  margin-top: 40px;
-  /* ❌ remova o display:grid daqui */
+  max-width: 1000px;   /* controla largura */
+  margin-top: 100px;   /* desce mais */
+  margin-left: 40px;   /* desloca para a esquerda */
 }
 
 .carousel-container {
@@ -933,25 +933,4 @@ input[type="file"] {
   font-size: 18px;
   font-weight: bold;
   display: none;
-}
-
-.fundo-resultados {
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 100px;   /* desce bem */
-  margin-left: 40px;   /* desloca para a esquerda */
-  padding: 20px;
-  background: #fff;    /* destaca como card */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.resultado-bloco h4 {
-  color: #8A2BE2;
-  margin-bottom: 10px;
-  text-align: left;
-}
-
-#resultado {
-  margin-top: 20px;
 }

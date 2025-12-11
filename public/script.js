@@ -61,17 +61,14 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    let html = `
-      <h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>
-      <p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>
-      <div class="carousel-container">
-    `;
+    let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
+    html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
+    html += `<div class="carousel-container">`;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
       const primeiroNome = nomes[0] || "";
       const segundoNome = nomes[1] || "";
-
       const telefone = instrutor.telefone.replace(/\D/g, "");
       const linkWhats = `https://wa.me/55${telefone}`;
 
@@ -80,14 +77,13 @@ async function buscarInstrutor(event) {
           <img src="${instrutor.selfie}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
           <h3>${primeiroNome} ${segundoNome}</h3>
           <p class="categorias">Categoria(s): ${instrutor.categorias}</p>
-          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a>
+          <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
         </div>
       `;
     });
 
-    html += `</div>`; // fecha o container só no final
-    document.getElementById("resultado").innerHTML = html;
-
+    html += `</div>`;
+    document.getElementById("resultado").innerHTML = html; // 🔑 injeta na section nova
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
     document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
