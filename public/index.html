@@ -335,7 +335,7 @@ function carregarFormularioInstrutor() {
         <label>Telefone (Whatsapp):</label>
         <input type="tel" id="telefone" name="telefone" placeholder="(XX)9XXXX-XXXX" title="Formato esperado: (XX)9XXXX-XXXX">
 
-        <button type="button" onclick="proximaEtapa(2)">Próximo</button>
+        <button type="button" onclick="validarEAvancar(1,2)">Próximo</button>
       </div>
 
       <!-- Etapa 2: Endereço -->
@@ -353,7 +353,7 @@ function carregarFormularioInstrutor() {
         </select>
 
         <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-        <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+        <button type="button" onclick="validarEAvancar(2,3)">Próximo</button>
       </div>
 
       <!-- Etapa 3: Identificação Pessoal -->
@@ -373,7 +373,7 @@ function carregarFormularioInstrutor() {
         <span class="upload-check" id="check-comprovante"></span>
 
         <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-        <button type="button" onclick="proximaEtapa(4)">Próximo</button>
+        <button type="button" onclick="validarEAvancar(3,4)">Próximo</button>
       </div>
 
       <!-- Etapa 4: CNH, Certificado e Categorias -->
@@ -381,7 +381,7 @@ function carregarFormularioInstrutor() {
         <h4>Habilitação e Certificação</h4>
 
         <label for="cnh" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Carteira Nascional de Habilitação
+          <i class="fa-solid fa-upload"></i> Carteira Nacional de Habilitação
         </label>
         <input type="file" id="cnh" name="cnh" required>
         <span class="upload-check" id="check-cnh"></span>
@@ -413,11 +413,10 @@ function carregarFormularioInstrutor() {
     </form>
   `;
 
-  // Apenas ✔ verde
+  // ✔ verde após upload
   document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
     input.addEventListener('change', function() {
       const checkSpan = document.getElementById('check-' + this.id);
-
       if (this.files.length > 0) {
         checkSpan.textContent = "✔";
         checkSpan.style.display = "inline";
@@ -427,58 +426,53 @@ function carregarFormularioInstrutor() {
         checkSpan.style.display = "none";
       }
     });
-  }); 
-
-  function validarEtapa(etapaAtual) {
-  const etapa = document.getElementById("etapa" + etapaAtual);
-  const inputs = etapa.querySelectorAll("input, select");
-  let valido = true;
-
-  inputs.forEach(input => {
-    if (input.hasAttribute("required") && !input.value) {
-      valido = false;
-      input.style.border = "2px solid red"; // destaque visual
-    } else {
-      input.style.border = ""; // remove destaque se preenchido
-    }
   });
 
-  return valido;
-}
+  // Validação de etapa (inclui arquivos)
+  function validarEtapa(etapaAtual) {
+    const etapa = document.getElementById("etapa" + etapaAtual);
+    const inputs = etapa.querySelectorAll("input, select");
+    let valido = true;
 
-function proximaEtapa(etapaDestino) {
-  const etapaAtual = etapaDestino - 1; // etapa anterior
-  if (!validarEtapa(etapaAtual)) {
-    alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
-    return;
+    inputs.forEach(input => {
+      if (input.hasAttribute("required")) {
+        if (input.type === "file") {
+          if (input.files.length === 0) {
+            valido = false;
+            input.style.border = "2px solid red";
+          } else {
+            input.style.border = "";
+          }
+        } else {
+          if (!input.value) {
+            valido = false;
+            input.style.border = "2px solid red";
+          } else {
+            input.style.border = "";
+          }
+        }
+      }
+    });
+
+    return valido;
   }
 
-  // esconder etapa atual
-  document.getElementById("etapa" + etapaAtual).style.display = "none";
-  // mostrar próxima etapa
-  document.getElementById("etapa" + etapaDestino).style.display = "block";
-}
-
-function voltarEtapa(etapaDestino) {
-  // esconder todas
-  document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
-  // mostrar etapa destino
-  document.getElementById("etapa" + etapaDestino).style.display = "block";
-}
-
-  // 🔑 Ativa a seta verde após upload
-document.querySelectorAll('input[type="file"]').forEach(input => {
-  input.addEventListener('change', function() {
-    const checkSpan = document.getElementById('check-' + this.id);
-    if (this.files.length > 0) {
-      checkSpan.textContent = "✔"; // seta verde aparece fora do botão
-      checkSpan.style.display = "inline";
-    } else {
-      checkSpan.textContent = "";
-      checkSpan.style.display = "none";
+  // Avançar etapa com validação
+  window.validarEAvancar = function(etapaAtual, etapaDestino) {
+    if (!validarEtapa(etapaAtual)) {
+      alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
+      return;
     }
-  });
-});
+    document.getElementById("etapa" + etapaAtual).style.display = "none";
+    document.getElementById("etapa" + etapaDestino).style.display = "block";
+  }
+
+  // Voltar etapa
+  window.voltarEtapa = function(etapaDestino) {
+    document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
+    document.getElementById("etapa" + etapaDestino).style.display = "block";
+  }
+
   
   
       // Inicializar selects IBGE para instrutor
