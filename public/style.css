@@ -901,3 +901,27 @@ section {
   flex: initial;
   width: auto;
 }
+
+/* Esconde o input padrão */
+input[type="file"] {
+  display: none;
+}
+
+/* Botão lilás estilizado */
+.custom-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* espaço entre ícone e texto */
+  padding: 10px 20px;
+  background-color: #9b59b6; /* lilás */
+  color: white;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-label:hover {
+  background-color: #8e44ad; /* lilás mais escuro */
+}
