@@ -938,9 +938,10 @@ input[type="file"] {
 .fundo-resultados {
   width: 100%;
   max-width: 1200px;
-  margin: 80px auto 0;   /* empurra bem para baixo */
+  margin-top: 100px;   /* desce bem */
+  margin-left: 40px;   /* desloca para a esquerda */
   padding: 20px;
-  background: #fff;
+  background: #fff;    /* destaca como card */
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
@@ -948,7 +949,7 @@ input[type="file"] {
 .resultado-bloco h4 {
   color: #8A2BE2;
   margin-bottom: 10px;
-  text-align: left; /* mais à esquerda */
+  text-align: left;
 }
 
 #resultado {

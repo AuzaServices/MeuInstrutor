@@ -29,7 +29,8 @@
 
   <!-- Seção principal -->
 <!-- Sessão de busca -->
-<section class="fundo-busca">
+<!-- Section do formulário -->
+<section class="fundo-busca" data-aos="fade-up">
   <div class="form-bloco">
     <div class="imagem"></div>
     <div class="formulario">
@@ -39,15 +40,7 @@
   </div>
 </section>
 
-<!-- 🔽 nova section só para resultados -->
-<section class="fundo-resultados">
-  <div class="resultado-bloco">
-    <h4 id="filtro-info"></h4>
-    <p id="filtro-aplicado"></p>
-    <div id="resultado" class="carousel-container"></div>
-  </div>
-</section>
-
+<!-- Section dos resultados (separada, logo abaixo) -->
 <section class="fundo-resultados" data-aos="fade-up">
   <div class="resultado-bloco">
     <h4 id="filtro-info"></h4>
@@ -289,13 +282,12 @@ async function buscarInstrutor(event) {
 
     let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
     html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
-    html += `<div class="carousel-container">`; // ✅ usa carrossel
+    html += `<div class="carousel-container">`;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
       const primeiroNome = nomes[0] || "";
       const segundoNome = nomes[1] || "";
-
       const telefone = instrutor.telefone.replace(/\D/g, "");
       const linkWhats = `https://wa.me/55${telefone}`;
 
@@ -310,7 +302,7 @@ async function buscarInstrutor(event) {
     });
 
     html += `</div>`;
-    document.getElementById("resultado").innerHTML = html;
+    document.getElementById("resultado").innerHTML = html; // 🔑 injeta na section nova
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
     document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
