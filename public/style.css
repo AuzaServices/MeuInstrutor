@@ -895,14 +895,13 @@ section {
 /* ✅ Desktop: grid fixo com 5 colunas */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); /* exatamente 5 por linha */
-    gap: 20px; 
-    max-width: 1200px;       /* limite da largura total */
-    margin: 40px auto 0;     /* centraliza na tela */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 40px auto 0; /* 🔑 centraliza */
     padding: 20px;
-    overflow-x: visible;     /* remove scroll lateral */
-    scroll-snap-type: none;
+    justify-items: center; /* 🔑 garante que cada card fique centralizado */
   }
 
   .card-instrutor {
