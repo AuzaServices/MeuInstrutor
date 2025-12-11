@@ -429,6 +429,43 @@ function carregarFormularioInstrutor() {
     });
   }); 
 
+  function validarEtapa(etapaAtual) {
+  const etapa = document.getElementById("etapa" + etapaAtual);
+  const inputs = etapa.querySelectorAll("input, select");
+  let valido = true;
+
+  inputs.forEach(input => {
+    if (input.hasAttribute("required") && !input.value) {
+      valido = false;
+      input.style.border = "2px solid red"; // destaque visual
+    } else {
+      input.style.border = ""; // remove destaque se preenchido
+    }
+  });
+
+  return valido;
+}
+
+function proximaEtapa(etapaDestino) {
+  const etapaAtual = etapaDestino - 1; // etapa anterior
+  if (!validarEtapa(etapaAtual)) {
+    alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
+    return;
+  }
+
+  // esconder etapa atual
+  document.getElementById("etapa" + etapaAtual).style.display = "none";
+  // mostrar próxima etapa
+  document.getElementById("etapa" + etapaDestino).style.display = "block";
+}
+
+function voltarEtapa(etapaDestino) {
+  // esconder todas
+  document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
+  // mostrar etapa destino
+  document.getElementById("etapa" + etapaDestino).style.display = "block";
+}
+
   // 🔑 Ativa a seta verde após upload
 document.querySelectorAll('input[type="file"]').forEach(input => {
   input.addEventListener('change', function() {
