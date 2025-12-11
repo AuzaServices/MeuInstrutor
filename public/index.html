@@ -309,7 +309,7 @@ async function buscarInstrutor(event) {
   }
 }
     // Formulário de instrutor
-   function carregarFormularioInstrutor() {
+function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
     <form id="formInstrutor" onsubmit="cadastrarInstrutor(event)">
@@ -347,98 +347,75 @@ async function buscarInstrutor(event) {
 
       <!-- Etapa 2: Endereço -->
       <div class="etapa" id="etapa2" style="display:none;">
-  <h4>Localização</h4>
-  
-  <label>Estado:</label>
-  <select id="estadoInstrutor" required>
-    <option value="">Selecione o estado</option>
-    <!-- opções de estados -->
-  </select>
+        <h4>Localização</h4>
+        
+        <label>Estado:</label>
+        <select id="estadoInstrutor" required>
+          <option value="">Selecione o estado</option>
+          <!-- opções de estados -->
+        </select>
 
-  <label>Cidade:</label>
-  <select id="cidadeInstrutor" required>
-    <option value="">Selecione a cidade</option>
-    <!-- opções de cidades -->
-  </select>
+        <label>Cidade:</label>
+        <select id="cidadeInstrutor" required>
+          <option value="">Selecione a cidade</option>
+          <!-- opções de cidades -->
+        </select>
 
-  <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-  <button type="button" onclick="proximaEtapa(3)">Próximo</button>
-</div>
+        <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+        <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+      </div>
 
- <!-- Etapa 3.1: Foto e Comprovante -->
-<!-- Etapa 3: Identificação Pessoal -->
-<div class="etapa" id="etapa3" style="display:none;">
-  <h4>Identificação Pessoal</h4>
+      <!-- Etapa 3: Identificação Pessoal -->
+      <div class="etapa" id="etapa3" style="display:none;">
+        <h4>Identificação Pessoal</h4>
 
-  <!-- Etapa 3: Identificação Pessoal -->
-<div class="etapa" id="etapa3" style="display:none;">
-  <h4>Identificação Pessoal</h4>
+        <label for="selfie" class="custom-file-label">
+          <i class="fa-solid fa-upload"></i> Selecionar Foto de Perfil
+        </label>
+        <input type="file" id="selfie" name="selfie" accept="image/*" capture="user" required>
 
-  <label for="selfie" class="custom-file-label">
-    <i class="fa-solid fa-upload"></i> Selecionar Foto de Perfil
-  </label>
-  <input type="file" id="selfie" name="selfie" accept="image/*" capture="user" required>
+        <label for="comprovante" class="custom-file-label">
+          <i class="fa-solid fa-upload"></i> Selecionar Comprovante de Residência
+        </label>
+        <input type="file" id="comprovante" name="comprovante" required>
 
-  <label for="comprovante" class="custom-file-label">
-    <i class="fa-solid fa-upload"></i> Selecionar Comprovante de Residência
-  </label>
-  <input type="file" id="comprovante" name="comprovante" required>
+        <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+        <button type="button" onclick="proximaEtapa(4)">Próximo</button>
+      </div>
 
-  <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-  <button type="button" onclick="proximaEtapa(4)">Próximo</button>
-</div>
+      <!-- Etapa 4: CNH, Certificado e Categorias -->
+      <div class="etapa" id="etapa4" style="display:none;">
+        <h4>Habilitação e Certificação</h4>
 
-<!-- Etapa 4: CNH, Certificado e Categorias -->
-<div class="etapa" id="etapa4" style="display:none;">
-  <h4>Habilitação e Certificação</h4>
+        <label for="cnh" class="custom-file-label">
+          <i class="fa-solid fa-upload"></i> Selecionar CNH Válida
+        </label>
+        <input type="file" id="cnh" name="cnh" required>
 
-  <label for="cnh" class="custom-file-label">
-    <i class="fa-solid fa-upload"></i> Selecionar CNH Válida
-  </label>
-  <input type="file" id="cnh" name="cnh" required>
+        <label for="certificado" class="custom-file-label">
+          <i class="fa-solid fa-upload"></i> Selecionar Certificado de Instrutor de Trânsito
+        </label>
+        <input type="file" id="certificado" name="certificado" required>
 
-  <label for="certificado" class="custom-file-label">
-    <i class="fa-solid fa-upload"></i> Selecionar Certificado de Instrutor de Trânsito
-  </label>
-  <input type="file" id="certificado" name="certificado" required>
+        <h4>Especializações de ensino:</h4>
+        <div class="categorias">
+          <label><input type="checkbox" name="categoria" value="A"> A</label>
+          <label><input type="checkbox" name="categoria" value="B"> B</label>
+          <label><input type="checkbox" name="categoria" value="C"> C</label>
+          <label><input type="checkbox" name="categoria" value="D"> D</label>
+          <label><input type="checkbox" name="categoria" value="E"> E</label>
+        </div>
 
-  <h4>Especializações de ensino:</h4>
-  <div class="categorias">
-    <label><input type="checkbox" name="categoria" value="A"> A</label>
-    <label><input type="checkbox" name="categoria" value="B"> B</label>
-    <label><input type="checkbox" name="categoria" value="C"> C</label>
-    <label><input type="checkbox" name="categoria" value="D"> D</label>
-    <label><input type="checkbox" name="categoria" value="E"> E</label>
-  </div>
+        <button type="button" onclick="voltarEtapa(3)">Voltar</button>
+        <button type="submit">Enviar</button>
 
-  <button type="button" onclick="voltarEtapa(3)">Voltar</button>
-  <button type="submit">Enviar</button>
-
-  <p style="font-size: 12px; color: #555; margin-top: 8px;">
-    Ao clicar em <strong>Enviar</strong>, você concorda com os 
-    <a href="/termos" target="_blank" style="color: orange;">Termos de Uso</a> e com a 
-    <a href="/privacidade" target="_blank" style="color: orange;">Política de Privacidade</a>.
-  </p>
-</div>
-
-  <h4>Especializações de ensino:</h4>
-  <div class="categorias">
-    <label><input type="checkbox" name="categoria" value="A"> A</label>
-    <label><input type="checkbox" name="categoria" value="B"> B</label>
-    <label><input type="checkbox" name="categoria" value="C"> C</label>
-    <label><input type="checkbox" name="categoria" value="D"> D</label>
-    <label><input type="checkbox" name="categoria" value="E"> E</label>
-  </div>
-
-  <button type="button" onclick="voltarEtapa(3)">Voltar</button>
-  <button type="submit">Enviar</button>
-
-  <p style="font-size: 12px; color: #555; margin-top: 8px;">
-    Ao clicar em <strong>Enviar</strong>, você concorda com os 
-    <a href="/termos" target="_blank" style="color: orange;">Termos de Uso</a> e com a 
-    <a href="/privacidade" target="_blank" style="color: orange;">Política de Privacidade</a>.
-  </p>
-</div>
+        <p style="font-size: 12px; color: #555; margin-top: 8px;">
+          Ao clicar em <strong>Enviar</strong>, você concorda com os 
+          <a href="/termos" target="_blank" style="color: orange;">Termos de Uso</a> e com a 
+          <a href="/privacidade" target="_blank" style="color: orange;">Política de Privacidade</a>.
+        </p>
+      </div>
+    </form>
   `;
 
       // Inicializar selects IBGE para instrutor
@@ -664,6 +641,18 @@ document.addEventListener("DOMContentLoaded", () => {
   AOS.init({
     duration: 1000, // duração da animação
     once: true      // anima só uma vez
+  });
+});
+
+// adiciona evento para todos os inputs file
+document.querySelectorAll('input[type="file"]').forEach(input => {
+  input.addEventListener('change', function() {
+    const label = document.querySelector(`label[for="${this.id}"]`);
+    if (this.files.length > 0) {
+      label.classList.add("uploaded"); // ativa seta verde
+    } else {
+      label.classList.remove("uploaded"); // remove seta se limpar
+    }
   });
 });
 

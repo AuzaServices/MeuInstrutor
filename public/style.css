@@ -911,7 +911,7 @@ input[type="file"] {
 .custom-file-label {
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* espaço entre ícone e texto */
+  gap: 8px;
   padding: 10px 20px;
   background-color: #9b59b6; /* lilás */
   color: white;
@@ -920,8 +920,23 @@ input[type="file"] {
   cursor: pointer;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
+  position: relative;
 }
 
 .custom-file-label:hover {
-  background-color: #8e44ad; /* lilás mais escuro */
+  background-color: #8e44ad;
+}
+
+/* Ícone verde de confirmação (inicialmente escondido) */
+.custom-file-label::after {
+  content: "✔"; /* pode trocar por ➤ ou outra seta */
+  color: #2ecc71; /* verde profissional */
+  font-size: 18px;
+  margin-left: 10px;
+  display: none;
+}
+
+/* Quando tiver arquivo selecionado, mostra a seta verde */
+.custom-file-label.uploaded::after {
+  display: inline;
 }
