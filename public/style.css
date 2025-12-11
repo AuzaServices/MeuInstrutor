@@ -82,6 +82,7 @@ body {
   display: flex;
   flex-direction: row;
   width: 100%;
+  margin-left: 500px;
   min-height: auto; /* deixa crescer conforme o conteúdo */
     justify-content: flex-end; /* empurra imagem + formulário para a direita */
   align-items: stretch; /* colunas acompanham a altura do maior conteúdo */
