@@ -885,23 +885,19 @@ section {
 }
 
 /* ✅ Desktop: grid fixo com 5 colunas */
-@media (min-width: 1024px) {
-  .carousel-container {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr) !important;
-    gap: 20px !important;
-    max-width: 1200px !important;
-    margin: 40px 0 0 0 !important; /* 🔑 remove auto e cola à esquerda */
-    padding: 20px !important;
-    overflow-x: visible !important;
-    scroll-snap-type: none !important;
-    justify-items: start; /* 🔑 alinha os cards à esquerda dentro das colunas */
-  }
-
-
-  .card-instrutor {
-    flex: initial !important;
-    width: auto !important;
-  }
+.carousel-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto 0;   /* centraliza */
+  padding: 20px;
+  overflow-x: visible;
+  scroll-snap-type: none;
+  justify-items: center;
 }
 
+.card-instrutor {
+  flex: initial;
+  width: auto;
+}
