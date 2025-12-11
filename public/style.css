@@ -935,3 +935,12 @@ input[type="file"] {
   display: none;
 }
 
+.fundo-resultados {
+  margin-top: 60px;       /* empurra para baixo */
+  margin-left: 40px;      /* desloca para a esquerda */
+  padding: 20px;
+  background: #f9f9f9;    /* fundo claro para destacar */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 80%;             /* controla largura */
+}
