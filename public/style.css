@@ -903,3 +903,37 @@ section {
     width: auto !important;
   }
 }
+
+.form-bloco {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.imagem {
+  width: 400px;
+  height: 500px;
+  background: url("sua-imagem.jpg") no-repeat center center;
+  background-size: cover;
+  flex-shrink: 0;
+}
+
+.formulario {
+  flex: 1;
+  min-width: 300px;
+  padding: 40px;
+}
+
+/* cards abaixo da imagem */
+.resultado-bloco {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+  clear: both; /* 🔑 força quebrar abaixo */
+  display: block;
+}
