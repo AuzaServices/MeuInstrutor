@@ -927,17 +927,10 @@ input[type="file"] {
   background-color: #8e44ad;
 }
 
-/* Ícone verde de confirmação (inicialmente escondido) */
-
-/* Quando tiver arquivo selecionado, mostra a seta verde */
-.custom-file-label.uploaded::after {
-  display: inline;
-}
-
 .upload-check {
   margin-left: 10px;
-  color: #2ecc71; /* verde profissional */
+  color: #2ecc71; /* verde */
   font-size: 18px;
   font-weight: bold;
-  display: none; /* escondido por padrão */
+  display: none;
 }
