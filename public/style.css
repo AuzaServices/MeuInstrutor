@@ -495,8 +495,9 @@ header .logo span {
 
 #resultado {
   width: 100%;
-  max-width: 1200px;
-  margin-top: 40px;
+  max-width: 1000px;   /* controla largura */
+  margin-top: 100px;   /* desce mais */
+  margin-left: 40px;   /* desloca para a esquerda */
 }
 
 /* Responsivo para mobile */
