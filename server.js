@@ -98,7 +98,7 @@ app.post(
     console.log("BODY:", req.body);
     console.log("FILES:", req.files);
 
-    const { nome, cpf, endereco, cidade, estado, categorias, telefone, sexo, email } = req.body;
+    const { nome, cpf, cidade, estado, categorias, telefone, sexo, email } = req.body;
 
 if (!email) {
   return res.status(400).json({ error: "Email é obrigatório" });
@@ -130,8 +130,8 @@ if (!email) {
     const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 db.query(
-  "INSERT INTO instrutores (nome, cpf, endereco, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
-[nome, cpf, endereco, cidade, estado, telefone, email, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, dataCadastro],
+  "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
+[nome, cpf, cidade, estado, telefone, email, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, dataCadastro],
   (err) => {
         if (err) {
           console.error("❌ Erro no INSERT:", err.sqlMessage);

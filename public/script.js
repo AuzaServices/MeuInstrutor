@@ -215,7 +215,6 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   }
   formData.append("telefone", telefone);
   formData.append("selfie", document.getElementById("selfie").files[0]);
-  formData.append("endereco", document.getElementById("rua").value + ", " + document.getElementById("numero").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
   formData.append("estado", document.getElementById("estadoInstrutor").selectedOptions[0].text);
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
