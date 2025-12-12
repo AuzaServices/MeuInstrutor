@@ -94,7 +94,7 @@ async function buscarInstrutor(event) {
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
-    <form id="formInstrutor">
+    <form id="formInstrutor" onsubmit="cadastrarInstrutor(event)">
       
       <!-- Etapa 1: Dados pessoais -->
       <div class="etapa" id="etapa1">
