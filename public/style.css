@@ -925,7 +925,7 @@ input[type="file"] {
         grid-template-columns: repeat(5, 1fr);
         gap: 15px;
         max-width: 1200px;
-        margin: 100px 0 0 -570px;
+        margin: 100px 0 0 -510px;
         padding: -11px;
         overflow-x: visible;
         scroll-snap-type: none;
