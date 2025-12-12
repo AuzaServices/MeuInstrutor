@@ -501,7 +501,6 @@ function validarEtapa(etapaAtual) {
 }
 
 // Avançar etapa com validação
-// Avançar etapa com validação
 function validarEAvancar(etapaAtual, etapaDestino) {
   if (!validarEtapa(etapaAtual)) {
     alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
@@ -515,35 +514,6 @@ function validarEAvancar(etapaAtual, etapaDestino) {
 function voltarEtapa(etapaDestino) {
   document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
   document.getElementById("etapa" + etapaDestino).style.display = "block";
-}
-
-// Validação de etapa (inclui arquivos)
-function validarEtapa(etapaAtual) {
-  const etapa = document.getElementById("etapa" + etapaAtual);
-  const inputs = etapa.querySelectorAll("input, select");
-  let valido = true;
-
-  inputs.forEach(input => {
-    if (input.hasAttribute("required")) {
-      if (input.type === "file") {
-        if (input.files.length === 0) {
-          valido = false;
-          input.style.border = "2px solid red";
-        } else {
-          input.style.border = "";
-        }
-      } else {
-        if (!input.value) {
-          valido = false;
-          input.style.border = "2px solid red";
-        } else {
-          input.style.border = "";
-        }
-      }
-    }
-  });
-
-  return valido;
 }
 
 // ====== FUNÇÃO DO MODAL ======
@@ -561,24 +531,20 @@ function mostrarModalSucesso() {
     modal.style.display = "none";
     progress.style.width = "100%"; // resetar barra
   }, 5000);
-}
 
-// ====== INICIALIZAÇÃO DO FORMULÁRIO ======
+  
+      // Inicializar selects IBGE para instrutor
+      carregarEstadosInstrutor();
+      document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
 
-// Carregar estados e cidades (via IBGE ou lista própria)
-carregarEstadosInstrutor();
-document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
+      aplicarMascaraCPF();
+      aplicarMascaraTelefone();
 
-// Aplicar máscaras
-aplicarMascaraCPF();
-aplicarMascaraTelefone();
-
-// Listener de envio do formulário
 document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const categoriasSelecionadas = [];
-  document.querySelectorAll('input[name="categorias"]:checked').forEach(el => {
+  document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
     categoriasSelecionadas.push(el.value);
   });
 
@@ -589,6 +555,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
 
+  // 🔑 Aqui está a correção
   const estadoSelect = document.getElementById("estadoInstrutor");
   const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
   formData.append("estado", estadoNome);
@@ -612,14 +579,15 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       throw new Error(resultado.error || "Erro no servidor");
     }
 
-    mostrarModalSucesso(); // exibe modal de sucesso
+    alert(resultado.message);
     document.getElementById("formInstrutor").reset();
-    validarEAvancar(4,1); // volta para etapa 1
+    proximaEtapa(1);
   } catch (error) {
     console.error("❌ Erro ao cadastrar instrutor:", error);
     alert("Erro ao cadastrar instrutor: " + error.message);
   }
 });
+}
 
     // Navegação entre etapas
     function proximaEtapa(n) {
