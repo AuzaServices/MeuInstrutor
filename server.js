@@ -197,17 +197,17 @@ app.get("/instrutores/aceitos", (req, res) => {
 
     results.forEach(instrutor => {
       if (instrutor.comprovante_residencia) {
-        instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+        instrutor.comprovante_residencia = `data:image/jpeg;base64,${instrutor.comprovante_residencia.toString("base64")}`;
       }
       if (instrutor.cnh) {
-        instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+        instrutor.cnh = `data:image/jpeg;base64,${instrutor.cnh.toString("base64")}`;
       }
       if (instrutor.selfie) {
-        instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+        instrutor.selfie = `data:image/jpeg;base64,${instrutor.selfie.toString("base64")}`;
       }
       if (instrutor.certificado) {
-  instrutor.certificado = `https://meuinstrutor.onrender.com/uploads/${instrutor.certificado}`;
-}
+        instrutor.certificado = `data:image/jpeg;base64,${instrutor.certificado.toString("base64")}`;
+      }
     });
 
     res.json(results);
