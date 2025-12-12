@@ -242,13 +242,14 @@ app.get("/instrutores/todos", (req, res) => {
 });
 
 // Atualizar Selfie
+// Atualizar Selfie
 app.put("/instrutores/:id/selfie", upload.single("selfie"), (req, res) => {
   const { id } = req.params;
   if (!req.file) {
     return res.status(400).json({ error: "Nenhuma selfie enviada" });
   }
 
-  const selfie = req.file.filename;
+  const selfie = req.file.buffer; // 🔎 usar buffer
 
   db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [selfie, id], (err) => {
     if (err) {
@@ -260,14 +261,13 @@ app.put("/instrutores/:id/selfie", upload.single("selfie"), (req, res) => {
 });
 
 // Atualizar Comprovante
-// Atualizar Comprovante
 app.put("/instrutores/:id/comprovante", upload.single("comprovante"), (req, res) => {
   const { id } = req.params;
   if (!req.file) {
     return res.status(400).json({ error: "Nenhum comprovante enviado" });
   }
 
-  const comprovante = req.file.filename;
+  const comprovante = req.file.buffer;
 
   db.query("UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?", [comprovante, id], (err) => {
     if (err) {
@@ -285,7 +285,7 @@ app.put("/instrutores/:id/cnh", upload.single("cnh"), (req, res) => {
     return res.status(400).json({ error: "Nenhuma CNH enviada" });
   }
 
-  const cnh = req.file.filename;
+  const cnh = req.file.buffer;
 
   db.query("UPDATE instrutores SET cnh = ? WHERE id = ?", [cnh, id], (err) => {
     if (err) {
@@ -296,13 +296,14 @@ app.put("/instrutores/:id/cnh", upload.single("cnh"), (req, res) => {
   });
 });
 
+// Atualizar Certificado
 app.put("/instrutores/:id/certificado", upload.single("certificado"), (req, res) => {
   const { id } = req.params;
   if (!req.file) {
     return res.status(400).json({ error: "Nenhum certificado enviado" });
   }
 
-  const certificado = req.file.filename;
+  const certificado = req.file.buffer;
 
   db.query("UPDATE instrutores SET certificado = ? WHERE id = ?", [certificado, id], (err) => {
     if (err) {
