@@ -91,9 +91,9 @@ app.post(
 
     const { nome, cpf, cidade, estado, categorias, telefone, sexo, email } = req.body;
 
-if (!email) {
-  return res.status(400).json({ error: "Email é obrigatório" });
-}
+    if (!email) {
+      return res.status(400).json({ error: "Email é obrigatório" });
+    }
 
     if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
       return res.status(400).json({ error: "Campos obrigatórios não enviados" });
@@ -103,11 +103,11 @@ if (!email) {
       return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
     }
 
-    const comprovante = req.files["comprovante"][0].filename;
-    const cnh = req.files["cnh"][0].filename;
-    const selfie = req.files["selfie"][0].filename;
-    const certificado = req.files["certificado"][0].filename;
-
+    // 🔎 Agora pegamos o buffer (conteúdo binário) em vez do filename
+    const comprovante = req.files["comprovante"][0].buffer;
+    const cnh = req.files["cnh"][0].buffer;
+    const selfie = req.files["selfie"][0].buffer;
+    const certificado = req.files["certificado"] ? req.files["certificado"][0].buffer : null;
 
     const categoriasNormalizadas = categorias ? categorias.replace(/\s+/g, "").toUpperCase() : null;
 
@@ -118,21 +118,36 @@ if (!email) {
       sexoNormalizado = null;
     }
 
-    const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const dataCadastro = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-db.query(
-  "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-  [nome, cpf, cidade, estado, telefone, email, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, "pendente", dataCadastro],
-  (err) => {
-    if (err) {
-      console.error("❌ Erro no INSERT:", err.sqlMessage);
-      return res.status(500).json({ error: err.sqlMessage });
-    }
-    res.json({ message: "Cadastro enviado para análise!" });
+    db.query(
+      "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        nome,
+        cpf,
+        cidade,
+        estado,
+        telefone,
+        email,
+        comprovante,
+        cnh,
+        selfie,
+        certificado,
+        categoriasNormalizadas,
+        sexoNormalizado,
+        "pendente",
+        dataCadastro
+      ],
+      (err) => {
+        if (err) {
+          console.error("❌ Erro no INSERT:", err.sqlMessage);
+          return res.status(500).json({ error: err.sqlMessage });
+        }
+        res.json({ message: "Cadastro enviado para análise!" });
+      }
+    );
   }
 );
-  }
-);  
 
 // 📌 Aceitar instrutor (única versão correta)
 app.put("/instrutores/aceitar/:id", (req, res) => {
@@ -202,24 +217,21 @@ app.get("/instrutores/aceitos", (req, res) => {
 // 📌 Listar todos os instrutores (pendentes e aceitos)
 app.get("/instrutores/todos", (req, res) => {
   db.query("SELECT * FROM instrutores", (err, results) => {
-    if (err) {
-      console.error("❌ Erro ao listar todos:", err);
-      return res.status(500).json({ error: err });
-    }
+    if (err) return res.status(500).json({ error: err });
 
     results.forEach(instrutor => {
-      if (instrutor.comprovante_residencia && instrutor.comprovante_residencia !== "NULL") {
-        instrutor.comprovante_residencia = `https://meuinstrutor.onrender.com/uploads/${instrutor.comprovante_residencia}`;
+      if (instrutor.selfie) {
+        instrutor.selfie = `data:image/jpeg;base64,${instrutor.selfie.toString("base64")}`;
       }
-      if (instrutor.cnh && instrutor.cnh !== "NULL") {
-        instrutor.cnh = `https://meuinstrutor.onrender.com/uploads/${instrutor.cnh}`;
+      if (instrutor.comprovante_residencia) {
+        instrutor.comprovante_residencia = `data:image/jpeg;base64,${instrutor.comprovante_residencia.toString("base64")}`;
       }
-      if (instrutor.selfie && instrutor.selfie !== "NULL") {
-        instrutor.selfie = `https://meuinstrutor.onrender.com/uploads/${instrutor.selfie}`;
+      if (instrutor.cnh) {
+        instrutor.cnh = `data:image/jpeg;base64,${instrutor.cnh.toString("base64")}`;
       }
       if (instrutor.certificado) {
-  instrutor.certificado = `https://meuinstrutor.onrender.com/uploads/${instrutor.certificado}`;
-}
+        instrutor.certificado = `data:image/jpeg;base64,${instrutor.certificado.toString("base64")}`;
+      }
     });
 
     res.json(results);
