@@ -920,16 +920,15 @@ input[type="file"] {
 
 /* Desktop: grid fixo */
 @media (min-width: 1024px) {
-  .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    max-width: 1200px;
-    margin-top: 40px;
-    margin-left: 40px;   /* 🔑 fixa deslocamento à esquerda */
-    padding: 20px;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    justify-items: start; /* 🔑 alinha os cards à esquerda */
-  }
+    .carousel-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        max-width: 1200px;
+        margin: 100px 0 0 -570px;
+        padding: -11px;
+        overflow-x: visible;
+        scroll-snap-type: none;
+        justify-items: start;
+    }
 }
