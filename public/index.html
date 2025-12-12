@@ -532,6 +532,7 @@ function mostrarModalSucesso() {
     progress.style.width = "100%"; // resetar barra
   }, 5000);
 
+}
   
       // Inicializar selects IBGE para instrutor
       carregarEstadosInstrutor();
@@ -587,7 +588,6 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
     alert("Erro ao cadastrar instrutor: " + error.message);
   }
 });
-}
 
     // Navegação entre etapas
     function proximaEtapa(n) {
