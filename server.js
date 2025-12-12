@@ -63,15 +63,6 @@ app.get("/instrutores", (req, res) => {
   });
 });
 
-// 📌 Aceitar instrutor
-app.put("/instrutores/aceitar/:id", (req, res) => {
-  const { id } = req.params;
-  db.query("UPDATE instrutores SET status = 'aceito' WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Instrutor aceito com sucesso!" });
-  });
-});
-
 // 📌 Excluir instrutor (Recusar)
 app.delete("/instrutores/:id", (req, res) => {
   const { id } = req.params;
@@ -143,11 +134,11 @@ db.query(
   }
 );  
 
-// 📌 Aceitar instrutor (ÚNICA VERSÃO)
+// 📌 Aceitar instrutor (única versão correta)
 app.put("/instrutores/aceitar/:id", (req, res) => {
   const { id } = req.params;
 
-  // Formata data local YYYY-MM-DD para evitar off-by-one com UTC
+  // Ajuste para fuso horário local
   const agora = new Date();
   const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000);
   const dataFormatada = local.toISOString().split("T")[0]; // YYYY-MM-DD
