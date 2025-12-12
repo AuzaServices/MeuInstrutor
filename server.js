@@ -174,6 +174,7 @@ app.get("/instrutores/aceitos", (req, res) => {
 });
 
 // 📌 Listar todos os instrutores (pendentes e aceitos)
+// 📌 Listar todos os instrutores (pendentes e aceitos)
 app.get("/instrutores/todos", (req, res) => {
   db.query("SELECT * FROM instrutores", (err, results) => {
     if (err) {
@@ -181,21 +182,7 @@ app.get("/instrutores/todos", (req, res) => {
       return res.status(500).json({ error: err });
     }
 
-    results.forEach(instrutor => {
-      if (instrutor.comprovante_residencia) {
-        instrutor.comprovante_residencia = `data:image/jpeg;base64,${instrutor.comprovante_residencia.toString("base64")}`;
-      }
-      if (instrutor.cnh) {
-        instrutor.cnh = `data:image/jpeg;base64,${instrutor.cnh.toString("base64")}`;
-      }
-      if (instrutor.selfie) {
-        instrutor.selfie = `data:image/jpeg;base64,${instrutor.selfie.toString("base64")}`;
-      }
-      if (instrutor.certificado) {
-        instrutor.certificado = `data:image/jpeg;base64,${instrutor.certificado.toString("base64")}`;
-      }
-    });
-
+    // Agora os campos já são URLs do Cloudinary, não precisa converter
     res.json(results);
   });
 });
