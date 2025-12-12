@@ -143,6 +143,24 @@ db.query(
   }
 );  
 
+app.put("/instrutores/aceitar/:id", (req, res) => {
+  const { id } = req.params;
+  const hoje = new Date();
+  const dataFormatada = hoje.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  db.query(
+    "UPDATE instrutores SET status = 'aceito', data_pagamento = ? WHERE id = ?",
+    [dataFormatada, id],
+    (err) => {
+      if (err) {
+        console.error("❌ Erro ao aceitar instrutor:", err.sqlMessage);
+        return res.status(500).json({ error: err.sqlMessage });
+      }
+      res.json({ message: "Instrutor aceito e pagamento registrado!" });
+    }
+  );
+});
+
 // 📌 Listar instrutores aceitos com filtro
 app.get("/instrutores/aceitos", (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
