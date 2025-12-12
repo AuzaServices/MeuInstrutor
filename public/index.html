@@ -501,6 +501,38 @@ function validarEtapa(etapaAtual) {
 }
 
 // Avançar etapa com validação
+// ====== FUNÇÕES DE ETAPAS ======
+
+// Validação de etapa (inclui arquivos)
+function validarEtapa(etapaAtual) {
+  const etapa = document.getElementById("etapa" + etapaAtual);
+  const inputs = etapa.querySelectorAll("input, select");
+  let valido = true;
+
+  inputs.forEach(input => {
+    if (input.hasAttribute("required")) {
+      if (input.type === "file") {
+        if (input.files.length === 0) {
+          valido = false;
+          input.style.border = "2px solid red";
+        } else {
+          input.style.border = "";
+        }
+      } else {
+        if (!input.value) {
+          valido = false;
+          input.style.border = "2px solid red";
+        } else {
+          input.style.border = "";
+        }
+      }
+    }
+  });
+
+  return valido;
+}
+
+// Avançar etapa com validação
 function validarEAvancar(etapaAtual, etapaDestino) {
   if (!validarEtapa(etapaAtual)) {
     alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
@@ -531,60 +563,128 @@ function mostrarModalSucesso() {
     modal.style.display = "none";
     progress.style.width = "100%"; // resetar barra
   }, 5000);
-  
-      // Inicializar selects IBGE para instruto
+}
 
-      aplicarMascaraCPF();
-      aplicarMascaraTelefone();
+// ====== NAVEGAÇÃO ENTRE ETAPAS ======
+function proximaEtapa(n) {
+  document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
+  const etapa = document.getElementById('etapa' + n);
+  etapa.style.display = 'block';
+  etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
-  event.preventDefault();
+function voltarEtapa(n) {
+  document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
+  const etapa = document.getElementById('etapa' + n);
+  etapa.style.display = 'block';
+  etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-  const categoriasSelecionadas = [];
-  document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
-    categoriasSelecionadas.push(el.value);
-  });
+// ====== CARREGAR ESTADOS/CIDADES PARA INSTRUTOR ======
+async function carregarEstadosInstrutor() {
+  try {
+    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+    const estados = await resp.json();
+    const selectEstado = document.getElementById("estadoInstrutor");
 
-  const formData = new FormData();
-  formData.append("nome", document.getElementById("nome").value);
-  formData.append("email", document.getElementById("email").value);
-  formData.append("cpf", document.getElementById("cpf").value);
-  formData.append("sexo", document.getElementById("sexoInstrutor").value);
-  formData.append("cidade", document.getElementById("cidadeInstrutor").value);
+    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
 
-  // 🔑 Aqui está a correção
-  const estadoSelect = document.getElementById("estadoInstrutor");
-  const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
-  formData.append("estado", estadoNome);
+    estados.sort((a, b) => a.nome.localeCompare(b.nome));
 
-  formData.append("telefone", document.getElementById("telefone").value);
-  formData.append("selfie", document.getElementById("selfie").files[0]);
-  formData.append("comprovante", document.getElementById("comprovante").files[0]);
-  formData.append("cnh", document.getElementById("cnh").files[0]);
-  formData.append("certificado", document.getElementById("certificado").files[0]);
-  formData.append("categorias", categoriasSelecionadas.join(","));
+    estados.forEach(estado => {
+      const option = document.createElement("option");
+      option.value = estado.id;
+      option.textContent = estado.nome;
+      selectEstado.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar estados (instrutor):", error);
+  }
+}
+
+async function carregarCidadesInstrutor() {
+  const estadoId = document.getElementById("estadoInstrutor").value;
+  if (!estadoId) return;
 
   try {
-    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
-      method: "POST",
-      body: formData
+    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
+    const cidades = await resp.json();
+    const selectCidade = document.getElementById("cidadeInstrutor");
+
+    selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+    cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    cidades.forEach(cidade => {
+      const option = document.createElement("option");
+      option.value = cidade.nome;
+      option.textContent = cidade.nome;
+      selectCidade.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar cidades (instrutor):", error);
+  }
+}
+
+// ====== INICIALIZAÇÃO DO FORMULÁRIO ======
+document.addEventListener("DOMContentLoaded", () => {
+  // inicializa selects IBGE
+  carregarEstadosInstrutor();
+  document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
+
+  // aplica máscaras (se tiver funções definidas)
+  aplicarMascaraCPF();
+  aplicarMascaraTelefone();
+
+  // listener de envio
+  const form = document.getElementById("formInstrutor");
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const categoriasSelecionadas = [];
+    document.querySelectorAll('input[name="categorias"]:checked').forEach(el => {
+      categoriasSelecionadas.push(el.value);
     });
 
-    const resultado = await resposta.json();
+    const formData = new FormData();
+    formData.append("nome", document.getElementById("nome").value);
+    formData.append("email", document.getElementById("email").value);
+    formData.append("cpf", document.getElementById("cpf").value);
+    formData.append("sexo", document.getElementById("sexoInstrutor").value);
+    formData.append("cidade", document.getElementById("cidadeInstrutor").value);
 
-    if (!resposta.ok) {
-      throw new Error(resultado.error || "Erro no servidor");
+    const estadoSelect = document.getElementById("estadoInstrutor");
+    const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
+    formData.append("estado", estadoNome);
+
+    formData.append("telefone", document.getElementById("telefone").value);
+    formData.append("selfie", document.getElementById("selfie").files[0]);
+    formData.append("comprovante", document.getElementById("comprovante").files[0]);
+    formData.append("cnh", document.getElementById("cnh").files[0]);
+    formData.append("certificado", document.getElementById("certificado").files[0]);
+    formData.append("categorias", categoriasSelecionadas.join(","));
+
+    try {
+      const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
+        method: "POST",
+        body: formData
+      });
+
+      const resultado = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(resultado.error || "Erro no servidor");
+      }
+
+      mostrarModalSucesso(); // exibe modal de sucesso
+      document.getElementById("formInstrutor").reset();
+      proximaEtapa(1); // volta para etapa 1
+    } catch (error) {
+      console.error("❌ Erro ao cadastrar instrutor:", error);
+      alert("Erro ao cadastrar instrutor: " + error.message);
     }
-
-    alert(resultado.message);
-    document.getElementById("formInstrutor").reset();
-    proximaEtapa(1);
-  } catch (error) {
-    console.error("❌ Erro ao cadastrar instrutor:", error);
-    alert("Erro ao cadastrar instrutor: " + error.message);
-  }
+  });
 });
-}
 
     // Navegação entre etapas
     function proximaEtapa(n) {
