@@ -53,6 +53,75 @@ cloudinary.config({
   secure: true
 });
 
+// Função auxiliar para upload no Cloudinary
+function uploadToCloudinary(buffer, folder) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url); // 🔑 retorna o link público
+      }
+    );
+    stream.end(buffer);
+  });
+}
+
+// 📌 Cadastro de instrutor
+app.post("/instrutores", upload.fields([
+  { name: "selfie", maxCount: 1 },
+  { name: "comprovante", maxCount: 1 },
+  { name: "cnh", maxCount: 1 },
+  { name: "certificado", maxCount: 1 }
+]), async (req, res) => {
+  try {
+    const uploads = {};
+
+    // Faz upload de cada arquivo enviado
+    if (req.files.selfie) {
+      uploads.selfie = await uploadToCloudinary(req.files.selfie[0].buffer, "instrutores/selfies");
+    }
+    if (req.files.comprovante) {
+      uploads.comprovante = await uploadToCloudinary(req.files.comprovante[0].buffer, "instrutores/comprovantes");
+    }
+    if (req.files.cnh) {
+      uploads.cnh = await uploadToCloudinary(req.files.cnh[0].buffer, "instrutores/cnhs");
+    }
+    if (req.files.certificado) {
+      uploads.certificado = await uploadToCloudinary(req.files.certificado[0].buffer, "instrutores/certificados");
+    }
+
+    // Agora salva os links no banco
+    db.query(
+      "INSERT INTO instrutores (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
+      [
+        req.body.nome,
+        req.body.email,
+        req.body.cpf,
+        req.body.sexo,
+        req.body.cidade,
+        req.body.estado,
+        req.body.telefone,
+        uploads.selfie || null,
+        uploads.comprovante || null,
+        uploads.cnh || null,
+        uploads.certificado || null,
+        req.body.categorias
+      ],
+      (err) => {
+        if (err) {
+          console.error("❌ Erro ao cadastrar instrutor:", err);
+          return res.status(500).json({ error: err });
+        }
+        res.json({ message: "Instrutor cadastrado com sucesso!" });
+      }
+    );
+  } catch (error) {
+    console.error("❌ Erro no upload:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 /* ========================= ROTAS ========================= */
 
 // 📌 Listar instrutores pendentes
