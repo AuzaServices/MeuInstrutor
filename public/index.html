@@ -432,42 +432,42 @@ function carregarFormularioInstrutor() {
   `;
 
   // ✔ verde após upload
-  // ✔ verde após upload
-document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
-  input.addEventListener('change', function() {
-    const checkSpan = document.getElementById('check-' + this.id);
-    if (this.files.length > 0) {
-      checkSpan.textContent = "✔";
-      checkSpan.style.display = "inline";
-      checkSpan.style.color = "#2ecc71";
-    } else {
-      checkSpan.textContent = "";
-      checkSpan.style.display = "none";
+  document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const checkSpan = document.getElementById('check-' + this.id);
+      if (this.files.length > 0) {
+        checkSpan.textContent = "✔";
+        checkSpan.style.display = "inline";
+        checkSpan.style.color = "#2ecc71";
+      } else {
+        checkSpan.textContent = "";
+        checkSpan.style.display = "none";
+      }
+    });
+  });
+
+  // Evento de envio do formulário
+  const form = document.getElementById("formInstrutor");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/instrutores", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        mostrarModalSucesso();
+      } else {
+        alert("Erro ao enviar cadastro. Tente novamente.");
+      }
+    } catch (error) {
+      alert("Falha na conexão com o servidor.");
     }
   });
-});
-
-// Evento de envio do formulário
-const form = document.getElementById("formInstrutor");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch("/instrutores", {
-      method: "POST",
-      body: formData
-    });
-
-    if (response.ok) {
-      mostrarModalSucesso();
-    } else {
-      alert("Erro ao enviar cadastro. Tente novamente.");
-    }
-  } catch (error) {
-    alert("Falha na conexão com o servidor.");
-  }
-});
+}
 
 // ====== FUNÇÕES DE ETAPAS ======
 
@@ -529,8 +529,9 @@ function mostrarModalSucesso() {
   // fecha modal em 5s
   setTimeout(() => {
     modal.style.display = "none";
+    // opcional: resetar barra para próxima vez
+    progress.style.width = "100%";
   }, 5000);
-}
   
   
       // Inicializar selects IBGE para instrutor
