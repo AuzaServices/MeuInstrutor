@@ -44,6 +44,15 @@ db.getConnection((err, connection) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "dzwkr47ib",
+  api_key: "553561859359519",
+  api_secret: "IYJBytc-xlGnFW87Taguno77LDw",
+  secure: true
+});
+
 /* ========================= ROTAS ========================= */
 
 // 📌 Listar instrutores pendentes
@@ -67,78 +76,54 @@ app.delete("/instrutores/:id", (req, res) => {
 });
 
 // 📌 Cadastro de instrutor
-app.post(
-  "/instrutores",
-  upload.fields([
-    { name: "comprovante" },
-    { name: "cnh" },
-    { name: "selfie" },
-    { name: "certificado" }
-  ]),
-  (req, res) => {
-    console.log("📥 Recebendo cadastro...");
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+app.post("/instrutores", upload.fields([
+  { name: "selfie", maxCount: 1 },
+  { name: "comprovante", maxCount: 1 },
+  { name: "cnh", maxCount: 1 },
+  { name: "certificado", maxCount: 1 }
+]), async (req, res) => {
+  try {
+    const uploads = {};
 
-    const { nome, cpf, cidade, estado, categorias, telefone, sexo, email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: "Email é obrigatório" });
+    for (const field of ["selfie", "comprovante", "cnh", "certificado"]) {
+      if (req.files[field]) {
+        const result = await cloudinary.uploader.upload_stream(
+          { folder: "instrutores" },
+          (error, uploaded) => {
+            if (error) throw error;
+            uploads[field] = uploaded.secure_url; // 🔑 link público
+          }
+        );
+        result.end(req.files[field][0].buffer);
+      }
     }
 
-    if (!nome || !cpf || !cidade || !estado || !telefone || !categorias || !sexo) {
-      return res.status(400).json({ error: "Campos obrigatórios não enviados" });
-    }
-
-    if (!req.files || !req.files["comprovante"] || !req.files["cnh"] || !req.files["selfie"]) {
-      return res.status(400).json({ error: "Arquivos obrigatórios não enviados" });
-    }
-
-    // 🔎 Agora pegamos o buffer (conteúdo binário) em vez do filename
-    const comprovante = req.files["comprovante"][0].buffer;
-    const cnh = req.files["cnh"][0].buffer;
-    const selfie = req.files["selfie"][0].buffer;
-    const certificado = req.files["certificado"] ? req.files["certificado"][0].buffer : null;
-
-    const categoriasNormalizadas = categorias ? categorias.replace(/\s+/g, "").toUpperCase() : null;
-
-    let sexoNormalizado = sexo;
-    if (sexoNormalizado === "M") sexoNormalizado = "masculino";
-    if (sexoNormalizado === "F") sexoNormalizado = "feminino";
-    if (sexoNormalizado && sexoNormalizado.toLowerCase() === "sem-preferencia") {
-      sexoNormalizado = null;
-    }
-
-    const dataCadastro = new Date().toISOString().slice(0, 19).replace("T", " ");
-
+    // Agora salva só os links no banco
     db.query(
-      "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO instrutores (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
       [
-        nome,
-        cpf,
-        cidade,
-        estado,
-        telefone,
-        email,
-        comprovante,
-        cnh,
-        selfie,
-        certificado,
-        categoriasNormalizadas,
-        sexoNormalizado,
-        "pendente",
-        dataCadastro
+        req.body.nome,
+        req.body.email,
+        req.body.cpf,
+        req.body.sexo,
+        req.body.cidade,
+        req.body.estado,
+        req.body.telefone,
+        uploads.selfie || null,
+        uploads.comprovante || null,
+        uploads.cnh || null,
+        uploads.certificado || null,
+        req.body.categorias
       ],
       (err) => {
-        if (err) {
-          console.error("❌ Erro no INSERT:", err.sqlMessage);
-          return res.status(500).json({ error: err.sqlMessage });
-        }
-        res.json({ message: "Cadastro enviado para análise!" });
+        if (err) return res.status(500).json({ error: err });
+        res.json({ message: "Instrutor cadastrado com sucesso!" });
       }
     );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-);
+});
 
 // 📌 Aceitar instrutor (única versão correta)
 app.put("/instrutores/aceitar/:id", (req, res) => {
