@@ -212,7 +212,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("telefone", telefone);
   formData.append("selfie", document.getElementById("selfie").files[0]);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-  formData.append("estado", document.getElementById("estadoInstrutor").value);
+  formData.append("estado", estadoSelect.options[estadoSelect.selectedIndex].text);
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
   formData.append("cnh", document.getElementById("cnh").files[0]);
   formData.append("certificado", document.getElementById("certificado").files[0]);
