@@ -143,20 +143,24 @@ db.query(
   }
 );  
 
+// 📌 Aceitar instrutor (ÚNICA VERSÃO)
 app.put("/instrutores/aceitar/:id", (req, res) => {
   const { id } = req.params;
-  const hoje = new Date();
-  const dataFormatada = hoje.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  // Formata data local YYYY-MM-DD para evitar off-by-one com UTC
+  const agora = new Date();
+  const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000);
+  const dataFormatada = local.toISOString().split("T")[0]; // YYYY-MM-DD
 
   db.query(
     "UPDATE instrutores SET status = 'aceito', data_pagamento = ? WHERE id = ?",
     [dataFormatada, id],
     (err) => {
       if (err) {
-        console.error("❌ Erro ao aceitar instrutor:", err.sqlMessage);
-        return res.status(500).json({ error: err.sqlMessage });
+        console.error("❌ Erro ao aceitar instrutor:", err.sqlMessage || err);
+        return res.status(500).json({ error: err.sqlMessage || String(err) });
       }
-      res.json({ message: "Instrutor aceito e pagamento registrado!" });
+      res.json({ message: "Instrutor aceito e data de pagamento registrada!", data_pagamento: dataFormatada });
     }
   );
 });
