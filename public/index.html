@@ -316,8 +316,8 @@ function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
     <form id="formInstrutor">
-      
-      <!-- Etapa 1: Dados pessoais -->
+      <!-- Etapas do formulário (como você já tinha) -->
+      <!-- Etapa 1 -->
       <div class="etapa" id="etapa1">
         <label>Nome completo:</label>
         <input type="text" id="nome" required>
@@ -336,15 +336,14 @@ function carregarFormularioInstrutor() {
         </select>
 
         <label>Telefone (Whatsapp):</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="(XX)9XXXX-XXXX" title="Formato esperado: (XX)9XXXX-XXXX">
+        <input type="tel" id="telefone" name="telefone" placeholder="(XX)9XXXX-XXXX">
 
         <button type="button" onclick="validarEAvancar(1,2)">Próximo</button>
       </div>
 
-      <!-- Etapa 2: Endereço -->
+      <!-- Etapa 2 -->
       <div class="etapa" id="etapa2" style="display:none;">
         <h4>Localização</h4>
-        
         <label>Estado:</label>
         <select id="estadoInstrutor" required>
           <option value="">Selecione o estado</option>
@@ -359,19 +358,14 @@ function carregarFormularioInstrutor() {
         <button type="button" onclick="validarEAvancar(2,3)">Próximo</button>
       </div>
 
-      <!-- Etapa 3: Identificação Pessoal -->
+      <!-- Etapa 3 -->
       <div class="etapa" id="etapa3" style="display:none;">
         <h4>Identificação Pessoal</h4>
-
-        <label for="selfie" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Carregar Foto do instrutor(a)
-        </label>
+        <label for="selfie">Carregar Foto do instrutor(a)</label>
         <input type="file" id="selfie" name="selfie" accept="image/*" required>
         <span class="upload-check" id="check-selfie"></span>
 
-        <label for="comprovante" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Enviar Comprovante de Residência
-        </label>
+        <label for="comprovante">Enviar Comprovante de Residência</label>
         <input type="file" id="comprovante" name="comprovante" required>
         <span class="upload-check" id="check-comprovante"></span>
 
@@ -379,19 +373,14 @@ function carregarFormularioInstrutor() {
         <button type="button" onclick="validarEAvancar(3,4)">Próximo</button>
       </div>
 
-      <!-- Etapa 4: CNH, Certificado e Categorias -->
+      <!-- Etapa 4 -->
       <div class="etapa" id="etapa4" style="display:none;">
         <h4>Habilitação e Certificação</h4>
-
-        <label for="cnh" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Carteira Nacional de Habilitação
-        </label>
+        <label for="cnh">Carteira Nacional de Habilitação</label>
         <input type="file" id="cnh" name="cnh" required>
         <span class="upload-check" id="check-cnh"></span>
 
-        <label for="certificado" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Certificado de Instrutor de Trânsito
-        </label>
+        <label for="certificado">Certificado de Instrutor de Trânsito</label>
         <input type="file" id="certificado" name="certificado" required>
         <span class="upload-check" id="check-certificado"></span>
 
@@ -406,17 +395,19 @@ function carregarFormularioInstrutor() {
 
         <button type="button" onclick="voltarEtapa(3)">Voltar</button>
         <button type="submit">Enviar</button>
-
-        <p style="font-size: 12px; color: #555; margin-top: 8px;">
-          Ao clicar em <strong>Enviar</strong>, você concorda com os 
-          <a href="/termos" target="_blank" style="color: orange;">Termos de Uso</a> e com a 
-          <a href="/privacidade" target="_blank" style="color: orange;">Política de Privacidade</a>.
-        </p>
       </div>
     </form>
-  `;
 
-  
+    <!-- Modal de sucesso -->
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <h2>Cadastro realizado</h2>
+        <p>Seu cadastro foi realizado e será levado para análise.<br>
+        Em breve uma equipe irá entrar em contato com você.</p>
+        <button id="closeModal">Fechar</button>
+      </div>
+    </div>
+  `;
 
   // ✔ verde após upload
   document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
@@ -431,6 +422,35 @@ function carregarFormularioInstrutor() {
         checkSpan.style.display = "none";
       }
     });
+  });
+
+  // Evento de envio do formulário
+  const form = document.getElementById("formInstrutor");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/instrutores", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        document.getElementById("successModal").style.display = "block";
+      } else {
+        alert("Erro ao enviar cadastro. Tente novamente.");
+      }
+    } catch (error) {
+      alert("Falha na conexão com o servidor.");
+    }
+  });
+
+  // Fechar modal
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "closeModal") {
+      document.getElementById("successModal").style.display = "none";
+    }
   });
 
   // Validação de etapa (inclui arquivos)
