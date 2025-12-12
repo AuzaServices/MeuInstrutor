@@ -9,15 +9,10 @@ const fs = require("fs");
 const app = express();
 const PORT = 3000;
 
-// 🔐 Garante que a pasta uploads existe
 // Middleware
 app.use(express.json());
 app.use(cors());
 
-// 🔎 Não precisamos mais expor /uploads, pois não salvamos nada em disco.
-// As imagens ficam no banco como BLOB e são convertidas para base64 nas rotas.
-
-// Se você ainda quiser servir arquivos estáticos da pasta public (HTML, CSS, JS):
 app.use(express.static(path.join(__dirname, "public")));
 
 // Configuração do banco de dados usando Pool
@@ -28,7 +23,8 @@ const db = mysql.createPool({
   database: "sql5802663",
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  connectTimeout: 10000 // 10 segundos
 });
 
 // Testa a conexão inicial
@@ -201,20 +197,17 @@ app.get("/instrutores/aceitos", (req, res) => {
 });
 
 // 📌 Listar todos os instrutores (pendentes e aceitos)
-// 📌 Listar todos os instrutores (pendentes e aceitos)
 app.get("/instrutores/todos", (req, res) => {
   db.query("SELECT * FROM instrutores", (err, results) => {
     if (err) {
-      console.error("❌ Erro ao listar todos:", err);
-      return res.status(500).json({ error: err });
+      console.error("❌ Erro ao listar todos:", err.sqlMessage || err.message || err);
+      return res.status(500).json({ error: "Erro ao buscar instrutores" });
     }
 
-    // Agora os campos já são URLs do Cloudinary, não precisa converter
     res.json(results);
   });
 });
 
-// Atualizar Selfie
 // Atualizar Selfie
 app.put("/instrutores/:id/selfie", upload.single("selfie"), async (req, res) => {
   const { id } = req.params;
