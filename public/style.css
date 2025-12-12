@@ -925,10 +925,10 @@ input[type="file"] {
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     max-width: 1200px;
-    margin: 40px auto 0;   /* controla posição */
+    margin: 40px 0 0 40px;   /* margem esquerda fixa */
     padding: 20px;
     overflow-x: visible;
     scroll-snap-type: none;
-    justify-items: center;
+    justify-items: start;    /* alinha os cards à esquerda */
   }
 }
