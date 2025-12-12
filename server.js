@@ -41,15 +41,8 @@ db.getConnection((err, connection) => {
   connection.release();
 });
 
-// Configuração do multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
-});
+// Configuração do multer para salvar em memória (buffer)
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 /* ========================= ROTAS ========================= */
