@@ -432,91 +432,44 @@ function carregarFormularioInstrutor() {
   `;
 
   // ✔ verde após upload
-  // ✔ verde após upload
-document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
-  input.addEventListener('change', function() {
-    const checkSpan = document.getElementById('check-' + this.id);
-    if (this.files.length > 0) {
-      checkSpan.textContent = "✔";
-      checkSpan.style.display = "inline";
-      checkSpan.style.color = "#2ecc71";
-    } else {
-      checkSpan.textContent = "";
-      checkSpan.style.display = "none";
-    }
-  });
-});
-
-// Evento de envio do formulário
-const form = document.getElementById("formInstrutor");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch("/instrutores", {
-      method: "POST",
-      body: formData
-    });
-
-    if (response.ok) {
-      mostrarModalSucesso();
-    } else {
-      alert("Erro ao enviar cadastro. Tente novamente.");
-    }
-  } catch (error) {
-    alert("Falha na conexão com o servidor.");
-  }
-});
-
-// ====== FUNÇÕES DE ETAPAS ======
-
-// Validação de etapa (inclui arquivos)
-function validarEtapa(etapaAtual) {
-  const etapa = document.getElementById("etapa" + etapaAtual);
-  const inputs = etapa.querySelectorAll("input, select");
-  let valido = true;
-
-  inputs.forEach(input => {
-    if (input.hasAttribute("required")) {
-      if (input.type === "file") {
-        if (input.files.length === 0) {
-          valido = false;
-          input.style.border = "2px solid red";
-        } else {
-          input.style.border = "";
-        }
+  document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const checkSpan = document.getElementById('check-' + this.id);
+      if (this.files.length > 0) {
+        checkSpan.textContent = "✔";
+        checkSpan.style.display = "inline";
+        checkSpan.style.color = "#2ecc71";
       } else {
-        if (!input.value) {
-          valido = false;
-          input.style.border = "2px solid red";
-        } else {
-          input.style.border = "";
-        }
+        checkSpan.textContent = "";
+        checkSpan.style.display = "none";
       }
-    }
+    });
   });
 
-  return valido;
+  // Evento de envio do formulário
+  const form = document.getElementById("formInstrutor");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/instrutores", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        mostrarModalSucesso();
+      } else {
+        alert("Erro ao enviar cadastro. Tente novamente.");
+      }
+    } catch (error) {
+      alert("Falha na conexão com o servidor.");
+    }
+  });
 }
 
-// Avançar etapa com validação
-function validarEAvancar(etapaAtual, etapaDestino) {
-  if (!validarEtapa(etapaAtual)) {
-    alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
-    return;
-  }
-  document.getElementById("etapa" + etapaAtual).style.display = "none";
-  document.getElementById("etapa" + etapaDestino).style.display = "block";
-}
-
-// Voltar etapa
-function voltarEtapa(etapaDestino) {
-  document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
-  document.getElementById("etapa" + etapaDestino).style.display = "block";
-}
-
-// ====== FUNÇÃO DO MODAL ======
+// Função para mostrar modal
 function mostrarModalSucesso() {
   const modal = document.getElementById("successModal");
   const progress = modal.querySelector(".progress");
@@ -530,7 +483,52 @@ function mostrarModalSucesso() {
   setTimeout(() => {
     modal.style.display = "none";
   }, 5000);
-}
+
+  // Validação de etapa (inclui arquivos)
+  function validarEtapa(etapaAtual) {
+    const etapa = document.getElementById("etapa" + etapaAtual);
+    const inputs = etapa.querySelectorAll("input, select");
+    let valido = true;
+
+    inputs.forEach(input => {
+      if (input.hasAttribute("required")) {
+        if (input.type === "file") {
+          if (input.files.length === 0) {
+            valido = false;
+            input.style.border = "2px solid red";
+          } else {
+            input.style.border = "";
+          }
+        } else {
+          if (!input.value) {
+            valido = false;
+            input.style.border = "2px solid red";
+          } else {
+            input.style.border = "";
+          }
+        }
+      }
+    });
+
+    return valido;
+  }
+
+  // Avançar etapa com validação
+  window.validarEAvancar = function(etapaAtual, etapaDestino) {
+    if (!validarEtapa(etapaAtual)) {
+      alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
+      return;
+    }
+    document.getElementById("etapa" + etapaAtual).style.display = "none";
+    document.getElementById("etapa" + etapaDestino).style.display = "block";
+  }
+
+  // Voltar etapa
+  window.voltarEtapa = function(etapaDestino) {
+    document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
+    document.getElementById("etapa" + etapaDestino).style.display = "block";
+  }
+
   
   
       // Inicializar selects IBGE para instrutor
