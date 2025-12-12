@@ -181,8 +181,13 @@ app.get("/instrutores/aceitos", (req, res) => {
   const params = [cidade, estado];
 
   if (sexo && sexo.toLowerCase() !== "sem-preferencia") {
-    sql += " AND LOWER(sexo) = LOWER(?)";
-    params.push(sexo);
+    // Normaliza o valor recebido
+    let filtroSexo = sexo.toLowerCase();
+    if (filtroSexo === "masculino") filtroSexo = "M";
+    if (filtroSexo === "feminino") filtroSexo = "F";
+
+    sql += " AND sexo = ?";
+    params.push(filtroSexo);
   }
 
   if (categorias) {
@@ -191,8 +196,8 @@ app.get("/instrutores/aceitos", (req, res) => {
   }
 
   db.query(sql, params, (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results); // já são URLs
+    if (err) return res.status(500).json({ error: err.sqlMessage || err.message });
+    res.json(results);
   });
 });
 
