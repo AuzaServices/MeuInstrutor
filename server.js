@@ -41,7 +41,6 @@ db.getConnection((err, connection) => {
   connection.release();
 });
 
-// Configuração do multer para salvar em memória (buffer)
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 

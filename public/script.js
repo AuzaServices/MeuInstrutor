@@ -188,7 +188,6 @@ function carregarFormularioInstrutor() {
   document.getElementById("formInstrutor").addEventListener("submit", cadastrarInstrutor);
 }
 
-// Cadastro de instrutor integrado ao backend
 document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
   event.preventDefault();
 
