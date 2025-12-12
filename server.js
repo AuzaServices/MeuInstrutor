@@ -130,18 +130,18 @@ if (!email) {
     const dataCadastro = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 db.query(
-  "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?)",
-[nome, cpf, cidade, estado, telefone, email, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, dataCadastro],
+  "INSERT INTO instrutores (nome, cpf, cidade, estado, telefone, email, comprovante_residencia, cnh, selfie, certificado, categorias, sexo, status, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+  [nome, cpf, cidade, estado, telefone, email, comprovante, cnh, selfie, certificado, categoriasNormalizadas, sexoNormalizado, "pendente", dataCadastro],
   (err) => {
-        if (err) {
-          console.error("❌ Erro no INSERT:", err.sqlMessage);
-          return res.status(500).json({ error: err.sqlMessage });
-        }
-        res.json({ message: "Cadastro enviado para análise!" });
-      }
-    );
+    if (err) {
+      console.error("❌ Erro no INSERT:", err.sqlMessage);
+      return res.status(500).json({ error: err.sqlMessage });
+    }
+    res.json({ message: "Cadastro enviado para análise!" });
   }
 );
+  }
+);  
 
 // 📌 Listar instrutores aceitos com filtro
 app.get("/instrutores/aceitos", (req, res) => {
