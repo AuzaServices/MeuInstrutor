@@ -521,6 +521,7 @@ header .logo span {
 .carousel-container {
   display: flex;
   gap: 20px;
+  margin-left: -500px;
   overflow-x: auto;          /* rolagem horizontal */
   scroll-snap-type: x mandatory;
   padding: 10px;
@@ -846,6 +847,7 @@ section {
 .carousel-container {
   display: flex;
   gap: 16px;
+  margin-left: -500px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 10px;
