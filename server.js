@@ -150,7 +150,6 @@ app.put("/instrutores/aceitar/:id", (req, res) => {
 // 📌 Listar instrutores aceitos com filtro
 app.get("/instrutores/aceitos", (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
-
   if (!cidade || !estado) {
     return res.status(400).json({ error: "Cidade e estado são obrigatórios" });
   }
@@ -170,23 +169,7 @@ app.get("/instrutores/aceitos", (req, res) => {
 
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err });
-
-    results.forEach(instrutor => {
-      if (instrutor.comprovante_residencia) {
-        instrutor.comprovante_residencia = `data:image/jpeg;base64,${instrutor.comprovante_residencia.toString("base64")}`;
-      }
-      if (instrutor.cnh) {
-        instrutor.cnh = `data:image/jpeg;base64,${instrutor.cnh.toString("base64")}`;
-      }
-      if (instrutor.selfie) {
-        instrutor.selfie = `data:image/jpeg;base64,${instrutor.selfie.toString("base64")}`;
-      }
-      if (instrutor.certificado) {
-        instrutor.certificado = `data:image/jpeg;base64,${instrutor.certificado.toString("base64")}`;
-      }
-    });
-
-    res.json(results);
+    res.json(results); // já são URLs
   });
 });
 
@@ -218,51 +201,108 @@ app.get("/instrutores/todos", (req, res) => {
 });
 
 // Atualizar Selfie
-app.put("/instrutores/:id/selfie", upload.single("selfie"), (req, res) => {
+// Atualizar Selfie
+app.put("/instrutores/:id/selfie", upload.single("selfie"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhuma selfie enviada" });
 
-  const selfie = req.file.buffer;
-  db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [selfie, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Selfie atualizada com sucesso!" });
-  });
+  try {
+    const url = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "instrutores/selfies" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [url, id], (err) => {
+      if (err) return res.status(500).json({ error: err });
+      res.json({ message: "Selfie atualizada com sucesso!", url });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Atualizar Comprovante
-app.put("/instrutores/:id/comprovante", upload.single("comprovante"), (req, res) => {
+app.put("/instrutores/:id/comprovante", upload.single("comprovante"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhum comprovante enviado" });
 
-  const comprovante = req.file.buffer;
-  db.query("UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?", [comprovante, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Comprovante atualizado com sucesso!" });
-  });
+  try {
+    const url = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "instrutores/comprovantes" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    db.query("UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?", [url, id], (err) => {
+      if (err) return res.status(500).json({ error: err });
+      res.json({ message: "Comprovante atualizado com sucesso!", url });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Atualizar CNH
-app.put("/instrutores/:id/cnh", upload.single("cnh"), (req, res) => {
+app.put("/instrutores/:id/cnh", upload.single("cnh"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhuma CNH enviada" });
 
-  const cnh = req.file.buffer;
-  db.query("UPDATE instrutores SET cnh = ? WHERE id = ?", [cnh, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "CNH atualizada com sucesso!" });
-  });
+  try {
+    const url = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "instrutores/cnhs" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    db.query("UPDATE instrutores SET cnh = ? WHERE id = ?", [url, id], (err) => {
+      if (err) return res.status(500).json({ error: err });
+      res.json({ message: "CNH atualizada com sucesso!", url });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Atualizar Certificado
-app.put("/instrutores/:id/certificado", upload.single("certificado"), (req, res) => {
+app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhum certificado enviado" });
 
-  const certificado = req.file.buffer;
-  db.query("UPDATE instrutores SET certificado = ? WHERE id = ?", [certificado, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Certificado atualizado com sucesso!" });
-  });
+  try {
+    const url = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "instrutores/certificados" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    db.query("UPDATE instrutores SET certificado = ? WHERE id = ?", [url, id], (err) => {
+      if (err) return res.status(500).json({ error: err });
+      res.json({ message: "Certificado atualizado com sucesso!", url });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /* ========================= START ========================= */
