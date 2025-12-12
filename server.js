@@ -100,23 +100,32 @@ app.post("/instrutores", upload.fields([
   { name: "certificado", maxCount: 1 }
 ]), async (req, res) => {
   try {
+    // 🔎 Validação antes de enviar pro Cloudinary
+    const totalUploads = Object.keys(req.files).length;
+
+    // Se não forem exatamente 4 arquivos, rejeita sem enviar nada
+    if (totalUploads !== 4) {
+      return res.status(400).json({ error: "É obrigatório enviar exatamente 4 arquivos (selfie, comprovante, cnh e certificado)." });
+    }
+
+    // Valida se todos são imagens
+    for (const field of ["selfie", "comprovante", "cnh", "certificado"]) {
+      if (!req.files[field]) {
+        return res.status(400).json({ error: `Arquivo obrigatório não enviado: ${field}` });
+      }
+      if (!req.files[field][0].mimetype.startsWith("image/")) {
+        return res.status(400).json({ error: `O arquivo de ${field} deve ser uma imagem.` });
+      }
+    }
+
+    // ✅ Só chega aqui se passou na validação
     const uploads = {};
+    uploads.selfie = await uploadToCloudinary(req.files.selfie[0].buffer, "instrutores/selfies");
+    uploads.comprovante = await uploadToCloudinary(req.files.comprovante[0].buffer, "instrutores/comprovantes");
+    uploads.cnh = await uploadToCloudinary(req.files.cnh[0].buffer, "instrutores/cnhs");
+    uploads.certificado = await uploadToCloudinary(req.files.certificado[0].buffer, "instrutores/certificados");
 
-    // Faz upload de cada arquivo enviado
-    if (req.files.selfie) {
-      uploads.selfie = await uploadToCloudinary(req.files.selfie[0].buffer, "instrutores/selfies");
-    }
-    if (req.files.comprovante) {
-      uploads.comprovante = await uploadToCloudinary(req.files.comprovante[0].buffer, "instrutores/comprovantes");
-    }
-    if (req.files.cnh) {
-      uploads.cnh = await uploadToCloudinary(req.files.cnh[0].buffer, "instrutores/cnhs");
-    }
-    if (req.files.certificado) {
-      uploads.certificado = await uploadToCloudinary(req.files.certificado[0].buffer, "instrutores/certificados");
-    }
-
-    // Agora salva os links no banco
+    // Salva no banco
     db.query(
       "INSERT INTO instrutores (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
       [
@@ -127,22 +136,18 @@ app.post("/instrutores", upload.fields([
         req.body.cidade,
         req.body.estado,
         req.body.telefone,
-        uploads.selfie || null,
-        uploads.comprovante || null,
-        uploads.cnh || null,
-        uploads.certificado || null,
+        uploads.selfie,
+        uploads.comprovante,
+        uploads.cnh,
+        uploads.certificado,
         req.body.categorias
       ],
       (err) => {
-        if (err) {
-          console.error("❌ Erro ao cadastrar instrutor:", err);
-          return res.status(500).json({ error: err });
-        }
+        if (err) return res.status(500).json({ error: err });
         res.json({ message: "Instrutor cadastrado com sucesso!" });
       }
     );
   } catch (error) {
-    console.error("❌ Erro no upload:", error);
     res.status(500).json({ error: error.message });
   }
 });
