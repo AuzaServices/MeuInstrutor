@@ -312,11 +312,11 @@ instrutores.forEach(instrutor => {
   }
 }
     // Formulário de instrutor
-// ====== FORMULÁRIO INSTRUTOR ======
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
     <form id="formInstrutor">
+      
       <!-- Etapa 1: Dados pessoais -->
       <div class="etapa" id="etapa1">
         <label>Nome completo:</label>
@@ -344,6 +344,7 @@ function carregarFormularioInstrutor() {
       <!-- Etapa 2: Endereço -->
       <div class="etapa" id="etapa2" style="display:none;">
         <h4>Localização</h4>
+        
         <label>Estado:</label>
         <select id="estadoInstrutor" name="estado" required>
           <option value="">Selecione o estado</option>
@@ -361,6 +362,7 @@ function carregarFormularioInstrutor() {
       <!-- Etapa 3: Identificação Pessoal -->
       <div class="etapa" id="etapa3" style="display:none;">
         <h4>Identificação Pessoal</h4>
+
         <label for="selfie" class="custom-file-label">
           <i class="fa-solid fa-upload"></i> Carregar Foto do instrutor(a)
         </label>
@@ -380,6 +382,7 @@ function carregarFormularioInstrutor() {
       <!-- Etapa 4: CNH, Certificado e Categorias -->
       <div class="etapa" id="etapa4" style="display:none;">
         <h4>Habilitação e Certificação</h4>
+
         <label for="cnh" class="custom-file-label">
           <i class="fa-solid fa-upload"></i> Carteira Nacional de Habilitação
         </label>
@@ -429,54 +432,46 @@ function carregarFormularioInstrutor() {
   `;
 
   // ✔ verde após upload
-  document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
-    input.addEventListener('change', function() {
-      const checkSpan = document.getElementById('check-' + this.id);
-      if (this.files.length > 0) {
-        checkSpan.textContent = "✔";
-        checkSpan.style.display = "inline";
-        checkSpan.style.color = "#2ecc71";
-      } else {
-        checkSpan.textContent = "";
-        checkSpan.style.display = "none";
-      }
-    });
-  });
-
-  // Inicializar selects IBGE para instrutor
-  carregarEstadosInstrutor();
-  document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
-
-  // Aplicar máscaras
-  aplicarMascaraCPF();
-  aplicarMascaraTelefone();
-
-  // Evento de envio do formulário
-  const form = document.getElementById("formInstrutor");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch("https://meuinstrutor.onrender.com/instrutores", {
-        method: "POST",
-        body: formData
-      });
-
-      if (response.ok) {
-        mostrarModalSucesso();
-        form.reset();
-        validarEAvancar(4,1); // volta para etapa 1
-      } else {
-        alert("Erro ao enviar cadastro. Tente novamente.");
-      }
-    } catch (error) {
-      alert("Falha na conexão com o servidor.");
+  // ✔ verde após upload
+document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
+  input.addEventListener('change', function() {
+    const checkSpan = document.getElementById('check-' + this.id);
+    if (this.files.length > 0) {
+      checkSpan.textContent = "✔";
+      checkSpan.style.display = "inline";
+      checkSpan.style.color = "#2ecc71";
+    } else {
+      checkSpan.textContent = "";
+      checkSpan.style.display = "none";
     }
   });
-}
+});
+
+// Evento de envio do formulário
+const form = document.getElementById("formInstrutor");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("/instrutores", {
+      method: "POST",
+      body: formData
+    });
+
+    if (response.ok) {
+      mostrarModalSucesso();
+    } else {
+      alert("Erro ao enviar cadastro. Tente novamente.");
+    }
+  } catch (error) {
+    alert("Falha na conexão com o servidor.");
+  }
+});
 
 // ====== FUNÇÕES DE ETAPAS ======
+
+// Validação de etapa (inclui arquivos)
 function validarEtapa(etapaAtual) {
   const etapa = document.getElementById("etapa" + etapaAtual);
   const inputs = etapa.querySelectorAll("input, select");
@@ -505,6 +500,7 @@ function validarEtapa(etapaAtual) {
   return valido;
 }
 
+// Avançar etapa com validação
 function validarEAvancar(etapaAtual, etapaDestino) {
   if (!validarEtapa(etapaAtual)) {
     alert("Por favor, preencha todos os campos obrigatórios antes de continuar.");
@@ -514,10 +510,10 @@ function validarEAvancar(etapaAtual, etapaDestino) {
   document.getElementById("etapa" + etapaDestino).style.display = "block";
 }
 
+// Voltar etapa
 function voltarEtapa(etapaDestino) {
   document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
   document.getElementById("etapa" + etapaDestino).style.display = "block";
-  document.getElementById("etapa" + etapaDestino).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ====== FUNÇÃO DO MODAL ======
@@ -533,101 +529,172 @@ function mostrarModalSucesso() {
   // fecha modal em 5s
   setTimeout(() => {
     modal.style.display = "none";
-    progress.style.width = "100%"; // resetar barra
   }, 5000);
 }
+  
+  
+      // Inicializar selects IBGE para instrutor
+      carregarEstadosInstrutor();
+      document.getElementById("estadoInstrutor").addEventListener("change", carregarCidadesInstrutor);
 
-// ====== CARREGAR ESTADOS/CIDADES PARA INSTRUTOR ======
-async function carregarEstadosInstrutor() {
-  try {
-    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-    const estados = await resp.json();
-    const selectEstado = document.getElementById("estadoInstrutor");
+      aplicarMascaraCPF();
+      aplicarMascaraTelefone();
 
-    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
+  event.preventDefault();
 
-    estados.sort((a, b) => a.nome.localeCompare(b.nome));
+  const categoriasSelecionadas = [];
+  document.querySelectorAll('input[name="categoria"]:checked').forEach(el => {
+    categoriasSelecionadas.push(el.value);
+  });
 
-    estados.forEach(estado => {
-      const option = document.createElement("option");
-      option.value = estado.id;
-      option.textContent = estado.nome;
-      selectEstado.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Erro ao carregar estados (instrutor):", error);
-  }
-}
+  const formData = new FormData();
+  formData.append("nome", document.getElementById("nome").value);
+  formData.append("email", document.getElementById("email").value);
+  formData.append("cpf", document.getElementById("cpf").value);
+  formData.append("sexo", document.getElementById("sexoInstrutor").value);
+  formData.append("cidade", document.getElementById("cidadeInstrutor").value);
 
-async function carregarCidadesInstrutor() {
-  const estadoId = document.getElementById("estadoInstrutor").value;
-  if (!estadoId) return;
+  // 🔑 Aqui está a correção
+  const estadoSelect = document.getElementById("estadoInstrutor");
+  const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
+  formData.append("estado", estadoNome);
 
-  try {
-    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
-    const cidades = await resp.json();
-    const selectCidade = document.getElementById("cidadeInstrutor");
-
-    selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
-
-    cidades.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    cidades.forEach(cidade => {
-      const option = document.createElement("option");
-      option.value = cidade.nome;
-      option.textContent = cidade.nome;
-      selectCidade.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Erro ao carregar cidades (instrutor):", error);
-  }
-}
-
-// ====== CARREGAR ESTADOS/CIDADES PARA ALUNO ======
-async function carregarEstadosAluno() {
-  try {
-    const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-    const estados = await resp.json();
-    const selectEstado = document.getElementById("estado");
-
-    selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
-
-    estados.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    estados.forEach(estado => {
-      const option = document.createElement("option");
-      option.value = estado.id;
-      option.textContent = estado.nome;
-      selectEstado.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Erro ao carregar estados (aluno):", error);
-  }
-}
-
-async function carregarCidadesAluno() {
-  const estadoId = document.getElementById("estado").value;
-  if (!estadoId) return;
+  formData.append("telefone", document.getElementById("telefone").value);
+  formData.append("selfie", document.getElementById("selfie").files[0]);
+  formData.append("comprovante", document.getElementById("comprovante").files[0]);
+  formData.append("cnh", document.getElementById("cnh").files[0]);
+  formData.append("certificado", document.getElementById("certificado").files[0]);
+  formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
-    const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
-    const cidades = await resp.json();
-    const selectCidade = document.getElementById("cidade");
-
-    selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
-
-    cidades.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    cidades.forEach(cidade => {
-      const option = document.createElement("option");
-      option.value = cidade.nome;
-      option.textContent = cidade.nome;
-      selectCidade.appendChild(option);
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
+      method: "POST",
+      body: formData
     });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(resultado.error || "Erro no servidor");
+    }
+
+    alert(resultado.message);
+    document.getElementById("formInstrutor").reset();
+    proximaEtapa(1);
   } catch (error) {
-    console.error("Erro ao carregar cidades (aluno):", error);
+    console.error("❌ Erro ao cadastrar instrutor:", error);
+    alert("Erro ao cadastrar instrutor: " + error.message);
   }
+});
 }
+
+    // Navegação entre etapas
+    function proximaEtapa(n) {
+      document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
+      const etapa = document.getElementById('etapa' + n);
+      etapa.style.display = 'block';
+      etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function voltarEtapa(n) {
+      document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
+      const etapa = document.getElementById('etapa' + n);
+      etapa.style.display = 'block';
+      etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Carregar estados/cidades para aluno
+    async function carregarEstadosAluno() {
+      try {
+        const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+        const estados = await resp.json();
+        const selectEstado = document.getElementById("estado");
+
+        selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+        estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        estados.forEach(estado => {
+          const option = document.createElement("option");
+          option.value = estado.id;
+          option.textContent = estado.nome;
+          selectEstado.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar estados:", error);
+      }
+    }
+
+    async function carregarCidadesAluno() {
+      const estadoId = document.getElementById("estado").value;
+      if (!estadoId) return;
+
+      try {
+        const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
+        const cidades = await resp.json();
+        const selectCidade = document.getElementById("cidade");
+
+        selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+        cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        cidades.forEach(cidade => {
+          const option = document.createElement("option");
+          option.value = cidade.nome;
+          option.textContent = cidade.nome;
+          selectCidade.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar cidades:", error);
+      }
+    }
+
+    // Carregar estados/cidades para instrutor
+    async function carregarEstadosInstrutor() {
+      try {
+        const resp = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+        const estados = await resp.json();
+        const selectEstado = document.getElementById("estadoInstrutor");
+
+        selectEstado.innerHTML = "<option value=''>Selecione o estado</option>";
+
+        estados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        estados.forEach(estado => {
+          const option = document.createElement("option");
+          option.value = estado.id;
+          option.textContent = estado.nome;
+          selectEstado.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar estados (instrutor):", error);
+      }
+    }
+
+    async function carregarCidadesInstrutor() {
+      const estadoId = document.getElementById("estadoInstrutor").value;
+      if (!estadoId) return;
+
+      try {
+        const resp = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoId}/municipios`);
+        const cidades = await resp.json();
+        const selectCidade = document.getElementById("cidadeInstrutor");
+
+        selectCidade.innerHTML = "<option value=''>Selecione a cidade</option>";
+
+        cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        cidades.forEach(cidade => {
+          const option = document.createElement("option");
+          option.value = cidade.nome;
+          option.textContent = cidade.nome;
+          selectCidade.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar cidades (instrutor):", error);
+      }
+    }
 
     // Máscara de CPF
     function aplicarMascaraCPF() {
