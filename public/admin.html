@@ -30,6 +30,7 @@
             <th>Certificado</th>
             <th>Categoria</th>
             <th>Status</th>
+            <th>Mensalidade</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -55,6 +56,7 @@
             <th>Certificado</th>
             <th>Categoria</th>
             <th>Status</th>
+            <th>Mensalidade</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -64,74 +66,100 @@
   </main>
 
   <script>
-  async function carregarInstrutores() {
-    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
-    if (!resposta.ok) {
-      alert("Erro ao carregar instrutores");
-      return;
-    }
-    const instrutores = await resposta.json();
-
-    const tabelaPendentes = document.getElementById("tabelaPendentes");
-    const tabelaAceitos = document.getElementById("tabelaAceitos");
-    tabelaPendentes.innerHTML = "";
-    tabelaAceitos.innerHTML = "";
-
-    instrutores.forEach(instrutor => {
-      const linha = `
-        <tr>
-          <td>${instrutor.nome}</td>
-          <td>${instrutor.email}</td>
-          <td>${instrutor.cpf}</td>
-          <td>${instrutor.cidade}</td>
-          <td>${instrutor.estado}</td>
-          <td>${instrutor.telefone}</td>
-<td>
-  <img src="${instrutor.selfie}" width="80"><br>
-  <input type="file" id="selfie-${instrutor.id}" class="input-file upload-selfie" data-id="${instrutor.id}">
-  <label for="selfie-${instrutor.id}" class="btn-minimal">Escolher</label>
-  <button class="btn-minimal btn-secondary atualizar-selfie" data-id="${instrutor.id}">Mudar</button>
-</td>
-
-<td>
-  <img src="${instrutor.comprovante_residencia}" width="80"><br>
-  <input type="file" id="comprovante-${instrutor.id}" class="input-file upload-comprovante" data-id="${instrutor.id}">
-  <label for="comprovante-${instrutor.id}" class="btn-minimal">Escolher</label>
-  <button class="btn-minimal btn-secondary atualizar-comprovante" data-id="${instrutor.id}">Mudar</button>
-</td>
-
-<td>
-  <img src="${instrutor.cnh}" width="80"><br>
-  <input type="file" id="cnh-${instrutor.id}" class="input-file upload-cnh" data-id="${instrutor.id}">
-  <label for="cnh-${instrutor.id}" class="btn-minimal">Escolher</label>
-  <button class="btn-minimal btn-secondary atualizar-cnh" data-id="${instrutor.id}">Mudar</button>
-</td>
-
-<td>
-  <img src="${instrutor.certificado}" width="80"><br>
-  <input type="file" id="certificado-${instrutor.id}" class="input-file upload-certificado" data-id="${instrutor.id}">
-  <label for="certificado-${instrutor.id}" class="btn-minimal">Escolher</label>
-  <button class="btn-minimal btn-secondary atualizar-certificado" data-id="${instrutor.id}">Mudar</button>
-</td>
-          <td>${instrutor.categorias}</td>
-          <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
-            ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
-          </td>
-          <td>
-            ${instrutor.status === "aceito"
-              ? `<button class="excluir" data-id="${instrutor.id}">Excluir</button>`
-              : `<button class="admitir" data-id="${instrutor.id}">Aceitar</button>
-                 <button class="excluir" data-id="${instrutor.id}">Recusar</button>`}
-          </td>
-        </tr>
-      `;
-      if (instrutor.status === "aceito") {
-        tabelaAceitos.innerHTML += linha;
-      } else {
-        tabelaPendentes.innerHTML += linha;
-      }
-    });
+async function carregarInstrutores() {
+  const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
+  if (!resposta.ok) {
+    alert("Erro ao carregar instrutores");
+    return;
   }
+  const instrutores = await resposta.json();
+
+  const tabelaPendentes = document.getElementById("tabelaPendentes");
+  const tabelaAceitos = document.getElementById("tabelaAceitos");
+  tabelaPendentes.innerHTML = "";
+  tabelaAceitos.innerHTML = "";
+
+  instrutores.forEach(instrutor => {
+    // 🔎 Cronômetro de mensalidade
+    let cronometroHtml = "";
+    if (instrutor.status === "aceito") {
+      if (instrutor.data_pagamento) {
+        const ultimaData = new Date(instrutor.data_pagamento);
+        const hoje = new Date();
+        const vencimento = new Date(ultimaData);
+        vencimento.setMonth(vencimento.getMonth() + 1);
+
+        const diasRestantes = Math.ceil((vencimento - hoje) / (1000 * 60 * 60 * 24));
+
+        if (diasRestantes > 0) {
+          cronometroHtml = `<span style="color:green; font-weight:bold;">${diasRestantes} dias restantes</span>`;
+        } else {
+          const primeiroNome = instrutor.nome.split(" ")[0];
+          const mensagem = `Olá ${primeiroNome}, sua mensalidade de R$19,90 venceu. Para continuar na plataforma, realize o pagamento.`;
+          const linkWhatsapp = `https://wa.me/${instrutor.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+          cronometroHtml = `<span style="color:red; font-weight:bold;">Vencido</span><br>
+                            <a href="${linkWhatsapp}" target="_blank" class="btn-whatsapp">Cobrar no WhatsApp</a>`;
+        }
+      } else {
+        cronometroHtml = `<span style="color:gray;">Sem pagamento registrado</span>`;
+      }
+    } else {
+      cronometroHtml = `<span style="color:gray;">--</span>`;
+    }
+
+    const linha = `
+      <tr>
+        <td>${instrutor.nome}</td>
+        <td>${instrutor.email}</td>
+        <td>${instrutor.cpf}</td>
+        <td>${instrutor.cidade}</td>
+        <td>${instrutor.estado}</td>
+        <td>${instrutor.telefone}</td>
+        <td>
+          <img src="${instrutor.selfie}" width="80"><br>
+          <input type="file" id="selfie-${instrutor.id}" class="input-file upload-selfie" data-id="${instrutor.id}">
+          <label for="selfie-${instrutor.id}" class="btn-minimal">Escolher</label>
+          <button class="btn-minimal btn-secondary atualizar-selfie" data-id="${instrutor.id}">Mudar</button>
+        </td>
+        <td>
+          <img src="${instrutor.comprovante_residencia}" width="80"><br>
+          <input type="file" id="comprovante-${instrutor.id}" class="input-file upload-comprovante" data-id="${instrutor.id}">
+          <label for="comprovante-${instrutor.id}" class="btn-minimal">Escolher</label>
+          <button class="btn-minimal btn-secondary atualizar-comprovante" data-id="${instrutor.id}">Mudar</button>
+        </td>
+        <td>
+          <img src="${instrutor.cnh}" width="80"><br>
+          <input type="file" id="cnh-${instrutor.id}" class="input-file upload-cnh" data-id="${instrutor.id}">
+          <label for="cnh-${instrutor.id}" class="btn-minimal">Escolher</label>
+          <button class="btn-minimal btn-secondary atualizar-cnh" data-id="${instrutor.id}">Mudar</button>
+        </td>
+        <td>
+          <img src="${instrutor.certificado}" width="80"><br>
+          <input type="file" id="certificado-${instrutor.id}" class="input-file upload-certificado" data-id="${instrutor.id}">
+          <label for="certificado-${instrutor.id}" class="btn-minimal">Escolher</label>
+          <button class="btn-minimal btn-secondary atualizar-certificado" data-id="${instrutor.id}">Mudar</button>
+        </td>
+        <td>${instrutor.categorias}</td>
+        <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
+          ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
+        </td>
+        <td>${cronometroHtml}</td>
+        <td>
+          ${instrutor.status === "aceito"
+            ? `<button class="excluir" data-id="${instrutor.id}">Excluir</button>`
+            : `<button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+               <button class="excluir" data-id="${instrutor.id}">Recusar</button>`}
+        </td>
+      </tr>
+    `;
+
+    if (instrutor.status === "aceito") {
+      tabelaAceitos.innerHTML += linha;
+    } else {
+      tabelaPendentes.innerHTML += linha;
+    }
+  });
+}
 
   document.addEventListener("DOMContentLoaded", () => {
     const tabela = document.querySelector("main");
