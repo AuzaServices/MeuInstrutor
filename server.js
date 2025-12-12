@@ -10,15 +10,14 @@ const app = express();
 const PORT = 3000;
 
 // 🔐 Garante que a pasta uploads existe
-const uploadsPath = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsPath)) {
-  fs.mkdirSync(uploadsPath);
-}
-
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static(uploadsPath));
+
+// 🔎 Não precisamos mais expor /uploads, pois não salvamos nada em disco.
+// As imagens ficam no banco como BLOB e são convertidas para base64 nas rotas.
+
+// Se você ainda quiser servir arquivos estáticos da pasta public (HTML, CSS, JS):
 app.use(express.static(path.join(__dirname, "public")));
 
 // Configuração do banco de dados usando Pool
