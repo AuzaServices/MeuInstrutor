@@ -498,7 +498,12 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("cpf", document.getElementById("cpf").value);
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-  formData.append("estado", estadoSelect.options[estadoSelect.selectedIndex].text);
+
+  // 🔑 Aqui está a correção
+  const estadoSelect = document.getElementById("estadoInstrutor");
+  const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
+  formData.append("estado", estadoNome);
+
   formData.append("telefone", document.getElementById("telefone").value);
   formData.append("selfie", document.getElementById("selfie").files[0]);
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
@@ -507,7 +512,6 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
-    console.log("📤 Disparando fetch...");
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
       method: "POST",
       body: formData
@@ -516,13 +520,12 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
     const resultado = await resposta.json();
 
     if (!resposta.ok) {
-      // 🔑 Mostra o erro real vindo do servidor
       throw new Error(resultado.error || "Erro no servidor");
     }
 
     alert(resultado.message);
     document.getElementById("formInstrutor").reset();
-    proximaEtapa(1); // volta para a primeira etapa
+    proximaEtapa(1);
   } catch (error) {
     console.error("❌ Erro ao cadastrar instrutor:", error);
     alert("Erro ao cadastrar instrutor: " + error.message);

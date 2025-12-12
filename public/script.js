@@ -210,32 +210,39 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
     return;
   }
   formData.append("telefone", telefone);
+
   formData.append("selfie", document.getElementById("selfie").files[0]);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
-  formData.append("estado", estadoSelect.options[estadoSelect.selectedIndex].text);
+
+  // ✅ Correção: pegar o nome do estado
+  const estadoSelect = document.getElementById("estadoInstrutor");
+  const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
+  formData.append("estado", estadoNome);
+
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
   formData.append("cnh", document.getElementById("cnh").files[0]);
   formData.append("certificado", document.getElementById("certificado").files[0]);
   formData.append("categorias", categoriasSelecionadas.join(","));
 
   try {
-    console.log("Disparando fetch...");
+    console.log("📤 Disparando fetch...");
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
       method: "POST",
       body: formData
     });
 
+    const resultado = await resposta.json();
+
     if (!resposta.ok) {
-      throw new Error("Erro no servidor: " + resposta.status);
+      throw new Error(resultado.error || "Erro no servidor");
     }
 
-    const resultado = await resposta.json();
     alert(resultado.message);
     document.getElementById("formInstrutor").reset();
     proximaEtapa(1);
   } catch (error) {
-    console.error("Erro ao cadastrar instrutor:", error);
-    alert("Erro ao cadastrar instrutor. Verifique se o servidor está rodando e a tabela existe.");
+    console.error("❌ Erro ao cadastrar instrutor:", error);
+    alert("Erro ao cadastrar instrutor: " + error.message);
   }
 });
 
