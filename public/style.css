@@ -912,3 +912,67 @@ input[type="file"] {
     }
 }
 
+/* ===== MODAL DE SUCESSO ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background-color: rgba(0,0,0,0.7); /* escurece a tela */
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 480px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  font-family: "Segoe UI", sans-serif;
+  animation: slideDown 0.3s ease-out;
+}
+
+.icon-check {
+  font-size: 60px;
+  color: #2ecc71; /* verde moderno */
+  margin-bottom: 15px;
+}
+
+.modal-content h2 {
+  margin: 0;
+  color: #2ecc71;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.modal-content p {
+  color: #333;
+  line-height: 1.5;
+  margin: 16px 0;
+}
+
+/* Barra decrescente */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.progress {
+  height: 100%;
+  background: #2ecc71;
+  width: 100%;
+  transition: width 5s linear; /* animação decrescente */
+}
+
+/* Animação modal */
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
