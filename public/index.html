@@ -320,16 +320,16 @@ function carregarFormularioInstrutor() {
       <!-- Etapa 1: Dados pessoais -->
       <div class="etapa" id="etapa1">
         <label>Nome completo:</label>
-        <input type="text" id="nome" name="nome" required>
+        <input type="text" id="nome" required>
 
         <label>Email:</label>
         <input type="email" id="email" name="email" required>
 
         <label>CPF:</label>
-        <input type="text" id="cpf" name="cpf" maxlength="14" required>
+        <input type="text" id="cpf" maxlength="14" required>
 
         <label>Sexo:</label>
-        <select id="sexoInstrutor" name="sexo" required>
+        <select id="sexoInstrutor" required>
           <option value="">Selecione</option>
           <option value="M">Masculino</option>
           <option value="F">Feminino</option>
@@ -346,12 +346,12 @@ function carregarFormularioInstrutor() {
         <h4>Localização</h4>
         
         <label>Estado:</label>
-        <select id="estadoInstrutor" name="estado" required>
+        <select id="estadoInstrutor" required>
           <option value="">Selecione o estado</option>
         </select>
 
         <label>Cidade:</label>
-        <select id="cidadeInstrutor" name="cidade" required>
+        <select id="cidadeInstrutor" required>
           <option value="">Selecione a cidade</option>
         </select>
 
@@ -414,22 +414,9 @@ function carregarFormularioInstrutor() {
         </p>
       </div>
     </form>
-
-    <!-- Modal de sucesso -->
-    <div id="successModal" class="modal">
-      <div class="modal-content">
-        <div class="icon-check">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <h2>Cadastro realizado</h2>
-        <p>Seu cadastro foi feito e está em análise.<br>
-        Dentro de um período de 24 horas nossa equipe entrará em contato com você para dar prosseguimento.</p>
-        <div class="progress-bar">
-          <div class="progress"></div>
-        </div>
-      </div>
-    </div>
   `;
+
+  
 
   // ✔ verde após upload
   document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
@@ -564,23 +551,6 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-// ====== FUNÇÃO DO MODAL ======
-function mostrarModalSucesso() {
-  const modal = document.getElementById("successModal");
-  const progress = modal.querySelector(".progress");
-  modal.style.display = "flex"; // exibe o modal centralizado
-
-  // anima barra decrescente
-  progress.style.width = "100%";
-  setTimeout(() => { progress.style.width = "0%"; }, 50);
-
-  // fecha modal em 5s
-  setTimeout(() => {
-    modal.style.display = "none";
-    progress.style.width = "100%"; // resetar barra para próxima vez
-  }, 5000);
-}
-
     // Carregar estados/cidades para aluno
     async function carregarEstadosAluno() {
       try {
@@ -693,6 +663,7 @@ function mostrarModalSucesso() {
         cpfInput.value = value;
       });
     }
+
     // Inicialização
     document.addEventListener("DOMContentLoaded", () => {
       carregarFormularioAluno();
@@ -735,7 +706,7 @@ function aplicarMascaraTelefone() {
 
 document.addEventListener("DOMContentLoaded", () => {
   AOS.init({
-    duration: 1000, 
+    duration: 1000, // duração da animação
     once: true      // anima só uma vez
   });
 });

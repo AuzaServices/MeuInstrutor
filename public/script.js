@@ -99,80 +99,76 @@ function carregarFormularioInstrutor() {
       <!-- Etapa 1: Dados pessoais -->
       <div class="etapa" id="etapa1">
         <label>Nome completo:</label>
-        <input type="text" id="nome" name="nome" required>
-
-        <label>Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="text" id="nome" required>
 
         <label>CPF:</label>
-        <input type="text" id="cpf" name="cpf" maxlength="14" required>
+        <input type="text" id="cpf" maxlength="14" required>
 
+        <!-- Campo Sexo -->
         <label>Sexo:</label>
-        <select id="sexoInstrutor" name="sexo" required>
+        <select id="sexoInstrutor" required>
           <option value="">Selecione</option>
           <option value="M">Masculino</option>
           <option value="F">Feminino</option>
         </select>
 
-        <label>Telefone (Whatsapp):</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="(XX)9XXXX-XXXX" title="Formato esperado: (XX)9XXXX-XXXX">
+        <!-- Campo Telefone -->
+        <label>Telefone:</label>
+        <input 
+          type="tel" 
+          id="telefone" 
+          name="telefone" 
+          placeholder="(XX)9XXXX-XXXX" 
+          title="Formato esperado: (XX)9XXXX-XXXX">
 
-        <button type="button" onclick="validarEAvancar(1,2)">Próximo</button>
+        <button type="button" onclick="proximaEtapa(2)">Próximo</button>
       </div>
 
       <!-- Etapa 2: Endereço -->
       <div class="etapa" id="etapa2" style="display:none;">
-        <h4>Localização</h4>
+        <h4>Endereço</h4>
+        <label>CEP:</label>
+        <input type="text" id="cep" required>
         
+        <label>Rua:</label>
+        <input type="text" id="rua" required>
+        
+        <label>Número:</label>
+        <input type="text" id="numero" required>
+        
+        <label>Bairro:</label>
+        <input type="text" id="bairro" required>
+
         <label>Estado:</label>
-        <select id="estadoInstrutor" name="estado" required>
+        <select id="estadoInstrutor" required>
           <option value="">Selecione o estado</option>
         </select>
 
         <label>Cidade:</label>
-        <select id="cidadeInstrutor" name="cidade" required>
+        <select id="cidadeInstrutor" required>
           <option value="">Selecione a cidade</option>
         </select>
 
         <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-        <button type="button" onclick="validarEAvancar(2,3)">Próximo</button>
+        <button type="button" onclick="proximaEtapa(3)">Próximo</button>
       </div>
 
-      <!-- Etapa 3: Identificação Pessoal -->
+      <!-- Etapa 3: Documentos -->
       <div class="etapa" id="etapa3" style="display:none;">
-        <h4>Identificação Pessoal</h4>
+        <h4>Anexos Obrigatórios</h4>
 
-        <label for="selfie" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Carregar Foto do instrutor(a)
-        </label>
-        <input type="file" id="selfie" name="selfie" accept="image/*" required>
-        <span class="upload-check" id="check-selfie"></span>
+        <!-- Campo de selfie -->
+        <label>Foto de Perfil:</label>
+        <input type="file" id="selfie" name="selfie" accept="image/*" capture="user" required>
 
-        <label for="comprovante" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Enviar Comprovante de Residência
-        </label>
+        <label>Comprovante de Residência:</label>
         <input type="file" id="comprovante" name="comprovante" required>
-        <span class="upload-check" id="check-comprovante"></span>
 
-        <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-        <button type="button" onclick="validarEAvancar(3,4)">Próximo</button>
-      </div>
-
-      <!-- Etapa 4: CNH, Certificado e Categorias -->
-      <div class="etapa" id="etapa4" style="display:none;">
-        <h4>Habilitação e Certificação</h4>
-
-        <label for="cnh" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Carteira Nacional de Habilitação
-        </label>
+        <label>CNH Válida:</label>
         <input type="file" id="cnh" name="cnh" required>
-        <span class="upload-check" id="check-cnh"></span>
 
-        <label for="certificado" class="custom-file-label">
-          <i class="fa-solid fa-upload"></i> Certificado de Instrutor de Trânsito
-        </label>
+        <label>Certificado de Instrutor de Trânsito:</label>
         <input type="file" id="certificado" name="certificado" required>
-        <span class="upload-check" id="check-certificado"></span>
 
         <h4>Especializações de ensino:</h4>
         <div class="categorias">
@@ -183,36 +179,16 @@ function carregarFormularioInstrutor() {
           <label><input type="checkbox" name="categoria" value="E"> E</label>
         </div>
 
-        <button type="button" onclick="voltarEtapa(3)">Voltar</button>
+        <button type="button" onclick="voltarEtapa(2)">Voltar</button>
         <button type="submit">Enviar</button>
-
-        <p style="font-size: 12px; color: #555; margin-top: 8px;">
-          Ao clicar em <strong>Enviar</strong>, você concorda com os 
-          <a href="/termos" target="_blank" style="color: orange;">Termos de Uso</a> e com a 
-          <a href="/privacidade" target="_blank" style="color: orange;">Política de Privacidade</a>.
-        </p>
       </div>
     </form>
-
-    <!-- Modal de sucesso -->
-    <div id="successModal" class="modal">
-      <div class="modal-content">
-        <div class="icon-check">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <h2>Cadastro realizado</h2>
-        <p>Seu cadastro foi feito e está em análise.<br>
-        Dentro de um período de 24 horas nossa equipe entrará em contato com você para dar prosseguimento.</p>
-        <div class="progress-bar">
-          <div class="progress"></div>
-        </div>
-      </div>
-    </div>
   `;
 
   document.getElementById("formInstrutor").addEventListener("submit", cadastrarInstrutor);
 }
 
+// Cadastro de instrutor integrado ao backend
 document.getElementById("formInstrutor").addEventListener("submit", async function(event) {
   event.preventDefault();
 
@@ -281,23 +257,6 @@ function voltarEtapa(n) {
   document.querySelectorAll('.etapa').forEach(e => e.style.display = 'none');
   document.getElementById('etapa' + n).style.display = 'block';
   document.querySelector('#form-area').scrollIntoView({ behavior: 'smooth' });
-}
-
-// ====== FUNÇÃO DO MODAL ======
-function mostrarModalSucesso() {
-  const modal = document.getElementById("successModal");
-  const progress = modal.querySelector(".progress");
-  modal.style.display = "flex"; // exibe o modal centralizado
-
-  // anima barra decrescente
-  progress.style.width = "100%";
-  setTimeout(() => { progress.style.width = "0%"; }, 50);
-
-  // fecha modal em 5s
-  setTimeout(() => {
-    modal.style.display = "none";
-    progress.style.width = "100%"; // resetar barra para próxima vez
-  }, 5000);
 }
 
 // ================= CARREGAR ESTADOS E CIDADES (IBGE) =================
