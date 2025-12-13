@@ -912,3 +912,72 @@ input[type="file"] {
     }
 }
 
+/* ====== MODAL BASE ====== */
+.modal {
+  display: none; /* escondido por padrão */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* fundo escuro translúcido */
+  justify-content: center;
+  align-items: center;
+}
+
+/* ====== CONTEÚDO DO MODAL ====== */
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: fadeIn 0.4s ease;
+}
+
+/* Ícone verde de sucesso */
+.icon-check {
+  font-size: 60px;
+  color: #2ecc71;
+  margin-bottom: 15px;
+}
+
+/* Título */
+.modal-content h2 {
+  margin: 10px 0;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Texto */
+.modal-content p {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* ====== PROGRESS BAR ====== */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 100%;
+  background: #2ecc71;
+  transition: width 5s linear; /* animação decrescente */
+}
+
+/* ====== ANIMAÇÃO DE ENTRADA ====== */
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
