@@ -488,15 +488,7 @@ function carregarFormularioInstrutor() {
         throw new Error(resultado.error || "Erro no servidor");
       }
 
-      mostrarModalSucesso(); // exibe modal
-      form.reset();
-      proximaEtapa(1);
-    } catch (error) {
-      console.error("❌ Erro ao cadastrar instrutor:", error);
-      alert("Erro ao cadastrar instrutor: " + error.message);
-    }
-  });
-}
+
 
     // Navegação entre etapas
     function proximaEtapa(n) {
@@ -513,6 +505,15 @@ function carregarFormularioInstrutor() {
       etapa.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+          mostrarModalSucesso(); // exibe modal
+      form.reset();
+      proximaEtapa(1);
+    } catch (error) {
+      console.error("❌ Erro ao cadastrar instrutor:", error);
+      alert("Erro ao cadastrar instrutor: " + error.message);
+    }
+  });
+}
     // Carregar estados/cidades para aluno
     async function carregarEstadosAluno() {
       try {
