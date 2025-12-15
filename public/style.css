@@ -911,3 +911,64 @@ input[type="file"] {
         justify-items: start;
     }
 }
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card-instrutor {
+  flex: 0 0 280px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  overflow: hidden; /* garante que a imagem respeite os cantos arredondados */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-instrutor:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.foto-instrutor {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0; /* imagem ocupa todo o topo, sem margem */
+}
+
+.card-instrutor .conteudo {
+  padding: 16px;
+  text-align: center;
+}
+
+.card-instrutor h3 {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.card-instrutor p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.btn-whatsapp {
+  display: inline-block;
+  background: #25D366;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+}
