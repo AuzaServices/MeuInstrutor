@@ -907,8 +907,8 @@ input[type="file"] {
 
   .resultado-bloco {
     margin-bottom: 20px;
-    margin-top: -10px;           /* sobe o bloco inteiro */
-    padding-left: 40px;          /* desloca textos junto com os cards */
+    margin-top: -20px;           /* sobe o bloco inteiro */
+    padding-left: 70px;          /* desloca textos junto com os cards */
   }
 
   .resultado-bloco h4,
