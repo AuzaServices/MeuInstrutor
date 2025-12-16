@@ -855,22 +855,38 @@ input[type="file"] {
 .carousel-container {
   display: flex;
   gap: 16px;
-  overflow-x: auto;
+  overflow-x: auto;              /* 🔑 permite deslizar no mobile */
   scroll-snap-type: x mandatory;
   padding: 10px;
+  -webkit-overflow-scrolling: touch; /* suaviza no iOS */
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none; /* opcional: esconde a barra de rolagem */
+}
+
+/* Cada card dentro do carrossel */
+.carousel-container .card-instrutor {
+  flex: 0 0 80%;                 /* 🔑 ocupa 80% da tela no mobile */
+  scroll-snap-align: start;
+  flex-shrink: 0;                /* não encolhe */
 }
 
 /* Desktop: grid fixo */
 @media (min-width: 1024px) {
-    .carousel-container {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 15px;
-        max-width: 1200px;
-        margin: 100px 0 0 -510px;
-        padding: -11px;
-        overflow-x: visible;
-        scroll-snap-type: none;
-        justify-items: start;
-    }
+  .carousel-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    max-width: 1200px;
+    margin: 100px auto 0;        /* centraliza sem margem negativa */
+    padding: 0;                  /* remove padding inválido */
+    overflow-x: visible;
+    scroll-snap-type: none;
+    justify-items: start;
+  }
+
+  .carousel-container .card-instrutor {
+    flex: unset;                 /* grid controla largura no desktop */
+  }
 }
