@@ -42,11 +42,16 @@
 
 <!-- Section dos resultados (separada, logo abaixo) -->
 <section class="fundo-resultados" data-aos="fade-up">
-  <div class="resultado-bloco">
-    <h4 id="filtro-info"></h4>
-    <p id="filtro-aplicado"></p>
-    <div id="resultado" class="carousel-container"></div>
-  </div>
+<div class="resultado-bloco">
+  <h4 id="filtro-info"></h4>
+  <p id="filtro-aplicado"></p>
+
+  <!-- Mobile: carrossel -->
+  <section id="resultado-mobile"></section>
+
+  <!-- Desktop: grid -->
+  <section id="resultado-desktop"></section>
+</div>
 </section>
 
 
@@ -280,15 +285,17 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    // Atualiza os textos acima dos cards
+    // Atualiza textos
     document.getElementById("filtro-info").innerText =
       `Instrutores disponíveis em ${cidade}/${estado}:`;
-
     document.getElementById("filtro-aplicado").innerText =
       `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
 
-    // Monta só os cards
-    let cardsHtml = `<div class="carousel-container">`;
+    // Mobile: carrossel
+    let mobileHtml = `<div class="carousel-container">`;
+
+    // Desktop: grid
+    let desktopHtml = `<div class="cards-container">`;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
@@ -298,7 +305,7 @@ async function buscarInstrutor(event) {
       const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
       const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-      cardsHtml += `
+      const card = `
         <div class="card-instrutor">
           <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
           <div class="conteudo">
@@ -308,17 +315,25 @@ async function buscarInstrutor(event) {
           </div>
         </div>
       `;
+
+      mobileHtml += card;
+      desktopHtml += card;
     });
 
-    cardsHtml += `</div>`;
-    document.getElementById("resultado").innerHTML = cardsHtml;
+    mobileHtml += `</div>`;
+    desktopHtml += `</div>`;
+
+    document.getElementById("resultado-mobile").innerHTML = mobileHtml;
+    document.getElementById("resultado-desktop").innerHTML = desktopHtml;
 
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
-    document.getElementById("resultado").innerHTML =
+    document.getElementById("resultado-mobile").innerHTML =
+      "<p>Erro ao buscar instrutores.</p>";
+    document.getElementById("resultado-desktop").innerHTML =
       "<p>Erro ao buscar instrutores.</p>";
   }
-}    // Formulário de instrutor
+}
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `

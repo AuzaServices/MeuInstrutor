@@ -893,3 +893,15 @@ input[type="file"] {
     max-width: 280px !important;
   }
 }
+
+/* Mobile: mostra carrossel */
+@media (max-width: 1023px) {
+  #resultado-mobile { display: block; }
+  #resultado-desktop { display: none; }
+}
+
+/* Desktop: mostra grid */
+@media (min-width: 1024px) {
+  #resultado-mobile { display: none; }
+  #resultado-desktop { display: block; }
+}
