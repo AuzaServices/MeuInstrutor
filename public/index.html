@@ -308,10 +308,10 @@ instrutores.forEach(instrutor => {
 
     html += `</div>`;
     document.querySelector(".resultado-bloco #resultado").innerHTML = html; // 🔑 injeta na section nova
-  } catch (error) {
-    console.error("Erro ao buscar instrutores:", error);
-    document.getElementById("resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
-  }
+} catch (error) {
+  console.error("Erro ao buscar instrutores:", error);
+  document.querySelector(".resultado-bloco #resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
+}
 }
     // Formulário de instrutor
 function carregarFormularioInstrutor() {

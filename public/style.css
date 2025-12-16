@@ -851,6 +851,7 @@ input[type="file"] {
 
 /* Mobile padrão: carrossel horizontal */
 /* Mobile padrão: carrossel horizontal */
+/* Mobile: carrossel horizontal */
 .carousel-container {
   display: flex;
   gap: 16px;
@@ -861,33 +862,42 @@ input[type="file"] {
 }
 
 .carousel-container::-webkit-scrollbar {
-  display: none; /* opcional: esconde a barra de rolagem */
+  display: none;
 }
 
 .carousel-container .card-instrutor {
-  flex: 0 0 80%;                 /* ocupa 80% da tela no mobile */
+  flex: 0 0 80%;                 /* ocupa 80% da largura da tela */
   scroll-snap-align: start;
   flex-shrink: 0;
 }
 
-/* Desktop: grid responsivo sem scroll */
+/* Desktop: grid sem scroll */
 @media (min-width: 1024px) {
   .carousel-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     max-width: 1200px;
-    margin: 100px 0 0 0;       /* alinhado à esquerda */
+    margin-top: 20px;            /* 🔑 sobe os cards */
     padding: 0;
-    overflow-x: visible;       /* 🔑 sem scroll no desktop */
+    overflow-x: visible;         /* sem scroll lateral */
     scroll-snap-type: none;
-    justify-items: start;
+    justify-items: start;        /* começa da esquerda */
   }
 
   .carousel-container .card-instrutor {
-    flex: unset;               /* grid controla largura no desktop */
-    width: 100%;               /* cada card ocupa sua coluna */
+    flex: unset;
+    width: 100%;
   }
+}
+
+/* Ajuste dos textos acima dos resultados */
+.resultado-bloco h4,
+.resultado-bloco p {
+  margin: 0 0 10px 0;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
 }
 
 @media (min-width: 1024px) {
