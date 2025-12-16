@@ -480,23 +480,23 @@ header .logo span {
   }
 }
 
-/* ===== Desktop: grid fixo ===== */
+/* ===== Desktop: grid responsivo ===== */
 @media (min-width: 1024px) {
   .carousel-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 colunas fixas */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     max-width: 1200px;
-    margin: 100px auto 0;        /* centraliza sem margem negativa */
+    margin: 100px auto 0;
     padding: 0;
     overflow-x: visible;
     scroll-snap-type: none;
-    justify-items: center;       /* centraliza os cards dentro das colunas */
+    justify-items: center;
   }
 
   .carousel-container .card-instrutor {
-    flex: unset;                 /* grid controla largura no desktop */
-    width: 100%;                 /* cada card ocupa sua coluna */
+    flex: unset;   /* grid controla largura no desktop */
+    width: 100%;   /* cada card ocupa sua coluna */
   }
 }
 
