@@ -858,7 +858,7 @@ input[type="file"] {
   color: #333;
 }
 
-/* Mobile: mostra carrossel */
+/* Mobile */
 @media (max-width: 1023px) {
   #resultado-mobile { display: block; }
   #resultado-desktop { display: none; }
@@ -869,6 +869,8 @@ input[type="file"] {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    margin-top: 10px;            /* sobe os cards */
+    padding-left: 10px;          /* leve deslocamento à direita */
   }
   .carousel-container::-webkit-scrollbar { display: none; }
   .carousel-container .card-instrutor {
@@ -876,9 +878,16 @@ input[type="file"] {
     scroll-snap-align: start;
     max-width: 80%;
   }
+
+  .resultado-bloco h4,
+  .resultado-bloco p {
+    margin-top: 5px;             /* sobe os textos */
+    text-align: left;            /* alinhados à esquerda no mobile */
+    padding-left: 10px;          /* desloca um pouco à direita */
+  }
 }
 
-/* Desktop: mostra grid */
+/* Desktop */
 @media (min-width: 1024px) {
   #resultado-mobile { display: none; }
   #resultado-desktop { display: block; }
@@ -887,8 +896,9 @@ input[type="file"] {
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* 5 cards por linha */
     gap: 20px;
-    margin-top: 10px;
-    justify-items: center;
+    margin-top: 5px;             /* sobe os cards */
+    justify-items: start;        /* cards alinhados à esquerda da coluna */
+    padding-left: 40px;          /* desloca tudo mais para a direita */
   }
   .cards-container .card-instrutor {
     width: 100%;
@@ -896,7 +906,13 @@ input[type="file"] {
   }
 
   .resultado-bloco {
-    text-align: center;
     margin-bottom: 20px;
+    margin-top: -10px;           /* sobe o bloco inteiro */
+    padding-left: 40px;          /* desloca textos junto com os cards */
+  }
+
+  .resultado-bloco h4,
+  .resultado-bloco p {
+    text-align: left;            /* alinhados ao início da primeira coluna */
   }
 }
