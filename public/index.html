@@ -287,7 +287,7 @@ async function buscarInstrutor(event) {
     document.getElementById("filtro-aplicado").innerText =
       `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
 
-    // Monta os cards
+    // Monta os cards dentro do container
     let cardsHtml = `<div class="carousel-container">`;
 
     instrutores.forEach(instrutor => {

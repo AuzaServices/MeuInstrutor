@@ -879,18 +879,17 @@ input[type="file"] {
   }
 }
 
-/* Desktop: cards lado a lado */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: flex !important;
-    flex-wrap: wrap !important;
+    display: flex !important;      /* força horizontal */
+    flex-wrap: wrap !important;    /* quebra para baixo quando não couber */
     gap: 20px;
-    justify-content: flex-start;
+    justify-content: flex-start;   /* começa da esquerda */
     align-items: flex-start;
   }
 
   .carousel-container .card-instrutor {
-    flex: 0 0 280px !important;
+    flex: 0 0 280px !important;    /* largura fixa de cada card */
     max-width: 280px !important;
   }
 }
