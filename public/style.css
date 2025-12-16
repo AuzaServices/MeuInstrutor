@@ -908,11 +908,12 @@ input[type="file"] {
   .resultado-bloco {
     margin-bottom: 20px;
     margin-top: -20px;           /* sobe o bloco inteiro */
-    padding-left: 70px;          /* desloca textos junto com os cards */
+    padding-left: 90px;          /* desloca textos junto com os cards */
   }
 
   .resultado-bloco h4,
   .resultado-bloco p {
-    text-align: left;            /* alinhados ao início da primeira coluna */
+    text-align: left;  
+    margin-left: 20px;          /* alinhados ao início da primeira coluna */
   }
 }
