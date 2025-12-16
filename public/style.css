@@ -388,9 +388,8 @@ header .logo span {
 .carousel-container {
   display: flex;
   gap: 16px;
-  overflow-x: auto;              /* mobile: desliza */
-  scroll-snap-type: x mandatory;
   padding: 10px;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -398,7 +397,7 @@ header .logo span {
   display: none; /* opcional: esconde a barra de rolagem */
 }
 
-/* ===== Card individual dentro do carrossel ===== */
+/* ===== Card individual ===== */
 .carousel-container .card-instrutor {
   flex: 0 0 80%;                 /* mobile: ocupa 80% da tela */
   scroll-snap-align: start;
@@ -420,27 +419,27 @@ header .logo span {
 .foto-instrutor {
   width: 100%;
   height: 200px;             /* desktop: altura fixa */
-  object-fit: cover;         /* 🔑 preenche sem distorcer */
+  object-fit: cover;
   display: block;
-  border-radius: 0;          /* deixa o card aplicar os cantos */
+  border-radius: 0;
 }
 
 /* ===== Conteúdo do card ===== */
 .card-instrutor .conteudo {
-  padding: 16px;             /* espaçamento interno */
+  padding: 16px;
   text-align: center;
 }
 
 .card-instrutor h3 {
   margin: 10px 0;
-  font-size: 16px;           /* nome menor */
+  font-size: 16px;
   color: #333;
 }
 
 .card-instrutor p {
   font-size: 14px;
   color: #666;
-  margin-bottom: 12px;       /* espaço antes do botão */
+  margin-bottom: 12px;
 }
 
 /* ===== Botão WhatsApp ===== */
@@ -459,24 +458,25 @@ header .logo span {
   background: #1ebe5d;
 }
 
-/* ===== Responsividade ===== */
+/* ===== Mobile: carrossel com scroll ===== */
 @media (max-width: 768px) {
   .carousel-container {
-    justify-content: flex-start; /* mobile: deixa deslizar */
+    overflow-x: auto;            /* 🔑 só no mobile */
+    justify-content: flex-start;
   }
 
   .foto-instrutor {
-    height: auto;            /* 🔑 ajusta naturalmente no mobile */
-    max-height: 250px;       /* limite para não ficar gigante */
-    object-fit: contain;     /* mostra a imagem inteira sem cortar */
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
   }
 
   .card-instrutor .conteudo {
-    padding: 12px;           /* reduz padding no mobile */
+    padding: 12px;
   }
 
   .card-instrutor h3 {
-    font-size: 15px;         /* nome ainda mais compacto no mobile */
+    font-size: 15px;
   }
 }
 
@@ -484,20 +484,19 @@ header .logo span {
 @media (min-width: 1024px) {
   .carousel-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-    /* 🔑 cada card terá no mínimo 280px */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     max-width: 1200px;
-    margin: 100px 0 0 0;          /* alinhado à esquerda */
+    margin: 100px 0 0 0;
     padding: 0;
-    overflow-x: visible;          /* remove scroll horizontal */
+    overflow-x: visible;         /* 🔑 sem scroll no desktop */
     scroll-snap-type: none;
-    justify-items: start;         /* cards alinhados à esquerda */
+    justify-items: start;
   }
 
   .carousel-container .card-instrutor {
-    flex: unset;   /* grid controla largura no desktop */
-    width: 100%;   /* cada card ocupa sua coluna */
+    flex: unset;
+    width: 100%;
   }
 }
 
