@@ -291,8 +291,11 @@ async function buscarInstrutor(event) {
     document.getElementById("filtro-aplicado").innerText =
       `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
 
-    // Monta os cards em um único container
-    let html = `<div class="carousel-container">`;
+    // Mobile: carrossel
+    let mobileHtml = `<div class="carousel-container">`;
+
+    // Desktop: grid
+    let desktopHtml = `<div class="cards-container">`;
 
     instrutores.forEach(instrutor => {
       const nomes = instrutor.nome.split(" ");
@@ -302,7 +305,7 @@ async function buscarInstrutor(event) {
       const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
       const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-      html += `
+      const card = `
         <div class="card-instrutor">
           <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
           <div class="conteudo">
@@ -312,14 +315,22 @@ async function buscarInstrutor(event) {
           </div>
         </div>
       `;
+
+      mobileHtml += card;
+      desktopHtml += card;
     });
 
-    html += `</div>`;
-    document.getElementById("resultado").innerHTML = html;
+    mobileHtml += `</div>`;
+    desktopHtml += `</div>`;
+
+    document.getElementById("resultado-mobile").innerHTML = mobileHtml;
+    document.getElementById("resultado-desktop").innerHTML = desktopHtml;
 
   } catch (error) {
     console.error("Erro ao buscar instrutores:", error);
-    document.getElementById("resultado").innerHTML =
+    document.getElementById("resultado-mobile").innerHTML =
+      "<p>Erro ao buscar instrutores.</p>";
+    document.getElementById("resultado-desktop").innerHTML =
       "<p>Erro ao buscar instrutores.</p>";
   }
 }

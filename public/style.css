@@ -859,41 +859,63 @@ input[type="file"] {
 }
 
 /* Mobile: carrossel horizontal */
-/* Mobile: carrossel horizontal */
 @media (max-width: 1023px) {
   .carousel-container {
-    display: flex;
+    display: flex;                  /* lado a lado */
     flex-direction: row;
     gap: 16px;
-    overflow-x: auto;
+    overflow-x: auto;               /* scroll só no mobile */
     scroll-snap-type: x mandatory;
     padding: 10px 0;
     -webkit-overflow-scrolling: touch;
   }
   .carousel-container::-webkit-scrollbar { display: none; }
+
   .carousel-container .card-instrutor {
-    flex: 0 0 80%;
+    flex: 0 0 80%;                  /* ocupa ~80% da largura da tela */
     scroll-snap-align: start;
     flex-shrink: 0;
     max-width: 80%;
   }
 }
 
-/* Desktop: grid com 5 colunas */
 @media (min-width: 1024px) {
+  /* Container dos cards */
   .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: grid;                                  /* grid é ideal aqui */
+    grid-template-columns: repeat(5, 1fr);          /* exatamente 5 colunas */
     gap: 20px;
-    margin-top: 10px;
-    justify-items: center;
+    margin-top: 10px;                               /* section mais pra cima */
+    justify-items: center;                          /* centraliza cada card na coluna */
   }
+
+  /* Cada card ocupa a largura da coluna */
   .carousel-container .card-instrutor {
     width: 100%;
-    max-width: 220px;
+    max-width: 220px;                               /* controla largura máxima */
   }
+
+  /* Bloco de resultado (textos acima) */
   .resultado-bloco {
-    text-align: center;
     margin-bottom: 20px;
+    text-align: center;                             /* centraliza os textos */
+  }
+
+  /* Ajuste dos textos */
+  .resultado-bloco h4,
+  .resultado-bloco p {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: #333;
+    text-align: center;                             /* centraliza a frase */
+    display: block;
+    width: 100%;
+  }
+
+  /* Alinhamento com o grid */
+  .resultado-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;                            /* textos alinhados ao início da primeira coluna */
   }
 }
