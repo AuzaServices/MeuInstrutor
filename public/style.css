@@ -483,20 +483,21 @@ header .logo span {
 /* ===== Desktop: grid sem scroll ===== */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: flex;
-    flex-wrap: wrap;              /* 🔑 quebra os cards em linhas */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    /* 🔑 cada card terá no mínimo 280px */
     gap: 20px;
     max-width: 1200px;
     margin: 100px 0 0 0;          /* alinhado à esquerda */
     padding: 0;
-    overflow-x: visible;          /* 🔑 remove scroll horizontal */
+    overflow-x: visible;          /* remove scroll horizontal */
     scroll-snap-type: none;
-    justify-content: flex-start;  /* cards alinhados à esquerda */
+    justify-items: start;         /* cards alinhados à esquerda */
   }
 
   .carousel-container .card-instrutor {
-    flex: 0 0 calc(20% - 20px);   /* 5 cards por linha */
-    width: auto;
+    flex: unset;   /* grid controla largura no desktop */
+    width: 100%;   /* cada card ocupa sua coluna */
   }
 }
 
