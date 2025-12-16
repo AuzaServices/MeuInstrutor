@@ -879,21 +879,18 @@ input[type="file"] {
   }
 }
 
-/* Desktop: grid sem scroll */
+/* Desktop: cards lado a lado */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid;                  /* colunas lado a lado */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;              /* 🔑 força horizontal */
+    flex-wrap: wrap;            /* quebra para baixo quando não couber */
     gap: 20px;
     margin-top: 20px;
-    overflow-x: visible;            /* sem scroll lateral */
-    scroll-snap-type: none;
-    justify-items: start;           /* começa da esquerda */
+    justify-content: flex-start; /* começa da esquerda */
   }
 
   .carousel-container .card-instrutor {
-    flex: unset;
-    width: 100%;
-    max-width: none;
+    flex: 0 0 280px;            /* largura fixa de cada card */
+    max-width: 280px;
   }
 }
