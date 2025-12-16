@@ -384,26 +384,34 @@ header .logo span {
 }
 
 /* ===== Container dos cards ===== */
-.cards-container {
+/* ===== Container do carrossel ===== */
+.carousel-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center; /* centraliza os cards */
-  margin-top: 20px;
+  gap: 16px;
+  overflow-x: auto;              /* mobile: desliza */
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ===== Card individual ===== */
-.card-instrutor {
-  flex: 0 0 280px;
+.carousel-container::-webkit-scrollbar {
+  display: none; /* opcional: esconde a barra de rolagem */
+}
+
+/* ===== Card individual dentro do carrossel ===== */
+.carousel-container .card-instrutor {
+  flex: 0 0 80%;                 /* mobile: ocupa 80% da tela */
+  scroll-snap-align: start;
+  flex-shrink: 0;
   background: #fff;
-  border-radius: 12px;       /* cantos arredondados */
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  overflow: hidden;          /* 🔑 aplica os cantos também na imagem */
+  overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
 }
 
-.card-instrutor:hover {
+.carousel-container .card-instrutor:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
@@ -411,7 +419,7 @@ header .logo span {
 /* ===== Foto do instrutor ===== */
 .foto-instrutor {
   width: 100%;
-  height: 200px;             /* altura fixa no desktop */
+  height: 200px;             /* desktop: altura fixa */
   object-fit: cover;         /* 🔑 preenche sem distorcer */
   display: block;
   border-radius: 0;          /* deixa o card aplicar os cantos */
@@ -419,13 +427,13 @@ header .logo span {
 
 /* ===== Conteúdo do card ===== */
 .card-instrutor .conteudo {
-  padding: 16px;             /* 🔑 espaçamento interno */
+  padding: 16px;             /* espaçamento interno */
   text-align: center;
 }
 
 .card-instrutor h3 {
   margin: 10px 0;
-  font-size: 16px;           /* 🔑 nome menor */
+  font-size: 16px;           /* nome menor */
   color: #333;
 }
 
@@ -453,14 +461,13 @@ header .logo span {
 
 /* ===== Responsividade ===== */
 @media (max-width: 768px) {
-  .card-instrutor {
-    flex: 1 1 100%;
-    max-width: 100%;
+  .carousel-container {
+    justify-content: flex-start; /* mobile: deixa deslizar */
   }
 
   .foto-instrutor {
     height: auto;            /* 🔑 ajusta naturalmente no mobile */
-    max-height: 320px;       /* limite para não ficar gigante */
+    max-height: 250px;       /* limite para não ficar gigante */
     object-fit: contain;     /* mostra a imagem inteira sem cortar */
   }
 
@@ -470,6 +477,26 @@ header .logo span {
 
   .card-instrutor h3 {
     font-size: 15px;         /* nome ainda mais compacto no mobile */
+  }
+}
+
+/* ===== Desktop: grid fixo ===== */
+@media (min-width: 1024px) {
+  .carousel-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas fixas */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 100px auto 0;        /* centraliza sem margem negativa */
+    padding: 0;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    justify-items: center;       /* centraliza os cards dentro das colunas */
+  }
+
+  .carousel-container .card-instrutor {
+    flex: unset;                 /* grid controla largura no desktop */
+    width: 100%;                 /* cada card ocupa sua coluna */
   }
 }
 
@@ -816,8 +843,6 @@ section {
   margin-bottom: 15px;
 }
 
-/* carrossel *
-
 /* Esconde o input padrão */
 input[type="file"] {
   display: none;
@@ -849,44 +874,4 @@ input[type="file"] {
   font-size: 18px;
   font-weight: bold;
   display: none;
-}
-
-/* Mobile padrão: carrossel horizontal */
-.carousel-container {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;              /* 🔑 permite deslizar no mobile */
-  scroll-snap-type: x mandatory;
-  padding: 10px;
-  -webkit-overflow-scrolling: touch; /* suaviza no iOS */
-}
-
-.carousel-container::-webkit-scrollbar {
-  display: none; /* opcional: esconde a barra de rolagem */
-}
-
-/* Cada card dentro do carrossel */
-.carousel-container .card-instrutor {
-  flex: 0 0 80%;                 /* 🔑 ocupa 80% da tela no mobile */
-  scroll-snap-align: start;
-  flex-shrink: 0;                /* não encolhe */
-}
-
-/* Desktop: grid fixo */
-@media (min-width: 1024px) {
-  .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-    max-width: 1200px;
-    margin: 100px auto 0;        /* centraliza sem margem negativa */
-    padding: 0;                  /* remove padding inválido */
-    overflow-x: visible;
-    scroll-snap-type: none;
-    justify-items: start;
-  }
-
-  .carousel-container .card-instrutor {
-    flex: unset;                 /* grid controla largura no desktop */
-  }
 }
