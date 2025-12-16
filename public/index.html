@@ -280,43 +280,39 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    // Atualiza os textos acima dos resultados
-    document.getElementById("filtro-info").innerText =
-      `Instrutores disponíveis em ${cidade}/${estado}:`;
+    let html = `<h4>Instrutores disponíveis em ${cidade}/${estado}:</h4>`;
+    html += `<p>Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}</p>`;
+    html += `<div class="carousel-container">`;
 
-    document.getElementById("filtro-aplicado").innerText =
-      `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
+instrutores.forEach(instrutor => {
+  const nomes = instrutor.nome.split(" ");
+  const primeiroNome = nomes[0] || "";
+  const segundoNome = nomes[1] || "";
+  const telefone = instrutor.telefone ? instrutor.telefone.replace(/\D/g, "") : "";
+  const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
 
-    // Monta apenas os cards
-    let cardsHtml = "";
-    instrutores.forEach(instrutor => {
-      const nomes = instrutor.nome.split(" ");
-      const primeiroNome = nomes[0] || "";
-      const segundoNome = nomes[1] || "";
-      const telefone = instrutor.telefone ? instrutor.telefone.replace(/\D/g, "") : "";
-      const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
-      const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
+  // 🔑 Tratamento: se vier null, usa placeholder
+  const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-      cardsHtml += `
-        <div class="card-instrutor">
-          <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-          <div class="conteudo">
-            <h3>${primeiroNome} ${segundoNome}</h3>
-            <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
-            <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
-          </div>
-        </div>
-      `;
-    });
+  html += `
+<div class="card-instrutor">
+  <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+  <div class="conteudo">
+    <h3>${primeiroNome} ${segundoNome}</h3>
+    <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+    <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
+  </div>
+</div>
+  `;
+});
 
-    // Injeta os cards no container
-    document.getElementById("resultado").innerHTML = cardsHtml;
-
-  } catch (error) {
-    console.error("Erro ao buscar instrutores:", error);
-    document.getElementById("resultado").innerHTML =
-      "<p>Erro ao buscar instrutores.</p>";
-  }
+    html += `</div>`;
+    document.querySelector(".resultado-bloco #resultado").innerHTML = html; // 🔑 injeta na section nova
+} catch (error) {
+  console.error("Erro ao buscar instrutores:", error);
+  html += `</div>`;
+document.getElementById("resultado").innerHTML = html; // injeta no bloco certo
+}
 }
     // Formulário de instrutor
 function carregarFormularioInstrutor() {
