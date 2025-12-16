@@ -882,11 +882,12 @@ input[type="file"] {
 /* Desktop: cards lado a lado */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: flex;              /* 🔑 força horizontal */
+    display: flex;              /* força horizontal */
     flex-wrap: wrap;            /* quebra para baixo quando não couber */
     gap: 20px;
     margin-top: 20px;
     justify-content: flex-start; /* começa da esquerda */
+    align-items: flex-start;     /* alinha pelo topo */
   }
 
   .carousel-container .card-instrutor {
