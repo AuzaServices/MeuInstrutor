@@ -425,7 +425,7 @@ header .logo span {
 
 .card-instrutor h3 {
   margin: 10px 0;
-  font-size: 18px;
+  font-size: 16px;           /* 🔑 nome menor */
   color: #333;
 }
 
@@ -459,12 +459,17 @@ header .logo span {
   }
 
   .foto-instrutor {
-    height: auto;            /* 🔑 ajusta a altura no mobile */
-    max-height: 250px;       /* controla altura máxima */
+    height: auto;            /* 🔑 ajusta naturalmente no mobile */
+    max-height: 250px;       /* limite para não ficar gigante */
+    object-fit: contain;     /* mostra a imagem inteira sem cortar */
   }
 
   .card-instrutor .conteudo {
     padding: 12px;           /* reduz padding no mobile */
+  }
+
+  .card-instrutor h3 {
+    font-size: 15px;         /* nome ainda mais compacto no mobile */
   }
 }
 
