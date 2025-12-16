@@ -849,36 +849,6 @@ input[type="file"] {
   display: none;
 }
 
-/* Textos acima dos resultados */
-.resultado-bloco h4,
-.resultado-bloco p {
-  margin: 0 0 10px 0;
-  text-align: left;
-  font-size: 16px;
-  color: #333;
-}
-
-/* Mobile: carrossel horizontal */
-@media (max-width: 1023px) {
-  .carousel-container {
-    display: flex;                  /* lado a lado */
-    flex-direction: row;
-    gap: 16px;
-    overflow-x: auto;               /* scroll só no mobile */
-    scroll-snap-type: x mandatory;
-    padding: 10px 0;
-    -webkit-overflow-scrolling: touch;
-  }
-  .carousel-container::-webkit-scrollbar { display: none; }
-
-  .carousel-container .card-instrutor {
-    flex: 0 0 80%;                  /* ocupa ~80% da largura da tela */
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    max-width: 80%;
-  }
-}
-
 @media (min-width: 1024px) {
   /* Container dos cards */
   .carousel-container {
