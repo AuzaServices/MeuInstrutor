@@ -42,11 +42,11 @@
 
 <!-- Section dos resultados (separada, logo abaixo) -->
 <section class="fundo-resultados" data-aos="fade-up">
-<div class="resultado-bloco">
-  <h4 id="filtro-info"></h4>
-  <p id="filtro-aplicado"></p>
-  <div id="resultado"></div>
-</div>
+  <div class="resultado-bloco">
+    <h4 id="filtro-info"></h4>
+    <p id="filtro-aplicado"></p>
+    <div id="resultado" class="carousel-container"></div>
+  </div>
 </section>
 
 
@@ -318,7 +318,7 @@ async function buscarInstrutor(event) {
     document.getElementById("resultado").innerHTML =
       "<p>Erro ao buscar instrutores.</p>";
   }
-}r
+}    // Formulário de instrutor
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
