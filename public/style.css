@@ -852,6 +852,7 @@ input[type="file"] {
 /* Mobile padrão: carrossel horizontal */
 /* Textos acima dos resultados */
 /* Textos acima dos resultados */
+/* Textos acima dos resultados */
 .resultado-bloco h4,
 .resultado-bloco p {
   margin: 0 0 10px 0;
@@ -863,7 +864,7 @@ input[type="file"] {
 /* Mobile: carrossel horizontal */
 @media (max-width: 1023px) {
   .carousel-container {
-    display: flex;                  /* 🔑 garante lado a lado */
+    display: flex;                  /* lado a lado */
     flex-direction: row;
     gap: 16px;
     overflow-x: auto;               /* scroll só no mobile */
@@ -883,7 +884,7 @@ input[type="file"] {
 /* Desktop: grid sem scroll */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid;                  /* 🔑 garante colunas lado a lado */
+    display: grid;                  /* colunas lado a lado */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     margin-top: 20px;
