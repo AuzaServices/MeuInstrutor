@@ -460,7 +460,7 @@ header .logo span {
 
   .foto-instrutor {
     height: auto;            /* 🔑 ajusta naturalmente no mobile */
-    max-height: 250px;       /* limite para não ficar gigante */
+    max-height: 320px;       /* limite para não ficar gigante */
     object-fit: contain;     /* mostra a imagem inteira sem cortar */
   }
 
