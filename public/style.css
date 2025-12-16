@@ -885,12 +885,16 @@ input[type="file"] {
     text-align: left;            /* alinhados à esquerda no mobile */
     padding-left: 10px;          /* desloca um pouco à direita */
   }
-    #filtro-info,
+/* Mobile */
+@media (max-width: 1023px) {
+  /* aplica em ambos */
+  #filtro-info,
   #filtro-aplicado {
-    text-align: center;   /* centralizado no mobile */
-    margin-left: 0;
-    margin-top: 5px;
+    text-align: center;   /* centraliza as duas frases */
+    margin-top: 20px;     /* sobe igualmente */
+    margin-bottom: 5px;   /* dá respiro entre elas */
   }
+}
 }
 
 /* Desktop */
@@ -914,7 +918,7 @@ input[type="file"] {
   .resultado-bloco {
     margin-bottom: 20px;
     margin-top: -20px;           /* sobe o bloco inteiro */
-    padding-left: 90px;          /* desloca textos junto com os cards */
+    padding-left: 60px;          /* desloca textos junto com os cards */
   }
 
   .resultado-bloco h4,
