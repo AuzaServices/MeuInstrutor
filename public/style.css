@@ -849,14 +849,6 @@ input[type="file"] {
   display: none;
 }
 
-/* Layout dos resultados */
-.resultado-bloco {
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 40px;
-  padding: 0 20px;
-}
-
 /* Textos acima dos resultados */
 .resultado-bloco h4,
 .resultado-bloco p {
@@ -869,10 +861,10 @@ input[type="file"] {
 /* Mobile: carrossel horizontal */
 @media (max-width: 1023px) {
   .carousel-container {
-    display: flex !important;       /* força lado a lado */
+    display: flex;                  /* lado a lado */
     flex-direction: row;
     gap: 16px;
-    overflow-x: auto;
+    overflow-x: auto;               /* scroll só no mobile */
     scroll-snap-type: x mandatory;
     padding: 10px 0;
     -webkit-overflow-scrolling: touch;
@@ -880,7 +872,7 @@ input[type="file"] {
   .carousel-container::-webkit-scrollbar { display: none; }
 
   .carousel-container .card-instrutor {
-    flex: 0 0 80%;                  /* ocupa ~80% da largura */
+    flex: 0 0 80%;                  /* ocupa ~80% da largura da tela */
     scroll-snap-align: start;
     flex-shrink: 0;
     max-width: 80%;
@@ -890,13 +882,13 @@ input[type="file"] {
 /* Desktop: grid sem scroll */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid !important;       /* força grid */
+    display: grid;                  /* colunas lado a lado */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     margin-top: 20px;
-    overflow-x: visible;
+    overflow-x: visible;            /* sem scroll lateral */
     scroll-snap-type: none;
-    justify-items: start;
+    justify-items: start;           /* começa da esquerda */
   }
 
   .carousel-container .card-instrutor {
