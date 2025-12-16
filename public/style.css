@@ -388,6 +388,7 @@ header .logo span {
   flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
+  justify-content: center; /* centraliza os cards */
 }
 
 .card-instrutor {
@@ -395,7 +396,7 @@ header .logo span {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  overflow: hidden; /* 🔑 garante que a imagem respeite os cantos */
+  overflow: hidden; /* 🔑 aplica os cantos também na imagem */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
 }
@@ -407,12 +408,12 @@ header .logo span {
 
 .foto-instrutor {
   width: 100%;
-  height: 200px;       /* altura fixa para preencher o topo */
-  object-fit: cover;   /* 🔑 corta o excesso e preenche sem distorcer */
+  height: 100%;        /* ocupa toda a altura disponível do topo */
+  max-height: 200px;   /* controla a altura máxima */
+  object-fit: cover;   /* 🔑 preenche sem distorcer */
   display: block;
   border-radius: 0;    /* deixa o card aplicar os cantos */
 }
-
 
 .card-instrutor h3 {
   margin: 10px 0;
@@ -435,6 +436,7 @@ header .logo span {
   background: #1ebe5d;
 }
 
+/* Ajuste da seção de busca */
 .fundo-busca {
   display: flex;
   align-items: flex-start;
@@ -442,11 +444,11 @@ header .logo span {
 
 .fundo-busca .imagem {
   width: 100%;
-  max-width: 500px;   /* largura máxima no desktop */
-  height: 500px;      /* altura fixa */
+  max-width: 500px;
+  height: 500px;
   background: url("img.png") no-repeat center center;
   background-size: cover;
-  flex-shrink: 0;     /* impede a imagem de encolher */
+  flex-shrink: 0;
 }
 
 /* Responsivo para telas menores */
