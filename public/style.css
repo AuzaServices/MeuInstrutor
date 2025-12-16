@@ -882,7 +882,8 @@ input[type="file"] {
   .resultado-bloco h4,
   .resultado-bloco p {
     margin-top: 5px;             /* sobe os textos */
-    text-align: left;            /* alinhados à esquerda no mobile */
+    text-align: left;   
+    margin-top: -50px;         /* alinhados à esquerda no mobile */
     padding-left: 10px;          /* desloca um pouco à direita */
   }
     #filtro-info,
