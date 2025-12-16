@@ -886,7 +886,6 @@ input[type="file"] {
     padding-left: 10px;          /* desloca um pouco à direita */
   }
 /* Mobile */
-@media (max-width: 1023px) {
   /* aplica em ambos */
   #filtro-info,
   #filtro-aplicado {
@@ -894,7 +893,6 @@ input[type="file"] {
     margin-top: 20px;     /* sobe igualmente */
     margin-bottom: 5px;   /* dá respiro entre elas */
   }
-}
 }
 
 /* Desktop */
