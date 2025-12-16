@@ -388,7 +388,6 @@ header .logo span {
   flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
-  justify-content: center; /* centraliza os cards */
 }
 
 .card-instrutor {
@@ -396,7 +395,7 @@ header .logo span {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  overflow: hidden; /* 🔑 aplica os cantos também na imagem */
+  overflow: hidden; /* 🔑 garante que a imagem respeite os cantos */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
 }
@@ -408,12 +407,12 @@ header .logo span {
 
 .foto-instrutor {
   width: 100%;
-  height: 100%;        /* ocupa toda a altura disponível do topo */
-  max-height: 200px;   /* controla a altura máxima */
-  object-fit: cover;   /* 🔑 preenche sem distorcer */
+  height: 200px;       /* altura fixa para preencher o topo */
+  object-fit: cover;   /* 🔑 corta o excesso e preenche sem distorcer */
   display: block;
   border-radius: 0;    /* deixa o card aplicar os cantos */
 }
+
 
 .card-instrutor h3 {
   margin: 10px 0;
@@ -436,7 +435,6 @@ header .logo span {
   background: #1ebe5d;
 }
 
-/* Ajuste da seção de busca */
 .fundo-busca {
   display: flex;
   align-items: flex-start;
@@ -444,11 +442,11 @@ header .logo span {
 
 .fundo-busca .imagem {
   width: 100%;
-  max-width: 500px;
-  height: 500px;
+  max-width: 500px;   /* largura máxima no desktop */
+  height: 500px;      /* altura fixa */
   background: url("img.png") no-repeat center center;
   background-size: cover;
-  flex-shrink: 0;
+  flex-shrink: 0;     /* impede a imagem de encolher */
 }
 
 /* Responsivo para telas menores */
@@ -519,55 +517,6 @@ header .logo span {
   }
 }
 
-/* Container dos cards */
-/* Seção dos resultados */
-
-
-
-.card-instrutor {
-  flex: 0 0 280px;           /* largura fixa */
-  scroll-snap-align: start;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 16px;
-  text-align: center;
-}
-
-/* Container dos cards */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center; /* garante que fiquem lado a lado */
-  margin-top: 20px;
-}
-
-/* Estilo dos cards individuais */
-.card-instrutor {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-  background: #fff;
-  border-radius: 12px; /* cantos mais suaves */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* sombra mais bonita */
-  padding: 16px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card-instrutor:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-
-.foto-instrutor {
-  width: 100%;
-  height: auto;        /* altura automática */
-  display: block;
-  border-radius: 12px;
-}
-
-/* Sessão de busca (sem container branco) */
 .fundo-busca {
   width: 100%;
   margin: 40px auto;
@@ -789,15 +738,6 @@ section {
   transform: scale(1.2);
 }
 
-.card-instrutor {
-  flex: 0 0 280px;   /* largura fixa de cada card */
-  scroll-snap-align: start;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 16px;
-  text-align: center;
-}
 
 .form-bloco {
   display: flex;
@@ -838,25 +778,7 @@ section {
   margin-bottom: 15px;
 }
 
-/* carrossel */
-/* Mobile (padrão): carrossel com scroll lateral */
-
-/* Card padrão */
-.card-instrutor {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-  background: #fff;
-  border-radius: 12px; /* cantos mais suaves */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* sombra mais bonita */
-  padding: 16px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card-instrutor:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
+/* carrossel *
 
 /* Esconde o input padrão */
 input[type="file"] {
