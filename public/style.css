@@ -480,23 +480,23 @@ header .logo span {
   }
 }
 
-/* ===== Desktop: grid responsivo ===== */
+/* ===== Desktop: grid sem scroll ===== */
 @media (min-width: 1024px) {
   .carousel-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;              /* 🔑 quebra os cards em linhas */
     gap: 20px;
     max-width: 1200px;
-    margin: 100px 0 0 0;   /* 🔑 tira o auto e alinha à esquerda */
+    margin: 100px 0 0 0;          /* alinhado à esquerda */
     padding: 0;
-    overflow-x: visible;
+    overflow-x: visible;          /* 🔑 remove scroll horizontal */
     scroll-snap-type: none;
-    justify-items: start;  /* 🔑 garante que os cards fiquem alinhados à esquerda */
+    justify-content: flex-start;  /* cards alinhados à esquerda */
   }
 
   .carousel-container .card-instrutor {
-    flex: unset;
-    width: 100%;
+    flex: 0 0 calc(20% - 20px);   /* 5 cards por linha */
+    width: auto;
   }
 }
 
