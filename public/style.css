@@ -925,7 +925,7 @@ input[type="file"] {
     #filtro-info,
   #filtro-aplicado {
     text-align: left;     /* alinhados ao início da primeira coluna */
-    margin-left: 20px;    /* desloca para a direita */
+    margin-left: 60px;    /* desloca para a direita */
     margin-top: -10px;    /* sobe os textos */
   }
 
