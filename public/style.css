@@ -850,12 +850,11 @@ input[type="file"] {
 }
 
 /* Mobile padrão: carrossel horizontal */
-/* Mobile padrão: carrossel horizontal */
 /* Mobile: carrossel horizontal */
 .carousel-container {
   display: flex;
   gap: 16px;
-  overflow-x: auto;              /* 🔑 scroll só no mobile */
+  overflow-x: auto;              /* scroll só no mobile */
   scroll-snap-type: x mandatory;
   padding: 10px;
   -webkit-overflow-scrolling: touch;
@@ -878,7 +877,7 @@ input[type="file"] {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
     max-width: 1200px;
-    margin-top: 20px;            /* 🔑 sobe os cards */
+    margin-top: 20px;            /* sobe os cards */
     padding: 0;
     overflow-x: visible;         /* sem scroll lateral */
     scroll-snap-type: none;
@@ -891,7 +890,7 @@ input[type="file"] {
   }
 }
 
-/* Ajuste dos textos acima dos resultados */
+/* Textos acima dos resultados */
 .resultado-bloco h4,
 .resultado-bloco p {
   margin: 0 0 10px 0;

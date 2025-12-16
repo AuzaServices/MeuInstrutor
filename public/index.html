@@ -310,7 +310,8 @@ instrutores.forEach(instrutor => {
     document.querySelector(".resultado-bloco #resultado").innerHTML = html; // 🔑 injeta na section nova
 } catch (error) {
   console.error("Erro ao buscar instrutores:", error);
-  document.querySelector(".resultado-bloco #resultado").innerHTML = "<p>Erro ao buscar instrutores.</p>";
+  html += `</div>`;
+document.getElementById("resultado").innerHTML = html; // injeta no bloco certo
 }
 }
     // Formulário de instrutor
