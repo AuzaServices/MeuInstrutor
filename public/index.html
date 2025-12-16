@@ -42,11 +42,11 @@
 
 <!-- Section dos resultados (separada, logo abaixo) -->
 <section class="fundo-resultados" data-aos="fade-up">
-  <div class="resultado-bloco">
-    <h4 id="filtro-info"></h4>
-    <p id="filtro-aplicado"></p>
-    <div id="resultado" class="carousel-container"></div>
-  </div>
+<div class="resultado-bloco">
+  <h4 id="filtro-info"></h4>
+  <p id="filtro-aplicado"></p>
+  <div id="resultado"></div>
+</div>
 </section>
 
 
@@ -280,14 +280,14 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    // Atualiza os textos acima dos resultados
+    // Atualiza os textos acima dos cards
     document.getElementById("filtro-info").innerText =
       `Instrutores disponíveis em ${cidade}/${estado}:`;
 
     document.getElementById("filtro-aplicado").innerText =
       `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
 
-    // Monta os cards dentro do container
+    // Monta só os cards
     let cardsHtml = `<div class="carousel-container">`;
 
     instrutores.forEach(instrutor => {
@@ -318,8 +318,7 @@ async function buscarInstrutor(event) {
     document.getElementById("resultado").innerHTML =
       "<p>Erro ao buscar instrutores.</p>";
   }
-}
-    // Formulário de instrutor
+}    // Formulário de instrutor
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
