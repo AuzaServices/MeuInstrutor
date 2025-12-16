@@ -383,19 +383,22 @@ header .logo span {
   margin-right: 5px;
 }
 
+/* ===== Container dos cards ===== */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center; /* centraliza os cards */
   margin-top: 20px;
 }
 
+/* ===== Card individual ===== */
 .card-instrutor {
   flex: 0 0 280px;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 12px;       /* cantos arredondados */
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  overflow: hidden; /* 🔑 garante que a imagem respeite os cantos */
+  overflow: hidden;          /* 🔑 aplica os cantos também na imagem */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
 }
@@ -405,14 +408,20 @@ header .logo span {
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
+/* ===== Foto do instrutor ===== */
 .foto-instrutor {
   width: 100%;
-  height: 200px;       /* altura fixa para preencher o topo */
-  object-fit: cover;   /* 🔑 corta o excesso e preenche sem distorcer */
+  height: 200px;             /* altura fixa no desktop */
+  object-fit: cover;         /* 🔑 preenche sem distorcer */
   display: block;
-  border-radius: 0;    /* deixa o card aplicar os cantos */
+  border-radius: 0;          /* deixa o card aplicar os cantos */
 }
 
+/* ===== Conteúdo do card ===== */
+.card-instrutor .conteudo {
+  padding: 16px;             /* 🔑 espaçamento interno */
+  text-align: center;
+}
 
 .card-instrutor h3 {
   margin: 10px 0;
@@ -420,6 +429,13 @@ header .logo span {
   color: #333;
 }
 
+.card-instrutor p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;       /* espaço antes do botão */
+}
+
+/* ===== Botão WhatsApp ===== */
 .btn-whatsapp {
   display: inline-block;
   background: #25D366;
@@ -433,6 +449,23 @@ header .logo span {
 
 .btn-whatsapp:hover {
   background: #1ebe5d;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .card-instrutor {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .foto-instrutor {
+    height: auto;            /* 🔑 ajusta a altura no mobile */
+    max-height: 250px;       /* controla altura máxima */
+  }
+
+  .card-instrutor .conteudo {
+    padding: 12px;           /* reduz padding no mobile */
+  }
 }
 
 .fundo-busca {

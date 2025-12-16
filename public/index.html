@@ -295,12 +295,14 @@ instrutores.forEach(instrutor => {
   const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
   html += `
-    <div class="card-instrutor">
-      <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-      <h3>${primeiroNome} ${segundoNome}</h3>
-      <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
-      <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
-    </div>
+<div class="card-instrutor">
+  <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+  <div class="conteudo">
+    <h3>${primeiroNome} ${segundoNome}</h3>
+    <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+    <a href="${linkWhats}" target="_blank" class="btn-whatsapp">WhatsApp</a>
+  </div>
+</div>
   `;
 });
 
