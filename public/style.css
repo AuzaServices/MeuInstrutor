@@ -861,46 +861,66 @@ input[type="file"] {
 /* Mobile */
 /* Mobile */
 @media (max-width: 1023px) {
-  #resultado-mobile { display: block; }
-  #resultado-desktop { display: none; }
+  #resultado-mobile {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
 
-.carousel-container {
-  display: flex;
-  overflow-x: auto;         /* ativa rolagem horizontal */
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 16px;                /* espaço entre os cards */
-  padding: 0;               /* remove espaço interno que cortava */
-  margin: 0;                /* remove margem extra */
-  width: 100%;              /* ocupa toda a largura da tela */
-  box-sizing: border-box;   /* garante que padding/margin não empurre nada */
-}
+  #resultado-desktop {
+    display: none !important;
+  }
 
-.carousel-container::-webkit-scrollbar {
-  display: none;            /* esconde a barra de rolagem */
-}
+  .carousel-container {
+    display: flex !important;
+    overflow-x: auto !important;       /* ativa rolagem horizontal */
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 16px !important;              /* espaço entre os cards */
+    padding: 0 !important;             /* remove espaço interno */
+    margin: 0 !important;              /* remove margem extra */
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-.carousel-container .card-instrutor {
-  flex: 0 0 auto;           /* cada card ocupa só o espaço dele */
-  scroll-snap-align: start;
-  max-width: 80%;           /* largura proporcional */
-}
+  .carousel-container::-webkit-scrollbar {
+    display: none !important;          /* esconde a barra de rolagem */
+  }
+
+  .carousel-container .card-instrutor {
+    flex: 0 0 auto !important;         /* cada card ocupa só o espaço dele */
+    scroll-snap-align: start !important;
+    width: 80% !important;             /* largura proporcional */
+    max-width: none !important;        /* remove limite artificial */
+    margin: 0 !important;              /* sem margem lateral invisível */
+  }
+
+  /* garante que o primeiro e último card encostem nos limites da tela */
+  .carousel-container .card-instrutor:first-child {
+    margin-left: 0 !important;
+  }
+
+  .carousel-container .card-instrutor:last-child {
+    margin-right: 0 !important;
+  }
 
   /* Move as duas frases juntas */
   .resultado-bloco {
-    text-align: center;   /* centraliza no mobile */
-    margin-top: -80px;    /* sobe o bloco inteiro */
-    margin-left: 15px;    /* desloca para a direita */
+    text-align: center !important;   /* centraliza no mobile */
+    margin-top: -80px !important;    /* sobe o bloco inteiro */
+    margin-left: 15px !important;    /* desloca para a direita */
   }
 
   /* garante que os textos dentro sigam o alinhamento */
-#filtro-info,
-#filtro-aplicado {
-  display: block;        /* cada frase ocupa uma linha */
-  width: 100%;           /* garante largura total */
-  text-align: center;    /* centraliza o texto no meio da tela */
-  margin: 5px -35px;         /* controla o espaço vertical entre elas */
-}
+  #filtro-info,
+  #filtro-aplicado {
+    display: block !important;        /* cada frase ocupa uma linha */
+    width: 100% !important;           /* garante largura total */
+    text-align: center !important;    /* centraliza o texto no meio da tela */
+    margin: 5px -35px !important;     /* controla o espaço vertical entre elas */
+  }
 }
 
 /* Desktop */
