@@ -1074,3 +1074,20 @@ hr {
   border-top: 1px solid #ccc;
   margin: 1rem 0;
 }
+
+#comentario {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  resize: none; /* impede redimensionamento feio */
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#comentario:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
