@@ -320,14 +320,17 @@ app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req
 // Buscar todas as avaliações de um instrutor
 app.get("/avaliacoes/:instrutorId", async (req, res) => {
   const { instrutorId } = req.params;
+  console.log("Instrutor ID recebido:", instrutorId); // debug
+
   try {
     const [rows] = await db.query(
       "SELECT estrelas, comentario, primeiro_nome, sobrenome, telefone, data_avaliacao FROM avaliacoes WHERE instrutor_id = ? ORDER BY data_avaliacao DESC",
       [instrutorId]
     );
+    console.log("Resultados:", rows); // debug
     res.json(rows);
   } catch (err) {
-    console.error(err);
+    console.error("Erro MySQL:", err); // debug detalhado
     res.status(500).json({ erro: "Erro ao buscar avaliações" });
   }
 });
