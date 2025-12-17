@@ -925,22 +925,21 @@ input[type="file"] {
   margin-bottom: 5px !important;
 }
 
-  .mensagem-vazia {
-    display: block !important;
-    width: 100% !important;
-    text-align: center !important;
-    margin: 20px -30px !important;
-    color: #555 !important;
-    font-size: 14px !important;
-  }
+.mensagem-vazia {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 20px auto !important;   /* centraliza horizontalmente */
+  color: #555 !important;
+  font-size: 14px !important;
+}
 
-  .mensagem-vazia i {
-    display: block !important;
-    margin: 0 auto 8px !important;
-    text-align: center !important;
-    font-size: 32px !important;
-    color: orange !important;
-  }
+.mensagem-vazia i {
+  display: block !important;
+  margin: 0 auto 8px !important;  /* centraliza o ícone */
+  font-size: 32px !important;
+  color: orange !important;
+}
 }
 
 /* Desktop */
