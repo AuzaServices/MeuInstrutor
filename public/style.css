@@ -1091,3 +1091,25 @@ hr {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
 }
+
+/* Caixa do modal */
+.modal-conteudo {
+  background: #fff;
+  border-radius: 10px;
+  width: 600px;          /* largura padrão */
+  max-width: 90%;        /* não passa da tela */
+  max-height: 80%;       /* limita altura */
+  overflow-y: auto;      /* cria scroller interno */
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  .modal-conteudo {
+    width: 95%;          /* ocupa quase toda largura */
+    max-height: 85%;     /* menor altura no mobile */
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
