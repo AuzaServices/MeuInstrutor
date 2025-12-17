@@ -1034,12 +1034,13 @@ input[type="file"] {
   border-radius: 10px;
   width: 600px;
   max-width: 90%;
-  max-height: 80%;
+  /* max-height pode ser mantido se quiser limitar o modal na tela,
+     mas se quiser que tudo cresça até onde for, pode remover */
   padding: 1rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;          /* impede estourar */
+  /* antes estava overflow: hidden; → remove isso */
 }
 
 /* Responsividade para mobile */
@@ -1143,14 +1144,13 @@ input[type="file"] {
 }
 
 /* Área dos comentários com scroll interno */
+/* Área dos comentários sem scroll interno */
 #comentarios-lista {
-  flex: 1;
-  max-height: 40vh;      /* altura máxima da lista */
-  overflow-y: auto;      /* scroll só aqui */
   margin: 1rem 0;
-  padding-right: 0.5rem; /* espaço para scrollbar */
+  padding-right: 0.5rem;
   border: 1px solid #eee;
   border-radius: 6px;
+  /* removido max-height e overflow */
 }
 
 /* Botão fechar */
