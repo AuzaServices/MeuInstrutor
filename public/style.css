@@ -859,20 +859,35 @@ input[type="file"] {
 }
 
 /* Mobile */
+/* Mobile */
+/* Mobile */
 @media (max-width: 1023px) {
-  .cards-container {
+  #resultado-mobile {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    overflow-x: hidden !important; /* evita barra lateral invisível */
+  }
+
+  .carousel-container {
     display: flex !important;
     overflow-x: auto !important;       /* ativa rolagem horizontal */
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
     gap: 16px !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    padding-left: 0 !important;        /* remove espaço interno à esquerda */
+    padding-right: 0 !important;       /* remove espaço interno à direita */
+    margin-left: 0 !important;         /* remove margem invisível */
+    margin-right: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  .cards-container .card-instrutor {
+  .carousel-container::-webkit-scrollbar {
+    display: none !important;          /* esconde a barra de rolagem */
+  }
+
+  .carousel-container .card-instrutor {
     flex: 0 0 auto !important;
     scroll-snap-align: start !important;
     width: 80% !important;
@@ -880,15 +895,13 @@ input[type="file"] {
     margin-left: 0 !important;
   }
 
-  .cards-container .card-instrutor:first-child {
-    margin-left: 0 !important;
+  .carousel-container .card-instrutor:first-child {
+    margin-left: 0 !important;         /* garante que o primeiro encoste na borda */
   }
 
   .resultado-bloco {
-    text-align: center !important;
-    margin-top: -80px !important;
-    margin-left: 0 !important;
     padding-left: 0 !important;
+    margin-left: 0 !important;
   }
 
   #filtro-info,
@@ -918,52 +931,69 @@ input[type="file"] {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  .cards-container {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr) !important;
-    gap: 20px !important;
-    margin-top: 5px !important;
-    justify-items: start !important;
-    padding-left: 40px !important;
-  }
+  #resultado-mobile { display: none; }
+  #resultado-desktop { display: block; }
 
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 cards por linha */
+    gap: 20px;
+    margin-top: 5px;             /* sobe os cards */
+    justify-items: start;        /* cards alinhados à esquerda da coluna */
+    padding-left: 40px;          /* desloca tudo mais para a direita */
+  }
   .cards-container .card-instrutor {
-    width: 100% !important;
-    max-width: 220px !important;
+    width: 100%;
+    max-width: 220px;
   }
 
   .resultado-bloco {
-    margin-bottom: 20px !important;
-    margin-top: -70px !important;
-    margin-left: -20px !important;
-    padding-left: 60px !important;
+    margin-bottom: 20px;
+    margin-top: -70px;   
+    margin-left: -20px;        /* sobe o bloco inteiro */
+    padding-left: 60px;          /* desloca textos junto com os cards */
   }
 
   .resultado-bloco h4,
   .resultado-bloco p {
-    text-align: left !important;
-    margin-left: 20px !important;
+    text-align: left;  
+    margin-left: 20px;          /* alinhados ao início da primeira coluna */
   }
-
-  #filtro-info,
+    #filtro-info,
   #filtro-aplicado {
-    text-align: left !important;
-    margin-left: 60px !important;
-    margin-top: -10px !important;
+    text-align: left;     /* alinhados ao início da primeira coluna */
+    margin-left: 60px;    /* desloca para a direita */
+    margin-top: -10px;    /* sobe os textos */
   }
 
-  .mensagem-vazia {
-    text-align: left !important;
-    margin-left: 60px !important;
-    margin-top: 20px !important;
-    color: #555 !important;
-    font-size: 14px !important;
-  }
+}
 
-  .mensagem-vazia i {
-    font-size: 32px !important;
-    color: orange !important;
-    margin-bottom: 8px !important;
-    display: inline-block !important;
-  }
+.mensagem-vazia {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.mensagem-vazia i {
+  font-size: 32px;
+  color: orange;
+  margin-bottom: 8px;
+  display: block;
+}
+
+@media (max-width: 1023px) {
+.mensagem-vazia {
+  display: block;        /* ocupa uma linha inteira */
+  width: 100%;           /* garante largura total */
+  text-align: center;    /* centraliza o conteúdo */
+  margin: 20px -35px;    /* mesmo recuo lateral que você usa nos filtros */
+}
+
+.mensagem-vazia i {
+  display: block;        /* ícone ocupa linha própria */
+  margin: 0 auto 8px;    /* centraliza horizontalmente e dá espaço abaixo */
+  font-size: 32px;
+  color: orange;
+}
 }
