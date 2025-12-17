@@ -318,16 +318,21 @@ async function buscarInstrutor(event) {
         const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
         const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-        cardsHtml += `
-          <div class="card-instrutor">
-            <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-            <div class="conteudo">
-              <h3>${primeiroNome} ${segundoNome}</h3>
-              <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
-              <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-            </div>
-          </div>
-        `;
+cardsHtml += `
+  <div class="card-instrutor">
+    <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+    <div class="conteudo">
+      <h3>${primeiroNome} ${segundoNome}</h3>
+      <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+      <div class="acoes">
+        <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+        <button class="btn-avaliar" data-id="${instrutor._id}">
+          ⭐ Avaliar
+        </button>
+      </div>
+    </div>
+  </div>
+`;
       });
     }
 
@@ -750,6 +755,67 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
     } else {
       label.classList.remove("uploaded"); // remove seta se limpar
     }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("modal-avaliacao");
+  const closeBtn = document.querySelector(".close");
+  const avaliarBtns = document.querySelectorAll(".btn-avaliar");
+  const estrelas = document.querySelectorAll(".estrelas span");
+  const form = document.getElementById("form-avaliacao");
+
+  let estrelaSelecionada = 0;
+
+  // Abrir modal
+  avaliarBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
+  });
+
+  // Fechar modal
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Seleção de estrelas
+  estrelas.forEach(star => {
+    star.addEventListener("click", () => {
+      estrelaSelecionada = parseInt(star.dataset.star);
+      estrelas.forEach(s => s.classList.remove("selecionada"));
+      for (let i = 0; i < estrelaSelecionada; i++) {
+        estrelas[i].classList.add("selecionada");
+      }
+    });
+  });
+
+  // Submissão do formulário
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (estrelaSelecionada === 0) {
+      alert("Selecione uma estrela antes de enviar!");
+      return;
+    }
+
+    // Captura dos dados
+    const comentario = form.querySelector("textarea").value;
+    const nome = form.querySelector("input[type=text]").value;
+    const sobrenome = form.querySelectorAll("input[type=text]")[1].value;
+    const telefone = form.querySelector("input[type=tel]").value;
+
+    // Adiciona comentário na lista
+    const lista = document.getElementById("comentarios-lista");
+    const novoComentario = document.createElement("p");
+    novoComentario.textContent = "⭐".repeat(estrelaSelecionada) + " - " + comentario;
+    lista.appendChild(novoComentario);
+
+    // Aqui você pode salvar no backend via fetch/AJAX
+    alert("Avaliação registrada com sucesso!");
+
+    form.reset();
+    estrelas.forEach(s => s.classList.remove("selecionada"));
+    estrelaSelecionada = 0;
   });
 });
 
