@@ -856,21 +856,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Função para carregar avaliações existentes
   async function carregarAvaliacoes(instrutorId) {
-    try {
-      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
-      const avaliacoes = await resposta.json();
+  try {
+    const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
+    const avaliacoes = await resposta.json();
 
-      const lista = document.getElementById("comentarios-lista");
-      lista.innerHTML = "";
+    const lista = document.getElementById("comentarios-lista");
+    lista.innerHTML = "";
 
-      avaliacoes.forEach(av => {
-        const item = document.createElement("p");
-        item.textContent = "⭐".repeat(av.estrelas) + " - " + av.comentario;
-        lista.appendChild(item);
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    avaliacoes.forEach(av => {
+      // Container do comentário
+      const comentarioDiv = document.createElement("div");
+      comentarioDiv.classList.add("comentario");
+
+      // Cabeçalho: Nome + Estrelas
+      const cabecalho = document.createElement("div");
+      cabecalho.classList.add("cabecalho");
+
+      const nome = document.createElement("span");
+      nome.classList.add("nome");
+      nome.textContent = `${av.primeiro_nome} ${av.sobrenome}`;
+
+      const estrelas = document.createElement("span");
+      estrelas.classList.add("estrelas");
+      estrelas.textContent = "★".repeat(av.estrelas) + "☆".repeat(5 - av.estrelas);
+
+      cabecalho.appendChild(nome);
+      cabecalho.appendChild(estrelas);
+
+      // Comentário
+      const comentario = document.createElement("p");
+      comentario.classList.add("texto");
+      comentario.textContent = av.comentario;
+
+      // Linha divisória
+      const hr = document.createElement("hr");
+
+      // Monta tudo
+      comentarioDiv.appendChild(cabecalho);
+      comentarioDiv.appendChild(comentario);
+      comentarioDiv.appendChild(hr);
+
+      lista.appendChild(comentarioDiv);
+    });
+  } catch (err) {
+    console.error("❌ Erro ao carregar avaliações:", err);
+  }
   }
 });
 </script>
