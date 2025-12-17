@@ -862,64 +862,41 @@ input[type="file"] {
 /* Mobile */
 @media (max-width: 1023px) {
   #resultado-mobile {
-    display: block !important;
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
-    overflow: hidden !important;
-  }
-
-  #resultado-desktop {
-    display: none !important;
+    overflow-x: hidden !important;
   }
 
   .carousel-container {
     display: flex !important;
-    overflow-x: auto !important;       /* ativa rolagem horizontal */
+    overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    gap: 16px !important;              /* espaço entre os cards */
-    padding: 0 !important;             /* remove espaço interno */
-    margin: 0 !important;              /* remove margem extra */
+    gap: 16px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  .carousel-container::-webkit-scrollbar {
-    display: none !important;          /* esconde a barra de rolagem */
-  }
-
   .carousel-container .card-instrutor {
-    flex: 0 0 auto !important;         /* cada card ocupa só o espaço dele */
+    flex: 0 0 auto !important;
     scroll-snap-align: start !important;
-    width: 80% !important;             /* largura proporcional */
-    max-width: none !important;        /* remove limite artificial */
-    margin: 0 !important;              /* sem margem lateral invisível */
+    width: 80% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
   }
 
-  /* garante que o primeiro e último card encostem nos limites da tela */
   .carousel-container .card-instrutor:first-child {
     margin-left: 0 !important;
   }
 
-  .carousel-container .card-instrutor:last-child {
-    margin-right: 0 !important;
-  }
-
-  /* Move as duas frases juntas */
   .resultado-bloco {
-    text-align: center !important;   /* centraliza no mobile */
-    margin-top: -80px !important;    /* sobe o bloco inteiro */
-    margin-left: 15px !important;    /* desloca para a direita */
-  }
-
-  /* garante que os textos dentro sigam o alinhamento */
-  #filtro-info,
-  #filtro-aplicado {
-    display: block !important;        /* cada frase ocupa uma linha */
-    width: 100% !important;           /* garante largura total */
-    text-align: center !important;    /* centraliza o texto no meio da tela */
-    margin: 5px -35px !important;     /* controla o espaço vertical entre elas */
+    padding-left: 0 !important;
+    margin-left: 0 !important;
   }
 }
 
