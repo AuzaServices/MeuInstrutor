@@ -852,8 +852,8 @@ input[type="file"] {
 /* Textos acima dos resultados */
 .resultado-bloco h4,
 .resultado-bloco p {
-  margin: 0 0 10px 0;
-  text-align: left;
+  margin: 0 0 10px -5px;
+  text-align: center;
   font-size: 16px;
   color: #333;
 }
@@ -955,7 +955,7 @@ input[type="file"] {
   display: block;        /* ocupa uma linha inteira */
   width: 100%;           /* garante largura total */
   text-align: center;    /* centraliza o conteúdo */
-  margin: 0 0 10px -5px;    /* mesmo recuo lateral que você usa nos filtros */
+  margin: 20px -35px;    /* mesmo recuo lateral que você usa nos filtros */
 }
 
 .mensagem-vazia i {
