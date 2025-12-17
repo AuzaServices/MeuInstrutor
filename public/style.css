@@ -895,6 +895,19 @@ input[type="file"] {
   text-align: center;    /* centraliza o texto no meio da tela */
   margin: 5px -35px;         /* controla o espaço vertical entre elas */
 }
+
+  .mensagem-vazia {
+    text-align: center;
+    margin: 20px auto;
+    width: 100%;
+  }
+
+  .mensagem-vazia i {
+    font-size: 32px;
+    color: orange;
+    margin-bottom: 8px;
+    display: block;
+  }
 }
 
 /* Desktop */
