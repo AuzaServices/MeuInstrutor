@@ -1012,28 +1012,66 @@ input[type="file"] {
 }
 
 /* Modal geral */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Inputs e textarea do modal */
+.modal-input, .modal-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.modal-content {
-  background: #fff;
-  border-radius: 10px;
-  width: 600px;
-  max-width: 90%;
-  max-height: 80%;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
+.modal-textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.modal-input:focus, .modal-textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Botão exclusivo do modal */
+.modal-button {
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estrelas dentro do modal */
+.modal-estrelas span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #444; /* padrão escuro/ôco */
+}
+
+.modal-estrelas span.selecionada {
+  color: gold; /* preenchida */
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  .modal-input, .modal-textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .modal-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
 }
 
 /* Área dos comentários com scroll interno */
@@ -1046,21 +1084,6 @@ input[type="file"] {
   border: 1px solid #eee;
   border-radius: 6px;
 }
-
-/* Responsividade para mobile */
-@media (max-width: 480px) {
-  .modal-content {
-    width: 95%;
-    max-height: 70%;
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  #comentarios-lista {
-    max-height: 30vh;    /* menor altura no mobile */
-  }
-}
-
 
 .close {
   float: right;
@@ -1108,31 +1131,3 @@ hr {
   margin: 1rem 0;
 }
 
-#comentario {
-  width: 100%;            /* ocupa toda largura disponível */
-  max-width: 100%;        /* nunca passa do modal */
-  min-height: 120px;
-  padding: 0.8rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
-  resize: none;           /* impede redimensionamento feio */
-  transition: border-color 0.3s, box-shadow 0.3s;
-  box-sizing: border-box; /* garante que padding conte na largura */
-}
-
-#comentario:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
-}
-
-/* Responsividade para mobile */
-@media (max-width: 480px) {
-  #comentario {
-    font-size: 0.9rem;     /* texto menor no mobile */
-    min-height: 100px;     /* altura reduzida */
-  }
-}
-
-/* Caixa do modal */
