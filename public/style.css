@@ -955,12 +955,13 @@ input[type="file"] {
   display: block;        /* ocupa uma linha inteira */
   width: 100%;           /* garante largura total */
   text-align: center;    /* centraliza tudo no meio da tela */
-  margin: 20px -35px;    /* controla o espaço vertical e ajusta lateral */
+  margin: 20px -5px;    /* controla o espaço vertical e ajusta lateral */
 }
 
 .mensagem-vazia i {
   display: block;        /* ícone ocupa linha própria */
   margin: 0 auto 8px;    /* centraliza horizontalmente e dá espaço abaixo */
+  margin-left: -70px;
   font-size: 32px;       /* tamanho da lupa */
   color: orange;         /* cor da lupa */
 }
