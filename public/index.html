@@ -764,22 +764,27 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("modal-avaliacao");
   const closeBtn = document.querySelector(".close");
-  const avaliarBtns = document.querySelectorAll(".btn-avaliar");
   const estrelas = document.querySelectorAll(".estrelas span");
   const form = document.getElementById("form-avaliacao");
 
   let estrelaSelecionada = 0;
 
-  // Abrir modal
-  avaliarBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
+  // Abrir modal (delegação)
+  document.body.addEventListener("click", (e) => {
+    if (e.target.classList.contains("btn-avaliar")) {
       modal.style.display = "block";
-    });
+    }
   });
 
   // Fechar modal
   closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
   });
 
   // Seleção de estrelas
@@ -801,19 +806,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Captura dos dados
     const comentario = form.querySelector("textarea").value;
-    const nome = form.querySelector("input[type=text]").value;
-    const sobrenome = form.querySelectorAll("input[type=text]")[1].value;
+    const nome = form.querySelector("input[placeholder='Primeiro nome']").value;
+    const sobrenome = form.querySelector("input[placeholder='Sobrenome']").value;
     const telefone = form.querySelector("input[type=tel]").value;
 
-    // Adiciona comentário na lista
     const lista = document.getElementById("comentarios-lista");
     const novoComentario = document.createElement("p");
     novoComentario.textContent = "⭐".repeat(estrelaSelecionada) + " - " + comentario;
     lista.appendChild(novoComentario);
 
-    // Aqui você pode salvar no backend via fetch/AJAX
     alert("Avaliação registrada com sucesso!");
 
     form.reset();
@@ -821,8 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
     estrelaSelecionada = 0;
   });
 });
-
-  </script>
+</script>
 
 <!-- Modal de avaliações -->
 <div id="modal-avaliacao" class="modal">
