@@ -326,11 +326,16 @@ cardsHtml += `
     <div class="conteudo">
       <h3>${primeiroNome} ${segundoNome}</h3>
       <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+
+      <!-- Média de estrelas e total de avaliações -->
+      <p class="media-estrelas">
+        ⭐ Média: ${instrutor.media_estrelas ? instrutor.media_estrelas.toFixed(1) : "N/A"} 
+        (${instrutor.total_avaliacoes || 0} avaliações)
+      </p>
+
       <div class="acoes">
         <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-        <button class="btn-avaliar" data-id="${instrutor._id}">
-          ⭐ Avaliar
-        </button>
+        <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
       </div>
     </div>
   </div>
@@ -770,8 +775,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let estrelaSelecionada = 0;
 
   // Abrir modal (delegação)
-  document.body.addEventListener("click", (e) => {
+  document.body.addEventListener("click", async (e) => {
     if (e.target.classList.contains("btn-avaliar")) {
+      const instrutorId = e.target.getAttribute("data-id");
+      modal.setAttribute("data-instrutor-id", instrutorId);
+
+      // Carregar avaliações existentes do instrutor
+      await carregarAvaliacoes(instrutorId);
+
       modal.style.display = "block";
     }
   });
@@ -799,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Submissão do formulário
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (estrelaSelecionada === 0) {
       alert("Selecione uma estrela antes de enviar!");
@@ -810,18 +821,57 @@ document.addEventListener("DOMContentLoaded", () => {
     const nome = form.querySelector("input[placeholder='Primeiro nome']").value;
     const sobrenome = form.querySelector("input[placeholder='Sobrenome']").value;
     const telefone = form.querySelector("input[type=tel]").value;
+    const instrutorId = modal.getAttribute("data-instrutor-id");
 
-    const lista = document.getElementById("comentarios-lista");
-    const novoComentario = document.createElement("p");
-    novoComentario.textContent = "⭐".repeat(estrelaSelecionada) + " - " + comentario;
-    lista.appendChild(novoComentario);
+    try {
+      const resposta = await fetch("https://meuinstrutor.onrender.com/avaliacoes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          instrutor_id: instrutorId,
+          estrelas: estrelaSelecionada,
+          comentario,
+          primeiro_nome: nome,
+          sobrenome,
+          telefone
+        })
+      });
 
-    alert("Avaliação registrada com sucesso!");
+      if (resposta.ok) {
+        alert("Avaliação registrada com sucesso!");
+        form.reset();
+        estrelas.forEach(s => s.classList.remove("selecionada"));
+        estrelaSelecionada = 0;
 
-    form.reset();
-    estrelas.forEach(s => s.classList.remove("selecionada"));
-    estrelaSelecionada = 0;
+        // Recarregar lista de avaliações
+        await carregarAvaliacoes(instrutorId);
+      } else {
+        alert("Erro ao salvar avaliação.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Falha na conexão com o servidor.");
+    }
   });
+
+  // Função para carregar avaliações existentes
+  async function carregarAvaliacoes(instrutorId) {
+    try {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
+      const avaliacoes = await resposta.json();
+
+      const lista = document.getElementById("comentarios-lista");
+      lista.innerHTML = "";
+
+      avaliacoes.forEach(av => {
+        const item = document.createElement("p");
+        item.textContent = "⭐".repeat(av.estrelas) + " - " + av.comentario;
+        lista.appendChild(item);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
 });
 </script>
 

@@ -317,6 +317,51 @@ app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req
   }
 });
 
+// Buscar todas as avaliações de um instrutor
+app.get("/avaliacoes/:instrutorId", async (req, res) => {
+  const { instrutorId } = req.params;
+  try {
+    const [rows] = await db.query(
+      "SELECT estrelas, comentario, primeiro_nome, sobrenome, telefone, data_avaliacao FROM avaliacoes WHERE instrutor_id = ? ORDER BY data_avaliacao DESC",
+      [instrutorId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: "Erro ao buscar avaliações" });
+  }
+});
+
+// Inserir nova avaliação
+app.post("/avaliacoes", async (req, res) => {
+  const { instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone } = req.body;
+  try {
+    await db.query(
+      "INSERT INTO avaliacoes (instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone) VALUES (?, ?, ?, ?, ?, ?)",
+      [instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone]
+    );
+    res.json({ mensagem: "Avaliação registrada com sucesso!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: "Erro ao salvar avaliação" });
+  }
+});
+
+// Calcular média de estrelas e total de avaliações por instrutor
+app.get("/instrutores/avaliacoes", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT instrutor_id, AVG(estrelas) AS media_estrelas, COUNT(*) AS total_avaliacoes
+      FROM avaliacoes
+      GROUP BY instrutor_id
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: "Erro ao calcular médias" });
+  }
+});
+
 /* ========================= START ========================= */
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
