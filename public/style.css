@@ -1109,20 +1109,30 @@ hr {
 }
 
 #comentario {
-  width: 100%;
+  width: 100%;            /* ocupa toda largura disponível */
+  max-width: 100%;        /* nunca passa do modal */
   min-height: 120px;
   padding: 0.8rem 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
-  resize: none; /* impede redimensionamento feio */
+  resize: none;           /* impede redimensionamento feio */
   transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box; /* garante que padding conte na largura */
 }
 
 #comentario:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  #comentario {
+    font-size: 0.9rem;     /* texto menor no mobile */
+    min-height: 100px;     /* altura reduzida */
+  }
 }
 
 /* Caixa do modal */
