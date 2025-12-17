@@ -909,13 +909,13 @@ input[type="file"] {
     margin-left: 0 !important;
   }
 
-  #filtro-info,
-  #filtro-aplicado {
-    display: block !important;
-    width: 100% !important;
-    text-align: center !important;
-    margin: 5px -35px !important;
-  }
+#filtro-info,
+#filtro-aplicado {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 15px 0px 5px 0px !important; /* adiciona espaço acima */
+}
 
   .mensagem-vazia {
     display: block !important;
