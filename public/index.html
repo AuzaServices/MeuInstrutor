@@ -769,21 +769,21 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("modal-avaliacao");
   const closeBtn = document.querySelector(".close");
-  const estrelas = document.querySelectorAll(".estrelas span");
+  const estrelas = document.querySelectorAll(".modal-estrelas span");
   const form = document.getElementById("form-avaliacao");
 
   let estrelaSelecionada = 0;
 
-  // Abrir modal (delegação)
+  // Abrir modal ao clicar no botão
   document.body.addEventListener("click", async (e) => {
     if (e.target.classList.contains("btn-avaliar")) {
       const instrutorId = e.target.getAttribute("data-id");
       modal.setAttribute("data-instrutor-id", instrutorId);
 
-      // Carregar avaliações existentes do instrutor
+      // Carregar avaliações existentes
       await carregarAvaliacoes(instrutorId);
 
-      modal.style.display = "block";
+      modal.style.display = "flex"; // usa flex para centralizar
     }
   });
 
@@ -856,51 +856,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Função para carregar avaliações existentes
   async function carregarAvaliacoes(instrutorId) {
-  try {
-    const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
-    const avaliacoes = await resposta.json();
+    try {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
+      const avaliacoes = await resposta.json();
 
-    const lista = document.getElementById("comentarios-lista");
-    lista.innerHTML = "";
+      const lista = document.getElementById("comentarios-lista");
+      lista.innerHTML = "";
 
-    avaliacoes.forEach(av => {
-      // Container do comentário
-      const comentarioDiv = document.createElement("div");
-      comentarioDiv.classList.add("comentario");
+      avaliacoes.forEach(av => {
+        const comentarioDiv = document.createElement("div");
+        comentarioDiv.classList.add("comentario");
 
-      // Cabeçalho: Nome + Estrelas
-      const cabecalho = document.createElement("div");
-      cabecalho.classList.add("cabecalho");
+        const cabecalho = document.createElement("div");
+        cabecalho.classList.add("cabecalho");
 
-      const nome = document.createElement("span");
-      nome.classList.add("nome");
-      nome.textContent = `${av.primeiro_nome} ${av.sobrenome}`;
+        const nome = document.createElement("span");
+        nome.classList.add("nome");
+        nome.textContent = `${av.primeiro_nome} ${av.sobrenome}`;
 
-      const estrelas = document.createElement("span");
-      estrelas.classList.add("estrelas");
-      estrelas.textContent = "★".repeat(av.estrelas) + "☆".repeat(5 - av.estrelas);
+        const estrelasSpan = document.createElement("span");
+        estrelasSpan.classList.add("estrelas");
+        estrelasSpan.textContent = "★".repeat(av.estrelas) + "☆".repeat(5 - av.estrelas);
 
-      cabecalho.appendChild(nome);
-      cabecalho.appendChild(estrelas);
+        cabecalho.appendChild(nome);
+        cabecalho.appendChild(estrelasSpan);
 
-      // Comentário
-      const comentario = document.createElement("p");
-      comentario.classList.add("texto");
-      comentario.textContent = av.comentario;
+        const comentario = document.createElement("p");
+        comentario.classList.add("texto");
+        comentario.textContent = av.comentario;
 
-      // Linha divisória
-      const hr = document.createElement("hr");
+        const hr = document.createElement("hr");
 
-      // Monta tudo
-      comentarioDiv.appendChild(cabecalho);
-      comentarioDiv.appendChild(comentario);
-      comentarioDiv.appendChild(hr);
+        comentarioDiv.appendChild(cabecalho);
+        comentarioDiv.appendChild(comentario);
+        comentarioDiv.appendChild(hr);
 
-      lista.appendChild(comentarioDiv);
-    });
-  } catch (err) {
-    console.error("❌ Erro ao carregar avaliações:", err);
-  }
+        lista.appendChild(comentarioDiv);
+      });
+    } catch (err) {
+      console.error("❌ Erro ao carregar avaliações:", err);
+    }
   }
 });
 </script>
