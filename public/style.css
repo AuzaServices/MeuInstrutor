@@ -869,6 +869,11 @@ input[type="file"] {
     overflow-x: hidden !important; /* evita barra lateral invisível */
   }
 
+    #resultado-desktop {
+    display: none !important; /* força esconder no mobile */
+  }
+
+
   .carousel-container {
     display: flex !important;
     overflow-x: auto !important;       /* ativa rolagem horizontal */
