@@ -1016,6 +1016,7 @@ input[type="file"] {
 
 /* Container do modal */
 /* Container do modal */
+/* Container do modal */
 .modal {
   display: none;              /* escondido por padrão */
   position: fixed;
@@ -1052,23 +1053,27 @@ input[type="file"] {
 }
 
 /* Inputs e textarea */
-.modal-input, .modal-textarea {
+.modal-input,
+.modal-textarea {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.6rem 0.8rem;     /* mais compacto */
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+/* Caixa de comentário (textarea) */
 .modal-textarea {
-  min-height: 120px;
-  resize: none;
+  min-height: 70px;           /* altura reduzida */
+  height: 70px;               /* fixa mais baixa */
+  resize: vertical;           /* permite expandir manualmente */
 }
 
-.modal-input:focus, .modal-textarea:focus {
+.modal-input:focus,
+.modal-textarea:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
 }
@@ -1077,19 +1082,20 @@ input[type="file"] {
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;        /* espaçamento entre campos */
+  gap: 0.6rem;                /* espaçamento menor entre campos */
   margin-top: 1rem;
 }
 
 /* Botão exclusivo do modal */
 .modal-button {
-  align-self: flex-start;     /* evita estourar pra baixo */
-  padding: 0.8rem 1rem;
+  align-self: flex-start;
+  padding: 0.5rem 0.8rem;     /* altura e largura menores */
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #007bff;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -1104,25 +1110,35 @@ input[type="file"] {
 }
 
 .modal-estrelas span {
-  font-size: 28px;
+  font-size: 26px;            /* levemente menor */
   cursor: pointer;
-  color: #444; /* padrão escuro/ôco */
+  color: #444;                /* padrão escuro/ôco */
 }
 
 .modal-estrelas span.selecionada {
-  color: gold; /* preenchida */
+  color: gold;                /* preenchida */
 }
 
 /* Responsividade para mobile */
 @media (max-width: 480px) {
-  .modal-input, .modal-textarea {
-    font-size: 0.9rem;
-    padding: 0.6rem 0.8rem;
+  .modal-input,
+  .modal-textarea {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .modal-textarea {
+    min-height: 60px;         /* ainda menor no mobile */
+    height: 60px;
   }
 
   .modal-button {
-    font-size: 0.9rem;
-    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .modal-estrelas span {
+    font-size: 24px;
   }
 }
 
