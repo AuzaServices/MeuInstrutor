@@ -876,7 +876,10 @@ input[type="file"] {
   box-sizing: border-box;   /* garante que padding/margin não empurre nada */
 }
 
-  .carousel-container::-webkit-scrollbar { display: none; }
+.carousel-container::-webkit-scrollbar {
+  display: none;            /* esconde a barra de rolagem */
+}
+
 .carousel-container .card-instrutor {
   flex: 0 0 auto;           /* cada card ocupa só o espaço dele */
   scroll-snap-align: start;
