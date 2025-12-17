@@ -735,6 +735,34 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
   });
 });
 
+function mostrarResultados(instrutores) {
+  let html = "";
+
+  if (instrutores.length === 0) {
+    // Mensagem de vazio
+    html = `
+      <div class="mensagem-vazia">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <p>Ainda não foram cadastrados instrutores para sua busca</p>
+      </div>
+    `;
+  } else {
+    // Monta os cards normalmente
+    html = instrutores.map(instrutor => `
+      <div class="card-instrutor">
+        <h4>${instrutor.nome}</h4>
+        <p>${instrutor.cidade}</p>
+      </div>
+    `).join("");
+  }
+
+  // Injeta nos containers
+  document.getElementById("resultado-mobile").innerHTML =
+    `<div class="carousel-container">${html}</div>`;
+  document.getElementById("resultado-desktop").innerHTML =
+    `<div class="cards-container">${html}</div>`;
+}
+
   </script>
 </body>
 </html>

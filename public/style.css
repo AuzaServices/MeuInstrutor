@@ -935,3 +935,17 @@ input[type="file"] {
   }
 
 }
+
+.mensagem-vazia {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.mensagem-vazia i {
+  font-size: 32px;
+  color: orange;
+  margin-bottom: 8px;
+  display: block;
+}
