@@ -909,7 +909,8 @@ input[type="file"] {
 
   .resultado-bloco {
     margin-bottom: 20px;
-    margin-top: -20px;           /* sobe o bloco inteiro */
+    margin-top: -70px;   
+    margin-left: -20px;        /* sobe o bloco inteiro */
     padding-left: 60px;          /* desloca textos junto com os cards */
   }
 
