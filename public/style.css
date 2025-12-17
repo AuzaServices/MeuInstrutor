@@ -1015,6 +1015,7 @@ input[type="file"] {
 /* Inputs e textarea do modal */
 
 /* Container do modal */
+/* Container do modal */
 .modal {
   display: none;              /* escondido por padrão */
   position: fixed;
@@ -1050,6 +1051,7 @@ input[type="file"] {
   }
 }
 
+/* Inputs e textarea */
 .modal-input, .modal-textarea {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -1071,8 +1073,17 @@ input[type="file"] {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
 }
 
+/* Formulário dentro do modal */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;        /* espaçamento entre campos */
+  margin-top: 1rem;
+}
+
 /* Botão exclusivo do modal */
 .modal-button {
+  align-self: flex-start;     /* evita estourar pra baixo */
   padding: 0.8rem 1rem;
   border: none;
   border-radius: 8px;
@@ -1088,6 +1099,10 @@ input[type="file"] {
 }
 
 /* Estrelas dentro do modal */
+.modal-estrelas {
+  margin: 0.5rem 0;
+}
+
 .modal-estrelas span {
   font-size: 28px;
   cursor: pointer;
@@ -1122,22 +1137,14 @@ input[type="file"] {
   border-radius: 6px;
 }
 
+/* Botão fechar */
 .close {
-  float: right;
+  align-self: flex-end;
   font-size: 28px;
   cursor: pointer;
 }
 
-.estrelas span {
-  font-size: 28px;
-  cursor: pointer;
-  color: #ccc;
-}
-
-.estrelas span.selecionada {
-  color: gold;
-}
-
+/* Comentários renderizados */
 .comentario {
   margin-bottom: 1rem;
 }
@@ -1167,4 +1174,3 @@ hr {
   border-top: 1px solid #ccc;
   margin: 1rem 0;
 }
-
