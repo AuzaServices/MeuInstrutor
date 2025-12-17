@@ -895,19 +895,6 @@ input[type="file"] {
   text-align: center;    /* centraliza o texto no meio da tela */
   margin: 5px -35px;         /* controla o espaço vertical entre elas */
 }
-
-  .mensagem-vazia {
-    text-align: center;
-    margin: 20px auto;
-    width: 100%;
-  }
-
-  .mensagem-vazia i {
-    font-size: 32px;
-    color: orange;
-    margin-bottom: 8px;
-    display: block;
-  }
 }
 
 /* Desktop */
@@ -961,4 +948,23 @@ input[type="file"] {
   color: orange;
   margin-bottom: 8px;
   display: block;
+}
+
+@media (max-width: 1023px) {
+  .mensagem-vazia {
+    display: flex;              /* usa flexbox */
+    flex-direction: column;     /* ícone em cima, texto embaixo */
+    align-items: center;        /* centraliza horizontalmente */
+    justify-content: center;    /* centraliza verticalmente */
+    text-align: center;         /* centraliza o texto */
+    margin: 20px auto;
+    width: 100%;
+  }
+
+  .mensagem-vazia i {
+    font-size: 32px;
+    color: orange;
+    margin-bottom: 8px;
+    display: block;
+  }
 }
