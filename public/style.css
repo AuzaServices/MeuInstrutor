@@ -882,7 +882,7 @@ input[type="file"] {
     gap: 16px !important;
     padding-left: 0 !important;        /* remove espaço interno à esquerda */
     padding-right: 0 !important;       /* remove espaço interno à direita */
-    margin-left: 35px !important;         /* remove margem invisível */
+    margin-left: 0 !important;         /* remove margem invisível */
     margin-right: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
