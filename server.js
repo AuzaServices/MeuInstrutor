@@ -1,6 +1,6 @@
 // server.js
 const express = require("express");
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
@@ -24,8 +24,9 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  connectTimeout: 10000 // 10 segundos
+  connectTimeout: 10000
 });
+
 
 // Testa a conexão inicial
 db.getConnection((err, connection) => {
