@@ -1020,13 +1020,25 @@ input[type="file"] {
   background: rgba(0,0,0,0.7);
 }
 
-.modal-content {
+.modal-conteudo {
   background: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
+  border-radius: 10px;
+  width: 600px;          /* largura padrão desktop */
+  max-width: 90%;        /* não passa da tela */
+  max-height: 80%;       /* limita altura para criar scroll */
+  overflow-y: auto;      /* rolamento interno */
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 480px) {
+  .modal-conteudo {
+    width: 95%;          /* ocupa quase toda largura */
+    max-height: 70%;     /* menor altura no mobile */
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    overflow-y: auto;    /* mantém scroll interno */
+  }
 }
 
 .close {
@@ -1093,23 +1105,5 @@ hr {
 }
 
 /* Caixa do modal */
-.modal-conteudo {
-  background: #fff;
-  border-radius: 10px;
-  width: 600px;          /* largura padrão */
-  max-width: 90%;        /* não passa da tela */
-  max-height: 80%;       /* limita altura */
-  overflow-y: auto;      /* cria scroller interno */
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
 
 /* Responsividade para mobile */
-@media (max-width: 480px) {
-  .modal-conteudo {
-    width: 95%;          /* ocupa quase toda largura */
-    max-height: 85%;     /* menor altura no mobile */
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-}
