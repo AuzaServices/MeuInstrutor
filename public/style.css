@@ -954,15 +954,14 @@ input[type="file"] {
 .mensagem-vazia {
   display: block;        /* ocupa uma linha inteira */
   width: 100%;           /* garante largura total */
-  text-align: center;    /* centraliza tudo no meio da tela */
-  margin: 20px -5px;    /* controla o espaço vertical e ajusta lateral */
+  text-align: center;    /* centraliza o conteúdo */
+  margin: 20px -35px;    /* mesmo recuo lateral que você usa nos filtros */
 }
 
 .mensagem-vazia i {
   display: block;        /* ícone ocupa linha própria */
   margin: 0 auto 8px;    /* centraliza horizontalmente e dá espaço abaixo */
-  margin-left: -70px;
-  font-size: 32px;       /* tamanho da lupa */
-  color: orange;         /* cor da lupa */
+  font-size: 32px;
+  color: orange;
 }
 }
