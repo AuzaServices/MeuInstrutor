@@ -888,13 +888,13 @@ input[type="file"] {
   }
 
   /* garante que os textos dentro sigam o alinhamento */
-  #filtro-info,
-  #filtro-aplicado {
-    text-align: center;
-    display: block;
-    margin-left: 15px;
-    margin: 5px 0;
-  }
+#filtro-info,
+#filtro-aplicado {
+  display: block;
+  width: fit-content;   /* faz o bloco ter só a largura do texto */
+  margin: 5px auto;     /* centraliza horizontalmente */
+  margin-left: 15px;    /* desloca um pouco para a direita */
+}
 }
 
 /* Desktop */
