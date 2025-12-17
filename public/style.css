@@ -1011,61 +1011,53 @@ input[type="file"] {
 }
 }
 
+/* Modal geral */
 .modal {
-  display: none; /* escondido por padrão */
+  display: none;
   position: fixed;
   z-index: 1000;
   left: 0; top: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.7);
-  display: flex;              /* centraliza conteúdo */
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-conteudo {
+.modal-content {
   background: #fff;
   border-radius: 10px;
-  width: 600px;               /* largura padrão desktop */
-  max-width: 90%;             /* não passa da tela */
-  max-height: 80%;            /* limita altura para criar scroll */
-  overflow-y: auto;           /* rolamento interno */
+  width: 600px;
+  max-width: 90%;
+  max-height: 80%;
   padding: 1rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  scrollbar-width: thin;      /* Firefox */
-  scrollbar-color: #888 #f1f1f1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Scrollbar estilizado (Chrome, Edge, Safari) */
-.modal-conteudo::-webkit-scrollbar {
-  width: 8px;
-}
-.modal-conteudo::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-.modal-conteudo::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-.modal-conteudo::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.close {
-  float: right;
-  font-size: 28px;
-  cursor: pointer;
+/* Área dos comentários com scroll interno */
+#comentarios-lista {
+  flex: 1;
+  max-height: 40vh;      /* altura máxima da lista */
+  overflow-y: auto;      /* scroll só aqui */
+  margin: 1rem 0;
+  padding-right: 0.5rem; /* espaço para scrollbar */
+  border: 1px solid #eee;
+  border-radius: 6px;
 }
 
 /* Responsividade para mobile */
 @media (max-width: 480px) {
-  .modal-conteudo {
-    width: 95%;          /* ocupa quase toda largura */
-    max-height: 70%;     /* menor altura no mobile */
+  .modal-content {
+    width: 95%;
+    max-height: 70%;
     padding: 0.8rem;
     font-size: 0.9rem;
-    overflow-y: auto;    /* mantém scroll interno */
+  }
+
+  #comentarios-lista {
+    max-height: 30vh;    /* menor altura no mobile */
   }
 }
 
@@ -1134,4 +1126,3 @@ hr {
 }
 
 /* Caixa do modal */
-
