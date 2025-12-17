@@ -879,18 +879,13 @@ input[type="file"] {
     max-width: 80%;
   }
 
-  .resultado-bloco h4,
-  .resultado-bloco p {
-    margin-top: 5px;             /* sobe os textos */
-    text-align: left;   
-    margin-top: -50px;         /* alinhados à esquerda no mobile */
-    padding-left: 10px;          /* desloca um pouco à direita */
-  }
-    #filtro-info,
+  /* Somente as frases informativas */
+  #filtro-info,
   #filtro-aplicado {
     text-align: center;   /* centralizado no mobile */
-    margin-left: -45px;
-    margin-top: 5px;
+    margin-top: -10px;    /* sobe mais para o topo */
+    margin-bottom: 8px;   /* espaço entre elas */
+    margin-left: 0;       /* não desloca lateralmente */
   }
 }
 
