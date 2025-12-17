@@ -955,7 +955,7 @@ input[type="file"] {
   display: block;        /* ocupa uma linha inteira */
   width: 100%;           /* garante largura total */
   text-align: center;    /* centraliza o conteúdo */
-  margin: 20px -35px;    /* mesmo recuo lateral que você usa nos filtros */
+  margin: 0 0 10px -5px;    /* mesmo recuo lateral que você usa nos filtros */
 }
 
 .mensagem-vazia i {
