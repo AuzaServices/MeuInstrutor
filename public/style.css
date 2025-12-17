@@ -909,12 +909,20 @@ input[type="file"] {
     margin-left: 0 !important;
   }
 
-#filtro-info,
+#filtro-info {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin-top: 5px !important;   /* espaço acima do primeiro */
+  margin-bottom: 5px !important; /* espaço abaixo */
+}
+
 #filtro-aplicado {
   display: block !important;
   width: 100% !important;
   text-align: center !important;
-  margin: 15px 0px 5px 0px !important; /* adiciona espaço acima */
+  margin-top: 5px !important;   /* espaço acima do segundo */
+  margin-bottom: 5px !important;
 }
 
   .mensagem-vazia {
