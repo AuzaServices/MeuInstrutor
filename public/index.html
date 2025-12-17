@@ -289,46 +289,57 @@ async function buscarInstrutor(event) {
     );
     const instrutores = await resposta.json();
 
-    // Atualiza textos
+    // Atualiza textos informativos
     document.getElementById("filtro-info").innerText =
       `Instrutores disponíveis em ${cidade}/${estado}:`;
     document.getElementById("filtro-aplicado").innerText =
       `Filtro aplicado: Categoria ${categoria}, Sexo ${sexo}`;
 
-    // Monta os cards uma vez só
+    // Monta os cards ou mensagem de vazio
     let cardsHtml = "";
-    instrutores.forEach(instrutor => {
-      const nomes = instrutor.nome.split(" ");
-      const primeiroNome = nomes[0] || "";
-      const segundoNome = nomes[1] || "";
-      const telefone = instrutor.telefone ? instrutor.telefone.replace(/\D/g, "") : "";
-      const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
-      const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-      cardsHtml += `
-        <div class="card-instrutor">
-          <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-          <div class="conteudo">
-            <h3>${primeiroNome} ${segundoNome}</h3>
-            <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
-            <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-          </div>
+    if (instrutores.length === 0) {
+      // Mensagem quando não há instrutores
+      cardsHtml = `
+        <div class="mensagem-vazia">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>Ainda não foram cadastrados instrutores para sua busca</p>
         </div>
       `;
-    });
+    } else {
+      instrutores.forEach(instrutor => {
+        const nomes = instrutor.nome.split(" ");
+        const primeiroNome = nomes[0] || "";
+        const segundoNome = nomes[1] || "";
+        const telefone = instrutor.telefone ? instrutor.telefone.replace(/\D/g, "") : "";
+        const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
+        const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-    // Injeta o mesmo HTML em cada container
-document.getElementById("resultado-mobile").innerHTML =
-  `<div class="carousel-container">${cardsHtml}</div>`;
-document.getElementById("resultado-desktop").innerHTML =
-  `<div class="cards-container">${cardsHtml}</div>`;
+        cardsHtml += `
+          <div class="card-instrutor">
+            <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+            <div class="conteudo">
+              <h3>${primeiroNome} ${segundoNome}</h3>
+              <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+              <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+            </div>
+          </div>
+        `;
+      });
+    }
 
-  } catch (error) {
-    console.error("Erro ao buscar instrutores:", error);
+    // Injeta nos containers de resultado
     document.getElementById("resultado-mobile").innerHTML =
-      "<p>Erro ao buscar instrutores.</p>";
+      `<div class="carousel-container">${cardsHtml}</div>`;
     document.getElementById("resultado-desktop").innerHTML =
-      "<p>Erro ao buscar instrutores.</p>";
+      `<div class="cards-container">${cardsHtml}</div>`;
+
+  } catch (erro) {
+    console.error("Erro ao buscar instrutores:", erro);
+    document.getElementById("resultado-mobile").innerHTML =
+      `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
+    document.getElementById("resultado-desktop").innerHTML =
+      `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
   }
 }
 function carregarFormularioInstrutor() {
@@ -738,34 +749,6 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
     }
   });
 });
-
-function mostrarResultados(instrutores) {
-  let html = "";
-
-  if (instrutores.length === 0) {
-    // Mensagem de vazio
-    html = `
-      <div class="mensagem-vazia">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <p>Ainda não foram cadastrados instrutores para sua busca</p>
-      </div>
-    `;
-  } else {
-    // Monta os cards normalmente
-    html = instrutores.map(instrutor => `
-      <div class="card-instrutor">
-        <h4>${instrutor.nome}</h4>
-        <p>${instrutor.cidade}</p>
-      </div>
-    `).join("");
-  }
-
-  // Injeta nos containers
-  document.getElementById("resultado-mobile").innerHTML =
-    `<div class="carousel-container">${html}</div>`;
-  document.getElementById("resultado-desktop").innerHTML =
-    `<div class="cards-container">${html}</div>`;
-}
 
   </script>
 </body>
