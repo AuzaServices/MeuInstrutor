@@ -864,21 +864,24 @@ input[type="file"] {
   #resultado-mobile { display: block; }
   #resultado-desktop { display: none; }
 
-  .carousel-container {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 10px;   /* sobe os cards */
-    padding-left: 10px; /* leve deslocamento à direita */
-  }
+.carousel-container {
+  display: flex;
+  overflow-x: auto;         /* ativa rolagem horizontal */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 16px;                /* espaço entre os cards */
+  padding: 0;               /* remove espaço interno que cortava */
+  margin: 0;                /* remove margem extra */
+  width: 100%;              /* ocupa toda a largura da tela */
+  box-sizing: border-box;   /* garante que padding/margin não empurre nada */
+}
+
   .carousel-container::-webkit-scrollbar { display: none; }
-  .carousel-container .card-instrutor {
-    flex: 0 0 80%;
-    scroll-snap-align: start;
-    max-width: 80%;
-  }
+.carousel-container .card-instrutor {
+  flex: 0 0 auto;           /* cada card ocupa só o espaço dele */
+  scroll-snap-align: start;
+  max-width: 80%;           /* largura proporcional */
+}
 
   /* Move as duas frases juntas */
   .resultado-bloco {
