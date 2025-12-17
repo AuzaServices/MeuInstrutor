@@ -883,8 +883,8 @@ input[type="file"] {
   /* Move as duas frases juntas */
   .resultado-bloco {
     text-align: center;   /* centraliza no mobile */
-    margin-top: -10px;    /* sobe o bloco inteiro */
-    margin-left: 20px;    /* desloca para a direita */
+    margin-top: -80px;    /* sobe o bloco inteiro */
+    margin-left: 15px;    /* desloca para a direita */
   }
 
   /* garante que os textos dentro sigam o alinhamento */
