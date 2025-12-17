@@ -1013,6 +1013,43 @@ input[type="file"] {
 
 /* Modal geral */
 /* Inputs e textarea do modal */
+
+/* Container do modal */
+.modal {
+  display: none;              /* escondido por padrão */
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;    /* centraliza horizontal */
+  align-items: center;        /* centraliza vertical */
+}
+
+/* Caixa interna do modal */
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 80%;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;           /* impede estourar */
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    max-height: 70%;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
 .modal-input, .modal-textarea {
   width: 100%;
   padding: 0.8rem 1rem;
