@@ -893,7 +893,7 @@ input[type="file"] {
   display: block;        /* cada frase ocupa uma linha */
   width: 100%;           /* garante largura total */
   text-align: center;    /* centraliza o texto no meio da tela */
-  margin: 5px 0;         /* controla o espaço vertical entre elas */
+  margin: 5px -35px;         /* controla o espaço vertical entre elas */
 }
 }
 
