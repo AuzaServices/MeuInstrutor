@@ -938,7 +938,7 @@ input[type="file"] {
   display: block !important;
   margin: 0 auto 8px !important;  /* centraliza o ícone */
   font-size: 32px !important;
-  color: orange !important;
+  color: #ffa500 !important;
 }
 }
 
