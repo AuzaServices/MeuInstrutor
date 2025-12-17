@@ -1039,14 +1039,14 @@ input[type="file"] {
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  overflow: hidden;           /* impede estourar */
+  overflow-y: auto;          /* impede estourar */
 }
 
 /* Responsividade para mobile */
 @media (max-width: 480px) {
   .modal-content {
     width: 95%;
-    max-height: 70%;
+    max-height: 90%;
     padding: 0.8rem;
     font-size: 0.9rem;
   }
