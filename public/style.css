@@ -913,7 +913,7 @@ input[type="file"] {
   display: block !important;
   width: 100% !important;
   text-align: center !important;
-  margin-top: 5px !important;   /* espaço acima do primeiro */
+  margin-top: -100px !important;   /* espaço acima do primeiro */
   margin-bottom: 5px !important; /* espaço abaixo */
 }
 
@@ -921,7 +921,7 @@ input[type="file"] {
   display: block !important;
   width: 100% !important;
   text-align: center !important;
-  margin-top: 5px !important;   /* espaço acima do segundo */
+  margin-top: -00px !important;   /* espaço acima do segundo */
   margin-bottom: 5px !important;
 }
 
