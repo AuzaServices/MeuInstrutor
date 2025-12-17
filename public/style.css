@@ -951,20 +951,17 @@ input[type="file"] {
 }
 
 @media (max-width: 1023px) {
-  .mensagem-vazia {
-    display: flex;              /* usa flexbox */
-    flex-direction: column;     /* ícone em cima, texto embaixo */
-    align-items: center;        /* centraliza horizontalmente */
-    justify-content: center;    /* centraliza verticalmente */
-    text-align: center;         /* centraliza o texto */
-    margin: 20px auto;
-    width: 100%;
-  }
+.mensagem-vazia {
+  display: block;        /* ocupa uma linha inteira */
+  width: 100%;           /* garante largura total */
+  text-align: center;    /* centraliza tudo no meio da tela */
+  margin: 20px -35px;    /* controla o espaço vertical e ajusta lateral */
+}
 
-  .mensagem-vazia i {
-    font-size: 32px;
-    color: orange;
-    margin-bottom: 8px;
-    display: block;
-  }
+.mensagem-vazia i {
+  display: block;        /* ícone ocupa linha própria */
+  margin: 0 auto 8px;    /* centraliza horizontalmente e dá espaço abaixo */
+  font-size: 32px;       /* tamanho da lupa */
+  color: orange;         /* cor da lupa */
+}
 }
