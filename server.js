@@ -55,23 +55,31 @@ cloudinary.config({
 /* ========================= ROTAS ========================= */
 
 // 📌 Listar instrutores pendentes
-app.get("/instrutores", (req, res) => {
-  db.query("SELECT * FROM instrutores WHERE status = 'pendente'", (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+app.get("/instrutores", async (req, res) => {
+  try {
+    const [results] = await db.query("SELECT * FROM instrutores WHERE status = 'pendente'");
     res.json(results);
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 📌 Excluir instrutor (Recusar)
-app.delete("/instrutores/:id", (req, res) => {
+// 📌 Excluir instrutor (Recusar)
+app.delete("/instrutores/:id", async (req, res) => {
   const { id } = req.params;
-  db.query("DELETE FROM instrutores WHERE id = ?", [id], (err) => {
-    if (err) {
-      console.error("❌ Erro ao excluir:", err);
-      return res.status(500).json({ error: err });
+  try {
+    const [result] = await db.query("DELETE FROM instrutores WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
     }
+
     res.json({ message: "Instrutor excluído com sucesso!" });
-  });
+  } catch (err) {
+    console.error("❌ Erro ao excluir:", err.message || err);
+    res.status(500).json({ error: err.message || String(err) });
+  }
 });
 
 // 📌 Cadastro de instrutor
@@ -90,6 +98,7 @@ function uploadToCloudinary(buffer, folder) {
 }
 
 // 📌 Cadastro de instrutor
+// 📌 Cadastro de instrutor
 app.post("/instrutores", upload.fields([
   { name: "selfie", maxCount: 1 },
   { name: "comprovante", maxCount: 1 },
@@ -100,12 +109,10 @@ app.post("/instrutores", upload.fields([
     // 🔎 Validação antes de enviar pro Cloudinary
     const totalUploads = Object.keys(req.files).length;
 
-    // Se não forem exatamente 4 arquivos, rejeita sem enviar nada
     if (totalUploads !== 4) {
       return res.status(400).json({ error: "É obrigatório enviar exatamente 4 arquivos (selfie, comprovante, cnh e certificado)." });
     }
 
-    // Valida se todos são imagens
     for (const field of ["selfie", "comprovante", "cnh", "certificado"]) {
       if (!req.files[field]) {
         return res.status(400).json({ error: `Arquivo obrigatório não enviado: ${field}` });
@@ -115,15 +122,15 @@ app.post("/instrutores", upload.fields([
       }
     }
 
-    // ✅ Só chega aqui se passou na validação
+    // ✅ Uploads para o Cloudinary
     const uploads = {};
     uploads.selfie = await uploadToCloudinary(req.files.selfie[0].buffer, "instrutores/selfies");
     uploads.comprovante = await uploadToCloudinary(req.files.comprovante[0].buffer, "instrutores/comprovantes");
     uploads.cnh = await uploadToCloudinary(req.files.cnh[0].buffer, "instrutores/cnhs");
     uploads.certificado = await uploadToCloudinary(req.files.certificado[0].buffer, "instrutores/certificados");
 
-    // Salva no banco
-    db.query(
+    // ✅ Salva no banco usando async/await
+    await db.query(
       "INSERT INTO instrutores (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
       [
         req.body.nome,
@@ -138,19 +145,19 @@ app.post("/instrutores", upload.fields([
         uploads.cnh,
         uploads.certificado,
         req.body.categorias
-      ],
-      (err) => {
-        if (err) return res.status(500).json({ error: err });
-        res.json({ message: "Instrutor cadastrado com sucesso!" });
-      }
+      ]
     );
+
+    res.json({ message: "Instrutor cadastrado com sucesso!" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("❌ Erro ao cadastrar instrutor:", error.message || error);
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 
 // 📌 Aceitar instrutor (única versão correta)
-app.put("/instrutores/aceitar/:id", (req, res) => {
+// 📌 Aceitar instrutor
+app.put("/instrutores/aceitar/:id", async (req, res) => {
   const { id } = req.params;
 
   // Ajuste para fuso horário local
@@ -158,22 +165,31 @@ app.put("/instrutores/aceitar/:id", (req, res) => {
   const local = new Date(agora.getTime() - agora.getTimezoneOffset() * 60000);
   const dataFormatada = local.toISOString().split("T")[0]; // YYYY-MM-DD
 
-  db.query(
-    "UPDATE instrutores SET status = 'aceito', data_pagamento = ? WHERE id = ?",
-    [dataFormatada, id],
-    (err) => {
-      if (err) {
-        console.error("❌ Erro ao aceitar instrutor:", err.sqlMessage || err);
-        return res.status(500).json({ error: err.sqlMessage || String(err) });
-      }
-      res.json({ message: "Instrutor aceito e data de pagamento registrada!", data_pagamento: dataFormatada });
+  try {
+    const [result] = await db.query(
+      "UPDATE instrutores SET status = 'aceito', data_pagamento = ? WHERE id = ?",
+      [dataFormatada, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
     }
-  );
+
+    res.json({
+      message: "Instrutor aceito e data de pagamento registrada!",
+      data_pagamento: dataFormatada
+    });
+  } catch (err) {
+    console.error("❌ Erro ao aceitar instrutor:", err.message || err);
+    res.status(500).json({ error: err.message || String(err) });
+  }
 });
 
 // 📌 Listar instrutores aceitos com filtro
-app.get("/instrutores/aceitos", (req, res) => {
+// 📌 Listar instrutores aceitos com filtro
+app.get("/instrutores/aceitos", async (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
+
   if (!cidade || !estado) {
     return res.status(400).json({ error: "Cidade e estado são obrigatórios" });
   }
@@ -196,25 +212,29 @@ app.get("/instrutores/aceitos", (req, res) => {
     params.push(`%${categorias.toUpperCase()}%`);
   }
 
-  db.query(sql, params, (err, results) => {
-    if (err) return res.status(500).json({ error: err.sqlMessage || err.message });
+  try {
+    const [results] = await db.query(sql, params);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("❌ Erro ao listar instrutores aceitos:", err.message || err);
+    res.status(500).json({ error: err.message || String(err) });
+  }
 });
 
 // 📌 Listar todos os instrutores (pendentes e aceitos)
-app.get("/instrutores/todos", (req, res) => {
-  db.query("SELECT * FROM instrutores", (err, results) => {
-    if (err) {
-      console.error("❌ Erro ao listar todos:", err.sqlMessage || err.message || err);
-      return res.status(500).json({ error: "Erro ao buscar instrutores" });
-    }
-
+// 📌 Listar todos os instrutores (pendentes e aceitos)
+app.get("/instrutores/todos", async (req, res) => {
+  try {
+    const [results] = await db.query("SELECT * FROM instrutores");
     res.json(results);
-  });
+  } catch (err) {
+    console.error("❌ Erro ao listar todos:", err.message || err);
+    res.status(500).json({ error: "Erro ao buscar instrutores" });
+  }
 });
 
 // Atualizar Selfie
+// 📌 Atualizar Selfie
 app.put("/instrutores/:id/selfie", upload.single("selfie"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhuma selfie enviada" });
@@ -231,16 +251,21 @@ app.put("/instrutores/:id/selfie", upload.single("selfie"), async (req, res) => 
       stream.end(req.file.buffer);
     });
 
-    db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [url, id], (err) => {
-      if (err) return res.status(500).json({ error: err });
-      res.json({ message: "Selfie atualizada com sucesso!", url });
-    });
+    const [result] = await db.query("UPDATE instrutores SET selfie = ? WHERE id = ?", [url, id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
+    }
+
+    res.json({ message: "Selfie atualizada com sucesso!", url });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("❌ Erro ao atualizar selfie:", error.message || error);
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 
 // Atualizar Comprovante
+// 📌 Atualizar Comprovante
 app.put("/instrutores/:id/comprovante", upload.single("comprovante"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhum comprovante enviado" });
@@ -257,16 +282,24 @@ app.put("/instrutores/:id/comprovante", upload.single("comprovante"), async (req
       stream.end(req.file.buffer);
     });
 
-    db.query("UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?", [url, id], (err) => {
-      if (err) return res.status(500).json({ error: err });
-      res.json({ message: "Comprovante atualizado com sucesso!", url });
-    });
+    const [result] = await db.query(
+      "UPDATE instrutores SET comprovante_residencia = ? WHERE id = ?",
+      [url, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
+    }
+
+    res.json({ message: "Comprovante atualizado com sucesso!", url });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("❌ Erro ao atualizar comprovante:", error.message || error);
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 
 // Atualizar CNH
+// 📌 Atualizar CNH
 app.put("/instrutores/:id/cnh", upload.single("cnh"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhuma CNH enviada" });
@@ -283,16 +316,24 @@ app.put("/instrutores/:id/cnh", upload.single("cnh"), async (req, res) => {
       stream.end(req.file.buffer);
     });
 
-    db.query("UPDATE instrutores SET cnh = ? WHERE id = ?", [url, id], (err) => {
-      if (err) return res.status(500).json({ error: err });
-      res.json({ message: "CNH atualizada com sucesso!", url });
-    });
+    const [result] = await db.query(
+      "UPDATE instrutores SET cnh = ? WHERE id = ?",
+      [url, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
+    }
+
+    res.json({ message: "CNH atualizada com sucesso!", url });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("❌ Erro ao atualizar CNH:", error.message || error);
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 
 // Atualizar Certificado
+// 📌 Atualizar Certificado
 app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req, res) => {
   const { id } = req.params;
   if (!req.file) return res.status(400).json({ error: "Nenhum certificado enviado" });
@@ -309,59 +350,83 @@ app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req
       stream.end(req.file.buffer);
     });
 
-    db.query("UPDATE instrutores SET certificado = ? WHERE id = ?", [url, id], (err) => {
-      if (err) return res.status(500).json({ error: err });
-      res.json({ message: "Certificado atualizado com sucesso!", url });
-    });
+    const [result] = await db.query(
+      "UPDATE instrutores SET certificado = ? WHERE id = ?",
+      [url, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Instrutor não encontrado" });
+    }
+
+    res.json({ message: "Certificado atualizado com sucesso!", url });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("❌ Erro ao atualizar certificado:", error.message || error);
+    res.status(500).json({ error: error.message || String(error) });
   }
 });
 
 // Buscar todas as avaliações de um instrutor
+// 📌 Buscar todas as avaliações de um instrutor
 app.get("/avaliacoes/:instrutorId", async (req, res) => {
   const { instrutorId } = req.params;
-  console.log("Instrutor ID recebido:", instrutorId); // debug
 
   try {
     const [rows] = await db.query(
-      "SELECT estrelas, comentario, primeiro_nome, sobrenome, telefone, data_avaliacao FROM avaliacoes WHERE instrutor_id = ? ORDER BY data_avaliacao DESC",
+      `SELECT estrelas, comentario, primeiro_nome, sobrenome, telefone, data_avaliacao
+       FROM avaliacoes
+       WHERE instrutor_id = ?
+       ORDER BY data_avaliacao DESC`,
       [instrutorId]
     );
-    console.log("Resultados:", rows); // debug
+
+    if (rows.length === 0) {
+      return res.status(404).json({ erro: "Nenhuma avaliação encontrada para este instrutor" });
+    }
+
     res.json(rows);
   } catch (err) {
-    console.error("Erro MySQL:", err); // debug detalhado
+    console.error("❌ Erro MySQL:", err.message || err);
     res.status(500).json({ erro: "Erro ao buscar avaliações" });
   }
 });
 
-// Inserir nova avaliação
+// 📌 Inserir nova avaliação
 app.post("/avaliacoes", async (req, res) => {
   const { instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone } = req.body;
+
+  if (!instrutor_id || !estrelas) {
+    return res.status(400).json({ erro: "Instrutor e estrelas são obrigatórios" });
+  }
+
   try {
-    await db.query(
-      "INSERT INTO avaliacoes (instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone) VALUES (?, ?, ?, ?, ?, ?)",
+    const [result] = await db.query(
+      `INSERT INTO avaliacoes (instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone)
+       VALUES (?, ?, ?, ?, ?, ?)`,
       [instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone]
     );
-    res.json({ mensagem: "Avaliação registrada com sucesso!" });
+
+    res.json({ mensagem: "Avaliação registrada com sucesso!", id: result.insertId });
   } catch (err) {
-    console.error(err);
+    console.error("❌ Erro ao salvar avaliação:", err.message || err);
     res.status(500).json({ erro: "Erro ao salvar avaliação" });
   }
 });
 
-// Calcular média de estrelas e total de avaliações por instrutor
+// 📌 Calcular média de estrelas e total de avaliações por instrutor
 app.get("/instrutores/avaliacoes", async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT instrutor_id, AVG(estrelas) AS media_estrelas, COUNT(*) AS total_avaliacoes
+      SELECT instrutor_id,
+             AVG(estrelas) AS media_estrelas,
+             COUNT(*) AS total_avaliacoes
       FROM avaliacoes
       GROUP BY instrutor_id
     `);
+
     res.json(rows);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Erro ao calcular médias:", err.message || err);
     res.status(500).json({ erro: "Erro ao calcular médias" });
   }
 });
