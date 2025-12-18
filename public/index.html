@@ -346,10 +346,12 @@ cardsHtml += `
         (${totalAvaliacoes} avaliações)
       </p>
 
-      <div class="acoes">
-        <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-        <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
-      </div>
+<div class="acoes">
+  <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+  <button class="btn-avaliar" data-id="${instrutor.id}" title="Avaliar">
+    <i class="fa-solid fa-star"></i>
+  </button>
+</div>
     </div>
   </div>
 `;
