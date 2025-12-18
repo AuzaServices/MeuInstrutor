@@ -204,24 +204,24 @@ async function carregarAvaliacoes() {
     tabelaAceitas.innerHTML = "";
 
     avaliacoes.forEach(av => {
-const linha = `
-  <tr>
-    <td>${av.instrutor_id}</td>
-    <td>${av.primeiro_nome}</td>
-    <td>${av.sobrenome}</td>
-    <td>${av.ip || "-"}</td>
-    <td>${av.telefone}</td>
-    <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
-    <td>${av.comentario}</td>
-    <td>${av.status}</td>
-    <td>
-      ${av.status === "pendente"
-        ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
-           <button class="recusar-av" data-id="${av.id}">Recusar</button>`
-        : ""}
-    </td>
-  </tr>
-`;
+      const linha = `
+        <tr>
+          <td>${av.instrutor_id}</td>
+          <td>${av.primeiro_nome}</td>
+          <td>${av.sobrenome}</td>
+          <td>${av.ip || "-"}</td>
+          <td>${av.telefone}</td>
+          <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
+          <td>${av.comentario}</td>
+          <td>${av.status}</td>
+          <td>
+            ${av.status === "pendente"
+              ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
+                 <button class="recusar-av" data-id="${av.id}">Recusar</button>`
+              : ""}
+          </td>
+        </tr>
+      `;
       if (av.status === "pendente") {
         tabelaPendentes.innerHTML += linha;
       } else {
@@ -237,12 +237,34 @@ const linha = `
 document.addEventListener("DOMContentLoaded", () => {
   const tabela = document.querySelector("main");
 
+  // Alternar telas ao clicar nos botões do menu
+  const navButtons = document.querySelectorAll(".btn-nav");
+  const telas = document.querySelectorAll(".tela");
+
+  navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-target");
+      const targetId = target === "instrutores" ? "tela-instrutores" : "tela-avaliacoes";
+
+      telas.forEach(sec => sec.classList.remove("ativa"));
+      document.getElementById(targetId).classList.add("ativa");
+
+      navButtons.forEach(b => b.classList.remove("ativo"));
+      btn.classList.add("ativo");
+
+      if (target === "instrutores") {
+        carregarInstrutores();
+      } else {
+        carregarAvaliacoes();
+      }
+    });
+  });
+
   tabela.addEventListener("click", async (e) => {
     const id = e.target.dataset.id;
     if (!id) return;
 
     try {
-      // Aceitar instrutor
       if (e.target.classList.contains("admitir")) {
         const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
         const resultado = await resposta.json();
@@ -250,7 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarInstrutores();
       }
 
-      // Excluir instrutor
       if (e.target.classList.contains("excluir")) {
         const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
         const resultado = await resposta.json();
@@ -258,7 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarInstrutores();
       }
 
-      // Aceitar avaliação
       if (e.target.classList.contains("aceitar-av")) {
         const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/aceitar/${id}`, { method: "PATCH" });
         const resultado = await resposta.json();
@@ -266,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarAvaliacoes();
       }
 
-      // Recusar avaliação
       if (e.target.classList.contains("recusar-av")) {
         const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${id}`, { method: "DELETE" });
         const resultado = await resposta.json();
@@ -279,8 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Inicializa com instrutores
   carregarInstrutores();
-  carregarAvaliacoes();
 });
 </script>
 </body>
