@@ -1230,29 +1230,24 @@ hr {
 .acoes {
   display: flex;
   justify-content: center; /* mantém o WhatsApp centralizado */
-  gap: 12px;               /* espaço entre os botões */
+  gap: 12px;               /* espaço entre os dois */
   align-items: center;
 }
 
 .btn-avaliar {
-  background: none;        /* sem fundo */
-  border: 1px solid #000;  /* borda preta */
-  border-radius: 50%;      /* formato circular */
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: none;   /* sem fundo */
+  border: none;       /* sem borda */
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0;         /* remove espaçamento extra */
 }
 
 .btn-avaliar i {
-  font-size: 1.2rem;
-  color: #000;             /* ícone preto */
+  font-size: 1.4rem;  /* tamanho do balão */
+  color: #000;        /* preto minimalista */
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.btn-avaliar:hover {
-  background: #f5f5f5;     /* leve fundo no hover */
-  transform: scale(1.1);   /* cresce suavemente */
+.btn-avaliar:hover i {
+  transform: scale(1.2); /* cresce levemente no hover */
+  color: #333;           /* muda o tom do preto */
 }
