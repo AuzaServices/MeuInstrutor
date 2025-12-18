@@ -458,11 +458,15 @@ header .logo span {
     max-width: 100%;
   }
 
-  .foto-instrutor {
-    height: auto;            /* 🔑 ajusta naturalmente no mobile */
-    max-height: 320px;       /* limite para não ficar gigante */
-    object-fit: contain;     /* mostra a imagem inteira sem cortar */
-  }
+.foto-instrutor {
+  width: 100%;          /* ocupa toda a largura disponível */
+  max-width: 320px;     /* limite padrão no mobile */
+  height: 320px;        /* altura padrão */
+  object-fit: cover;    /* mantém proporção e preenche sem borda */
+  border: none;         /* garante que não apareça borda */
+  display: block;       /* evita espaçamento extra */
+  margin: 0 auto;       /* centraliza no container */
+}
 
   .card-instrutor .conteudo {
     padding: 12px;           /* reduz padding no mobile */
