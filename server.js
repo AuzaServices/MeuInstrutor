@@ -383,6 +383,7 @@ app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req
 
 // Buscar todas as avaliações de um instrutor
 // 📌 Buscar todas as avaliações de um instrutor
+// 📌 Buscar apenas avaliações aceitas de um instrutor (site público)
 app.get("/avaliacoes/:instrutorId", async (req, res) => {
   const { instrutorId } = req.params;
 
@@ -390,13 +391,13 @@ app.get("/avaliacoes/:instrutorId", async (req, res) => {
     const [rows] = await db.query(
       `SELECT estrelas, comentario, primeiro_nome, sobrenome, telefone, data_avaliacao
        FROM avaliacoes
-       WHERE instrutor_id = ?
+       WHERE instrutor_id = ? AND status = 'aceita'
        ORDER BY data_avaliacao DESC`,
       [instrutorId]
     );
 
     if (rows.length === 0) {
-      return res.status(404).json({ erro: "Nenhuma avaliação encontrada para este instrutor" });
+      return res.status(404).json({ erro: "Nenhuma avaliação aprovada para este instrutor" });
     }
 
     res.json(rows);
