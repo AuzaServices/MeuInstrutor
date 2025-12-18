@@ -203,7 +203,7 @@ app.get("/instrutores/aceitos", async (req, res) => {
            COALESCE(AVG(a.estrelas), 0) AS media_estrelas,
            COUNT(a.id) AS total_avaliacoes
     FROM instrutores i
-    LEFT JOIN avaliacoes a ON a.instrutor_id = i.id
+    LEFT JOIN avaliacoes a ON a.instrutor_id = i.id AND a.status = 'aceita'
     WHERE i.status = 'aceito' AND i.cidade = ? AND i.estado = ?
   `;
   const params = [cidade, estado];
