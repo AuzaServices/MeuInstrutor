@@ -1033,15 +1033,13 @@ input[type="file"] {
   background: #fff;
   border-radius: 10px;
   width: 600px;
-  max-width: 90%;
-  /* max-height pode ser mantido se quiser limitar o modal na tela,
-     mas se quiser que tudo cresça até onde for, pode remover */
+  max-width: 95%;
+  max-height: 85%;            /* limita altura no desktop */
   padding: 1rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  overflow-y: auto; 
-  /* antes estava overflow: hidden; → remove isso */
+  overflow-y: auto;
 }
 
 /* Responsividade para mobile */
