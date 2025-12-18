@@ -970,7 +970,7 @@ input[type="file"] {
   .resultado-bloco h4,
   .resultado-bloco p {
     text-align: left;  
-    margin-left: 20px;          /* alinhados ao início da primeira coluna */
+    margin-left: 35px;          /* alinhados ao início da primeira coluna */
   }
     #filtro-info,
   #filtro-aplicado {
