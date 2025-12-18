@@ -1197,16 +1197,20 @@ hr {
   margin: 1rem 0;
 }
 
-/* Estilo das estrelas dentro do card */
 .media-estrelas {
-  font-size: 1.4rem;       /* tamanho maior para destacar */
-  color: #FFD700;          /* amarelo dourado */
+  text-align: center;
   margin: 6px 0;
-  text-align: center;      /* centraliza no card */
-  font-weight: bold;
+  font-size: 1rem;
 }
 
-/* Opcional: estilizar o texto da quantidade */
-.media-estrelas::after {
-  content: "";             /* não adiciona nada extra, só exemplo */
+.media-estrelas .estrela {
+  font-size: 1.4rem;
+}
+
+.media-estrelas .estrela.cheia {
+  color: #FFD700; /* amarelo dourado */
+}
+
+.media-estrelas .estrela.vazia {
+  color: #ccc;    /* cinza claro */
 }

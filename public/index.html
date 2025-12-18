@@ -328,29 +328,31 @@ async function buscarInstrutor(event) {
           : 0;
 
         // Arredonda a média para inteiro e gera estrelas visuais
-        const estrelasInt = Math.round(mediaEstrelas);
-        const estrelasHtml = "★".repeat(estrelasInt) + "☆".repeat(5 - estrelasInt);
+const estrelasInt = Math.round(mediaEstrelas);
+const estrelasHtml =
+  "<span class='estrela cheia'>★</span>".repeat(estrelasInt) +
+  "<span class='estrela vazia'>☆</span>".repeat(5 - estrelasInt);
 
-        cardsHtml += `
-          <div class="card-instrutor">
-            <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-            <div class="conteudo">
-              <h3>${primeiroNome} ${segundoNome}</h3>
-              <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+cardsHtml += `
+  <div class="card-instrutor">
+    <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+    <div class="conteudo">
+      <h3>${primeiroNome} ${segundoNome}</h3>
+      <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
 
-              <!-- Estrelas visuais e quantidade -->
-              <p class="media-estrelas">
-                ${estrelasHtml} <br>
-                (${totalAvaliacoes} avaliações)
-              </p>
+      <!-- Estrelas visuais e quantidade -->
+      <p class="media-estrelas">
+        ${estrelasHtml} <br>
+        (${totalAvaliacoes} avaliações)
+      </p>
 
-              <div class="acoes">
-                <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-                <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
-              </div>
-            </div>
-          </div>
-        `;
+      <div class="acoes">
+        <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+        <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
+      </div>
+    </div>
+  </div>
+`;
       });
     }
 
