@@ -1226,3 +1226,32 @@ hr {
 }
 
 }
+
+.btn-avaliar {
+  background: linear-gradient(135deg, #FFD700, #FFC107); /* gradiente dourado */
+  color: #333;                  /* texto escuro para contraste */
+  font-size: 1rem;              /* tamanho confortável */
+  font-weight: 600;             /* deixa o texto mais forte */
+  padding: 10px 18px;           /* espaço interno */
+  border: none;                 /* remove borda padrão */
+  border-radius: 6px;           /* cantos arredondados */
+  cursor: pointer;              /* cursor de clique */
+  transition: all 0.3s ease;    /* animação suave */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* sombra leve */
+  display: flex;                /* alinha ícone e texto */
+  align-items: center;
+  gap: 6px;                     /* espaço entre ícone e texto */
+}
+
+/* Efeito ao passar o mouse */
+.btn-avaliar:hover {
+  background: linear-gradient(135deg, #FFC107, #FFB300);
+  transform: translateY(-2px);  /* leve subida */
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+/* Efeito ao clicar */
+.btn-avaliar:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
