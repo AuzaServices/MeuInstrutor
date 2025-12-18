@@ -1219,6 +1219,6 @@ hr {
   .card-instrutor .categorias {
     display: block;
     text-align: right;   /* joga o texto para a direita */
-    margin-right: 12px;  /* dá um respiro da borda */
+    margin-right: 55px;  /* dá um respiro da borda */
   }
 }
