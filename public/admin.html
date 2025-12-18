@@ -204,24 +204,24 @@ async function carregarAvaliacoes() {
     tabelaAceitas.innerHTML = "";
 
     avaliacoes.forEach(av => {
-      const linha = `
-        <tr>
-          <td>${av.instrutor_nome || ""}</td>
-          <td>${av.primeiro_nome}</td>
-          <td>${av.sobrenome}</td>
-          <td>${av.telefone}</td>
-          <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
-          <td>${av.comentario}</td>
-          <td>${av.ip || "-"}</td>
-          <td>${av.status}</td>
-          <td>
-            ${av.status === "pendente"
-              ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
-                 <button class="recusar-av" data-id="${av.id}">Recusar</button>`
-              : ""}
-          </td>
-        </tr>
-      `;
+const linha = `
+  <tr>
+    <td>${av.instrutor_id}</td>
+    <td>${av.primeiro_nome}</td>
+    <td>${av.sobrenome}</td>
+    <td>${av.ip || "-"}</td>
+    <td>${av.telefone}</td>
+    <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
+    <td>${av.comentario}</td>
+    <td>${av.status}</td>
+    <td>
+      ${av.status === "pendente"
+        ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
+           <button class="recusar-av" data-id="${av.id}">Recusar</button>`
+        : ""}
+    </td>
+  </tr>
+`;
       if (av.status === "pendente") {
         tabelaPendentes.innerHTML += linha;
       } else {
