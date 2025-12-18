@@ -115,7 +115,7 @@
   </section>
 </main>
 
-  <script>
+<script>
 async function carregarInstrutores() {
   try {
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
@@ -218,7 +218,7 @@ async function carregarAvaliacoes() {
             ${av.status === "pendente"
               ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
                  <button class="recusar-av" data-id="${av.id}">Recusar</button>`
-              : ""}
+              : `<button class="apagar-av" data-id="${av.id}">Apagar</button>`}
           </td>
         </tr>
       `;
@@ -290,6 +290,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${id}`, { method: "DELETE" });
         const resultado = await resposta.json();
         alert(resultado.message);
+        carregarAvaliacoes();
+      }
+
+      if (e.target.classList.contains("apagar-av")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/apagar/${id}`, { method: "DELETE" });
+        const resultado = await resposta.json();
+        alert(resultado.mensagem);
         carregarAvaliacoes();
       }
     } catch (err) {

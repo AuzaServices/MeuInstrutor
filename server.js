@@ -493,6 +493,21 @@ app.delete("/avaliacoes/:id", async (req, res) => {
   }
 });
 
+// 📌 Apagar avaliação (remove do banco)
+app.delete("/avaliacoes/apagar/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await db.query("DELETE FROM avaliacoes WHERE id = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ erro: "Avaliação não encontrada" });
+    }
+    res.json({ mensagem: "Avaliação apagada definitivamente." });
+  } catch (err) {
+    console.error("❌ Erro ao apagar avaliação:", err.message || err);
+    res.status(500).json({ erro: "Erro ao apagar avaliação" });
+  }
+});
+
 /* ========================= START ========================= */
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
