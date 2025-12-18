@@ -1214,3 +1214,9 @@ hr {
 .media-estrelas .estrela.vazia {
   color: #ccc;    /* cinza claro */
 }
+
+.card-instrutor .categorias {
+  display: inline-block;   /* mantém como bloco inline */
+  margin-left: 20px;       /* empurra para a direita */
+  text-align: right;       /* alinha o texto à direita */
+}
