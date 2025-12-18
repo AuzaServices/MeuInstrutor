@@ -1216,9 +1216,13 @@ hr {
 }
 /* regra só para telas pequenas (mobile) */
 @media (max-width: 768px) {
-  .card-instrutor .categorias {
-    display: block;
-    text-align: right;   /* joga o texto para a direita */
-    margin-right: 55px;  /* dá um respiro da borda */
-  }
+.card-instrutor .categorias {
+  display: block;        /* garante que ocupe a linha toda */
+  text-align: center;    /* centraliza o texto */
+  font-size: 1rem;
+  font-weight: 500;
+  color: #444;
+  margin: 8px 0;         /* espaço acima e abaixo */
+}
+
 }
