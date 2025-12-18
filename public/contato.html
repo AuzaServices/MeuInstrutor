@@ -6,6 +6,164 @@
   <title>Fale Conosco - Instrutor Pro</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="logo.png" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+/* Header */
+header.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #222;
+  color: #fff;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header .logo img {
+  height: 40px;
+}
+
+nav.menu {
+  display: flex;
+  gap: 1rem;
+}
+
+nav.menu a, nav.menu button {
+  color: #fff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Ícones sociais */
+.redes-sociais {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;     /* permite quebrar linha no mobile */
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.redes-sociais a {
+  width: 60px;
+  height: 60px;
+  background: #000;       /* círculo preto */
+  color: #fff;            /* ícone branco */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+  border: none;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.redes-sociais a:hover {
+  transform: scale(1.1);
+  background: #222;       /* preto mais claro no hover */
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #222;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+  nav.menu {
+    display: none;
+    flex-direction: column;
+    background: #333;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    padding: 1rem;
+  }
+  nav.menu.active {
+    display: flex;
+  }
+  .menu-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  /* Ícones sociais no mobile */
+  .redes-sociais {
+    gap: 0.8rem;
+  }
+  .redes-sociais a {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
+
+.contato-main {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  text-align: left;
+  line-height: 1.8;
+  color: #333;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.contato-main h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #111;
+  text-align: center;
+}
+
+.contato-main p {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  text-align: justify;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+  .contato-main {
+    margin: 2rem 1rem;
+    padding: 0;
+  }
+
+  .contato-main h1 {
+    font-size: 2rem;
+  }
+
+  .contato-main p {
+    font-size: 1rem;
+  }
+}
+
+  </style>
 </head>
 <body>
   <header class="topo">
@@ -22,32 +180,111 @@
     </nav> 
   </header>
 
-  <main>
-    <h1>Fale Conosco</h1>
-    <p>Aqui você pode contar a história da plataforma, missão, valores e objetivos.</p>
-  </main>
+<main class="contato-main">
+  <h1>Fale Conosco</h1>
+  <p>
+    No Instrutor Pro, acreditamos que a comunicação é essencial para construir confiança e oferecer
+    a melhor experiência possível. Por isso, disponibilizamos diversos canais para que você possa
+    falar conosco de forma rápida e prática.
+  </p>
+  <p>
+    Seja para tirar dúvidas, enviar sugestões, relatar problemas ou simplesmente compartilhar sua
+    experiência, nossa equipe está pronta para ouvir você. Valorizamos cada mensagem recebida e
+    trabalhamos constantemente para melhorar nossos serviços.
+  </p>
+  <p>
+    Você pode entrar em contato diretamente pelas nossas redes sociais, enviar um e-mail ou nos
+    chamar pelo WhatsApp. Estamos sempre disponíveis para ajudar!
+  </p>
+</main>
+
+  <!-- Ícones sociais -->
+  <div class="redes-sociais">
+    <a href="https://wa.me/5585991340658" target="_blank" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="mailto:contato@instrutorpro.com" target="_blank" aria-label="Email">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://instagram.com/instrutorpro" target="_blank" aria-label="Instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+    <a href="https://facebook.com/instrutorpro" target="_blank" aria-label="Facebook">
+      <i class="fa-brands fa-facebook"></i>
+    </a>
+    <a href="https://twitter.com/instrutorpro" target="_blank" aria-label="Twitter">
+      <i class="fa-brands fa-x-twitter"></i>
+    </a>
+  </div>
+
+<section id="contato" class="institucional-section scroll-reveal">
+  <div class="institucional-grid">
+    
+    <!-- Coluna 1: Logo e informações -->
+    <div class="institucional-col">
+      <img src="logo.png" alt="Logo Instrutor Pro" class="institucional-logo" />
+      <p>Achei Instrutor é a plataforma que conecta alunos a instrutores credenciados de forma prática, segura e transparente.</p>
+    </div>
+
+    <!-- Coluna 2: Menu rápido -->
+    <div class="institucional-col">
+      <h4>Menu rápido</h4>
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#cadastro">Cadastro</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+
+    <!-- Coluna 3: Institucional -->
+    <div class="institucional-col">
+      <h4>Institucional</h4>
+      <ul>
+        <li><a href="/politica.html" target="_blank">Política de Privacidade</a></li>
+        <li><a href="/termos.html" target="_blank">Termos de Uso</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ícones sociais -->
+<div class="redes-sociais">
+  <a href="https://wa.me/5585991340658" target="_blank" aria-label="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+  <a href="https://instagram.com/instrutorpro" target="_blank" aria-label="Instagram">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+  <a href="https://twitter.com/instrutorpro" target="_blank" aria-label="X">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
+  <a href="https://facebook.com/instrutorpro" target="_blank" aria-label="Facebook">
+    <i class="fa-brands fa-facebook"></i>
+  </a>
+</div>
+</section>
 
   <footer>
     © 2025 Instrutor Pro - Todos os direitos reservados
   </footer>
-    <script>
+
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".menu-toggle");
-  const menu = document.querySelector("nav.menu");
+      const toggle = document.querySelector(".menu-toggle");
+      const menu = document.querySelector("nav.menu");
 
-  // abre/fecha ao clicar no hambúrguer
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita fechar imediatamente
-    menu.classList.toggle("active");
-  });
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("active");
+      });
 
-  // fecha ao clicar fora do menu
-  document.addEventListener("click", (e) => {
-    if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
-      menu.classList.remove("active");
-    }
-  });
-});
+      document.addEventListener("click", (e) => {
+        if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          menu.classList.remove("active");
+        }
+      });
+    });
   </script>
 </body>
 </html>
