@@ -321,10 +321,10 @@ async function buscarInstrutor(event) {
         const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
         const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-        // 👉 Calcula quantidade e média de avaliações
-        const totalAvaliacoes = instrutor.avaliacoes ? instrutor.avaliacoes.length : 0;
+        // 👉 Usa os campos já calculados pelo back
+        const totalAvaliacoes = instrutor.total_avaliacoes || 0;
         const mediaEstrelas = totalAvaliacoes > 0
-          ? (instrutor.avaliacoes.reduce((acc, av) => acc + (av.estrelas || 0), 0) / totalAvaliacoes).toFixed(1)
+          ? Number(instrutor.media_estrelas).toFixed(1)
           : "N/A";
 
         cardsHtml += `
