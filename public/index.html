@@ -324,8 +324,12 @@ async function buscarInstrutor(event) {
         // 👉 Usa os campos já calculados pelo back
         const totalAvaliacoes = instrutor.total_avaliacoes || 0;
         const mediaEstrelas = totalAvaliacoes > 0
-          ? Number(instrutor.media_estrelas).toFixed(1)
-          : "N/A";
+          ? Number(instrutor.media_estrelas)
+          : 0;
+
+        // Arredonda a média para inteiro e gera estrelas visuais
+        const estrelasInt = Math.round(mediaEstrelas);
+        const estrelasHtml = "★".repeat(estrelasInt) + "☆".repeat(5 - estrelasInt);
 
         cardsHtml += `
           <div class="card-instrutor">
@@ -334,9 +338,10 @@ async function buscarInstrutor(event) {
               <h3>${primeiroNome} ${segundoNome}</h3>
               <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
 
-              <!-- Média de estrelas e total de avaliações -->
+              <!-- Estrelas visuais e quantidade -->
               <p class="media-estrelas">
-                ⭐ Média: ${mediaEstrelas} (${totalAvaliacoes} avaliações)
+                ${estrelasHtml} <br>
+                (${totalAvaliacoes} avaliações)
               </p>
 
               <div class="acoes">
