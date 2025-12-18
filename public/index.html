@@ -864,38 +864,36 @@ document.addEventListener("DOMContentLoaded", () => {
 async function carregarAvaliacoes(instrutorId) {
   try {
     const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
-    const avaliacoes = await resposta.json();
 
-    const lista = document.getElementById("comentarios-lista");
-    lista.innerHTML = "";
-
-    // Debug: ver o que vem da API
-    console.log("Avaliações recebidas:", avaliacoes);
-
-    // Elementos de média e quantidade (protege contra null)
-    const mediaEl = document.getElementById("media-avaliacoes");
-    const quantidadeEl = document.getElementById("quantidade-avaliacoes");
-
-    // Se não houver avaliações
-    if (!avaliacoes || avaliacoes.length === 0) {
+    // Se a resposta não for OK (ex: 404)
+    if (!resposta.ok) {
+      const lista = document.getElementById("comentarios-lista");
       lista.innerHTML = "<p class='sem-avaliacoes'>Esse instrutor ainda não recebeu nenhuma avaliação.</p>";
 
+      const mediaEl = document.getElementById("media-avaliacoes");
+      const quantidadeEl = document.getElementById("quantidade-avaliacoes");
       if (mediaEl) mediaEl.textContent = "0.0";
       if (quantidadeEl) quantidadeEl.textContent = "0";
 
       return;
     }
 
-    // 👉 Calcula quantidade e média
+    const avaliacoes = await resposta.json();
+    console.log("Avaliações recebidas:", avaliacoes);
+
+    const lista = document.getElementById("comentarios-lista");
+    lista.innerHTML = "";
+
+    const mediaEl = document.getElementById("media-avaliacoes");
+    const quantidadeEl = document.getElementById("quantidade-avaliacoes");
+
     const quantidade = avaliacoes.length;
     const somaEstrelas = avaliacoes.reduce((acc, av) => acc + av.estrelas, 0);
     const media = (somaEstrelas / quantidade).toFixed(1);
 
-    // Atualiza no HTML (só se os elementos existirem)
     if (mediaEl) mediaEl.textContent = media;
     if (quantidadeEl) quantidadeEl.textContent = quantidade;
 
-    // Renderiza cada avaliação
     avaliacoes.forEach(av => {
       const comentarioDiv = document.createElement("div");
       comentarioDiv.classList.add("comentario");
