@@ -405,9 +405,13 @@ app.get("/avaliacoes/:instrutorId", async (req, res) => {
 });
 
 // 📌 Inserir nova avaliação
+// 📌 Inserir nova avaliação (captura IP automaticamente)
 app.post("/avaliacoes", async (req, res) => {
   const { instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone } = req.body;
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+  // Captura IP do cliente (primeiro da lista)
+  const ipHeader = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const ip = Array.isArray(ipHeader) ? ipHeader[0] : ipHeader.split(",")[0].trim();
 
   if (!instrutor_id || !estrelas) {
     return res.status(400).json({ erro: "Instrutor e estrelas são obrigatórios" });
@@ -466,6 +470,22 @@ app.delete("/avaliacoes/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ Erro ao recusar avaliação:", err.message || err);
     res.status(500).json({ erro: "Erro ao recusar avaliação" });
+  }
+});
+
+// 📌 Buscar todas as avaliações (admin)
+app.get("/avaliacoes/todas", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT id, instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone, ip, status, data_avaliacao
+      FROM avaliacoes
+      ORDER BY data_avaliacao DESC
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Erro ao buscar todas as avaliações:", err.message || err);
+    res.status(500).json({ erro: "Erro ao buscar todas as avaliações" });
   }
 });
 

@@ -103,3 +103,10 @@ form input, form select {
 .label-file:hover {
   background-color: #e0e0e0;
 }
+
+.tela {
+  display: none;
+}
+.tela.ativa {
+  display: block;
+}
