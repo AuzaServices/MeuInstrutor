@@ -1189,3 +1189,10 @@ hr {
   border-top: 1px solid #ccc;
   margin: 1rem 0;
 }
+
+.sem-avaliacoes {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  margin: 1rem 0;
+}

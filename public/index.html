@@ -863,12 +863,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const lista = document.getElementById("comentarios-lista");
     lista.innerHTML = "";
 
+    // Debug: ver o que está vindo da API
+    console.log("Avaliações recebidas:", avaliacoes);
+
+    // Se não vier nada ou vier vazio
     if (!avaliacoes || avaliacoes.length === 0) {
-      // Mensagem padrão quando não há avaliações
       lista.innerHTML = "<p class='sem-avaliacoes'>Esse instrutor ainda não recebeu nenhuma avaliação.</p>";
       return;
     }
 
+    // Renderiza cada avaliação
     avaliacoes.forEach(av => {
       const comentarioDiv = document.createElement("div");
       comentarioDiv.classList.add("comentario");
@@ -899,6 +903,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } catch (err) {
     console.error("❌ Erro ao carregar avaliações:", err);
+
+    // Mensagem de fallback em caso de erro
+    const lista = document.getElementById("comentarios-lista");
+    lista.innerHTML = "<p class='sem-avaliacoes'>Não foi possível carregar as avaliações.</p>";
   }
 }
 });
