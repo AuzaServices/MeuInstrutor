@@ -428,12 +428,18 @@ app.get("/avaliacoes/:instrutorId", async (req, res) => {
 app.post("/avaliacoes", async (req, res) => {
   const { instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone } = req.body;
 
-  // Captura IP do cliente (primeiro da lista)
+  // Captura IP do cliente
   const ipHeader = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const ip = Array.isArray(ipHeader) ? ipHeader[0] : ipHeader.split(",")[0].trim();
 
   if (!instrutor_id || !estrelas) {
     return res.status(400).json({ erro: "Instrutor e estrelas são obrigatórios" });
+  }
+
+  // 🔎 Limite de linhas no comentário (ex: máximo 3 linhas)
+  const linhas = comentario ? comentario.split(/\r?\n/).length : 0;
+  if (linhas > 3) {
+    return res.status(400).json({ erro: "O comentário deve ter no máximo 3 linhas." });
   }
 
   try {

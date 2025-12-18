@@ -948,14 +948,28 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 
     <form id="form-avaliacao" class="modal-form">
-      <textarea class="modal-input modal-textarea" required placeholder="Seu feedback ajuda outros alunos"></textarea>
-      <input type="text" class="modal-input" required placeholder="Primeiro nome" />
-      <input type="text" class="modal-input" required placeholder="Sobrenome" />
-      <input type="tel" class="modal-input" required placeholder="Telefone WhatsApp" />
+      <textarea id="comentario" class="modal-input modal-textarea" required placeholder="Seu feedback ajuda outros alunos" rows="3" maxlength="300"></textarea>
+      <p id="aviso" style="color:red; font-weight:bold;"></p>
+
+      <input type="text" id="primeiro_nome" class="modal-input" required placeholder="Primeiro nome" />
+      <input type="text" id="sobrenome" class="modal-input" required placeholder="Sobrenome" />
+      <input type="tel" id="telefone" class="modal-input" required placeholder="Telefone WhatsApp" />
       <button type="submit" class="modal-button">Enviar Avaliação</button>
     </form>
   </div>
 </div>
+
+<script>
+document.getElementById("comentario").addEventListener("input", e => {
+  const linhas = e.target.value.split(/\r?\n/).length;
+  if (linhas > 3) {
+    document.getElementById("aviso").textContent = "Máximo de 3 linhas permitido.";
+    e.target.value = e.target.value.split(/\r?\n/).slice(0,3).join("\n");
+  } else {
+    document.getElementById("aviso").textContent = "";
+  }
+});
+</script>
 
 </body>
 </html>
