@@ -384,6 +384,22 @@ app.put("/instrutores/:id/certificado", upload.single("certificado"), async (req
 // Buscar todas as avaliações de um instrutor
 // 📌 Buscar todas as avaliações de um instrutor
 // 📌 Buscar apenas avaliações aceitas de um instrutor (site público)
+
+app.get("/avaliacoes/todas", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT id, instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone, ip, status, data_avaliacao
+      FROM avaliacoes
+      ORDER BY data_avaliacao DESC
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Erro ao buscar todas as avaliações:", err.message || err);
+    res.status(500).json({ erro: "Erro ao buscar todas as avaliações" });
+  }
+});
+
 app.get("/avaliacoes/:instrutorId", async (req, res) => {
   const { instrutorId } = req.params;
 
@@ -461,21 +477,6 @@ app.patch("/avaliacoes/aceitar/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ Erro ao aceitar avaliação:", err.message || err);
     res.status(500).json({ erro: "Erro ao aceitar avaliação" });
-  }
-});
-
-app.get("/avaliacoes/todas", async (req, res) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT id, instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone, ip, status, data_avaliacao
-      FROM avaliacoes
-      ORDER BY data_avaliacao DESC
-    `);
-
-    res.json(rows);
-  } catch (err) {
-    console.error("❌ Erro ao buscar todas as avaliações:", err.message || err);
-    res.status(500).json({ erro: "Erro ao buscar todas as avaliações" });
   }
 });
 
