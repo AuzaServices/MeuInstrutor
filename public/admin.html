@@ -117,117 +117,121 @@
 
   <script>
 async function carregarInstrutores() {
-  const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
-  if (!resposta.ok) {
-    alert("Erro ao carregar instrutores");
-    return;
-  }
-  const instrutores = await resposta.json();
+  try {
+    const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores/todos");
+    if (!resposta.ok) throw new Error("Erro ao carregar instrutores");
 
-  const tabelaPendentes = document.getElementById("tabelaPendentes");
-  const tabelaAceitos = document.getElementById("tabelaAceitos");
-  tabelaPendentes.innerHTML = "";
-  tabelaAceitos.innerHTML = "";
+    const instrutores = await resposta.json();
+    const tabelaPendentes = document.getElementById("tabelaPendentes");
+    const tabelaAceitos = document.getElementById("tabelaAceitos");
+    tabelaPendentes.innerHTML = "";
+    tabelaAceitos.innerHTML = "";
 
-  instrutores.forEach(instrutor => {
-    let cronometroHtml = "";
-    if (instrutor.status === "aceito") {
-      if (instrutor.data_pagamento) {
-        const ultimaData = new Date(instrutor.data_pagamento);
-        const hoje = new Date();
-        const vencimento = new Date(ultimaData);
-        vencimento.setMonth(vencimento.getMonth() + 1);
+    instrutores.forEach(instrutor => {
+      let cronometroHtml = "";
+      if (instrutor.status === "aceito") {
+        if (instrutor.data_pagamento) {
+          const ultimaData = new Date(instrutor.data_pagamento);
+          const hoje = new Date();
+          const vencimento = new Date(ultimaData);
+          vencimento.setMonth(vencimento.getMonth() + 1);
 
-        const diasRestantes = Math.ceil((vencimento - hoje) / (1000 * 60 * 60 * 24));
+          const diasRestantes = Math.ceil((vencimento - hoje) / (1000 * 60 * 60 * 24));
 
-        if (diasRestantes > 0) {
-          cronometroHtml = `<span style="color:green; font-weight:bold;">${diasRestantes} dias restantes</span>`;
+          if (diasRestantes > 0) {
+            cronometroHtml = `<span style="color:green; font-weight:bold;">${diasRestantes} dias restantes</span>`;
+          } else {
+            const primeiroNome = instrutor.nome.split(" ")[0];
+            const mensagem = `Olá ${primeiroNome}, sua mensalidade de R$19,90 venceu. Para continuar na plataforma, realize o pagamento.`;
+            const linkWhatsapp = `https://wa.me/${instrutor.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+            cronometroHtml = `<span style="color:red; font-weight:bold;">Vencido</span><br>
+                              <a href="${linkWhatsapp}" target="_blank" class="btn-whatsapp">Cobrar no WhatsApp</a>`;
+          }
         } else {
-          const primeiroNome = instrutor.nome.split(" ")[0];
-          const mensagem = `Olá ${primeiroNome}, sua mensalidade de R$19,90 venceu. Para continuar na plataforma, realize o pagamento.`;
-          const linkWhatsapp = `https://wa.me/${instrutor.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
-          cronometroHtml = `<span style="color:red; font-weight:bold;">Vencido</span><br>
-                            <a href="${linkWhatsapp}" target="_blank" class="btn-whatsapp">Cobrar no WhatsApp</a>`;
+          cronometroHtml = `<span style="color:gray;">Sem pagamento registrado</span>`;
         }
       } else {
-        cronometroHtml = `<span style="color:gray;">Sem pagamento registrado</span>`;
+        cronometroHtml = `<span style="color:gray;">--</span>`;
       }
-    } else {
-      cronometroHtml = `<span style="color:gray;">--</span>`;
-    }
 
-    const linha = `
-      <tr>
-        <td>${instrutor.nome}</td>
-        <td>${instrutor.email}</td>
-        <td>${instrutor.cpf}</td>
-        <td>${instrutor.cidade}</td>
-        <td>${instrutor.estado}</td>
-        <td>${instrutor.telefone}</td>
-        <td>${instrutor.selfie ? `<img src="${instrutor.selfie}" width="80"><br>` : ""}</td>
-        <td>${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}</td>
-        <td>${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}</td>
-        <td>${instrutor.certificado ? `<img src="${instrutor.certificado}" width="80"><br>` : ""}</td>
-        <td>${instrutor.categorias}</td>
-        <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
-          ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
-        </td>
-        <td>${cronometroHtml}</td>
-        <td>
-          ${instrutor.status === "aceito"
-            ? `<button class="excluir" data-id="${instrutor.id}">Excluir</button>`
-            : `<button class="admitir" data-id="${instrutor.id}">Aceitar</button>
-               <button class="excluir" data-id="${instrutor.id}">Recusar</button>`}
-        </td>
-      </tr>
-    `;
+      const linha = `
+        <tr>
+          <td>${instrutor.nome}</td>
+          <td>${instrutor.email}</td>
+          <td>${instrutor.cpf}</td>
+          <td>${instrutor.cidade}</td>
+          <td>${instrutor.estado}</td>
+          <td>${instrutor.telefone}</td>
+          <td>${instrutor.selfie ? `<img src="${instrutor.selfie}" width="80"><br>` : ""}</td>
+          <td>${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}</td>
+          <td>${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}</td>
+          <td>${instrutor.certificado ? `<img src="${instrutor.certificado}" width="80"><br>` : ""}</td>
+          <td>${instrutor.categorias}</td>
+          <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
+            ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
+          </td>
+          <td>${cronometroHtml}</td>
+          <td>
+            ${instrutor.status === "aceito"
+              ? `<button class="excluir" data-id="${instrutor.id}">Excluir</button>`
+              : `<button class="admitir" data-id="${instrutor.id}">Aceitar</button>
+                 <button class="excluir" data-id="${instrutor.id}">Recusar</button>`}
+          </td>
+        </tr>
+      `;
 
-    if (instrutor.status === "aceito") {
-      tabelaAceitos.innerHTML += linha;
-    } else {
-      tabelaPendentes.innerHTML += linha;
-    }
-  });
+      if (instrutor.status === "aceito") {
+        tabelaAceitos.innerHTML += linha;
+      } else {
+        tabelaPendentes.innerHTML += linha;
+      }
+    });
+  } catch (err) {
+    console.error("❌ Erro ao carregar instrutores:", err);
+    alert("Erro ao carregar instrutores");
+  }
 }
 
 async function carregarAvaliacoes() {
-  const resposta = await fetch("https://meuinstrutor.onrender.com/avaliacoes/todas");
-  if (!resposta.ok) {
+  try {
+    const resposta = await fetch("https://meuinstrutor.onrender.com/avaliacoes/todas");
+    if (!resposta.ok) throw new Error("Erro ao carregar avaliações");
+
+    const avaliacoes = await resposta.json();
+    const tabelaPendentes = document.getElementById("tabelaAvaliacoesPendentes");
+    const tabelaAceitas = document.getElementById("tabelaAvaliacoesAceitas");
+    tabelaPendentes.innerHTML = "";
+    tabelaAceitas.innerHTML = "";
+
+    avaliacoes.forEach(av => {
+      const linha = `
+        <tr>
+          <td>${av.instrutor_nome || ""}</td>
+          <td>${av.primeiro_nome}</td>
+          <td>${av.sobrenome}</td>
+          <td>${av.telefone}</td>
+          <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
+          <td>${av.comentario}</td>
+          <td>${av.ip || "-"}</td>
+          <td>${av.status}</td>
+          <td>
+            ${av.status === "pendente"
+              ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
+                 <button class="recusar-av" data-id="${av.id}">Recusar</button>`
+              : ""}
+          </td>
+        </tr>
+      `;
+      if (av.status === "pendente") {
+        tabelaPendentes.innerHTML += linha;
+      } else {
+        tabelaAceitas.innerHTML += linha;
+      }
+    });
+  } catch (err) {
+    console.error("❌ Erro ao carregar avaliações:", err);
     alert("Erro ao carregar avaliações");
-    return;
   }
-  const avaliacoes = await resposta.json();
-
-  const tabelaPendentes = document.getElementById("tabelaAvaliacoesPendentes");
-  const tabelaAceitas = document.getElementById("tabelaAvaliacoesAceitas");
-  tabelaPendentes.innerHTML = "";
-  tabelaAceitas.innerHTML = "";
-
-  avaliacoes.forEach(av => {
-    const linha = `
-      <tr>
-        <td>${av.instrutor_nome}</td>
-        <td>${av.primeiro_nome}</td>
-        <td>${av.sobrenome}</td>
-        <td>${av.telefone}</td>
-        <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
-        <td>${av.comentario}</td>
-        <td>${av.ip}</td>
-        <td>${av.status}</td>
-        <td>
-          ${av.status === "pendente"
-            ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
-               <button class="recusar-av" data-id="${av.id}">Recusar</button>`
-            : ""}
-        </td>
-      </tr>
-    `;
-    if (av.status === "pendente") {
-      tabelaPendentes.innerHTML += linha;
-    } else {
-      tabelaAceitas.innerHTML += linha;
-    }
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -235,37 +239,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   tabela.addEventListener("click", async (e) => {
     const id = e.target.dataset.id;
+    if (!id) return;
 
-    // Aceitar instrutor
-    if (e.target.classList.contains("admitir")) {
-      const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
-      const resultado = await resposta.json();
-      alert(resultado.message);
-      carregarInstrutores();
-    }
+    try {
+      // Aceitar instrutor
+      if (e.target.classList.contains("admitir")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
 
-    // Excluir instrutor
-    if (e.target.classList.contains("excluir")) {
-      const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-      const resultado = await resposta.json();
-      alert(resultado.message);
-      carregarInstrutores();
-    }
+      // Excluir instrutor
+      if (e.target.classList.contains("excluir")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarInstrutores();
+      }
 
-    // Aceitar avaliação
-    if (e.target.classList.contains("aceitar-av")) {
-      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/aceitar/${id}`, { method: "PATCH" });
-      const resultado = await resposta.json();
-      alert(resultado.message);
-      carregarAvaliacoes();
-    }
+      // Aceitar avaliação
+      if (e.target.classList.contains("aceitar-av")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/aceitar/${id}`, { method: "PATCH" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarAvaliacoes();
+      }
 
-    // Recusar avaliação
-    if (e.target.classList.contains("recusar-av")) {
-      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${id}`, { method: "DELETE" });
-      const resultado = await resposta.json();
-      alert(resultado.message);
-      carregarAvaliacoes();
+      // Recusar avaliação
+      if (e.target.classList.contains("recusar-av")) {
+        const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${id}`, { method: "DELETE" });
+        const resultado = await resposta.json();
+        alert(resultado.message);
+        carregarAvaliacoes();
+      }
+    } catch (err) {
+      console.error("❌ Erro na ação:", err);
+      alert("Erro ao executar ação");
     }
   });
 
