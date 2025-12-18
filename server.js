@@ -450,7 +450,7 @@ app.post("/avaliacoes", async (req, res) => {
   }
 });
 
-// 📌 Calcular média de estrelas e total de avaliações por instrutor
+// 📌 Calcular média de estrelas e total de avaliações por instrutor (somente aceitas)
 app.get("/instrutores/avaliacoes", async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -458,6 +458,7 @@ app.get("/instrutores/avaliacoes", async (req, res) => {
              AVG(estrelas) AS media_estrelas,
              COUNT(*) AS total_avaliacoes
       FROM avaliacoes
+      WHERE status = 'aceita'
       GROUP BY instrutor_id
     `);
 
