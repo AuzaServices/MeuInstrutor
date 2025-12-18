@@ -407,6 +407,7 @@ app.get("/avaliacoes/:instrutorId", async (req, res) => {
 // 📌 Inserir nova avaliação
 app.post("/avaliacoes", async (req, res) => {
   const { instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone } = req.body;
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
   if (!instrutor_id || !estrelas) {
     return res.status(400).json({ erro: "Instrutor e estrelas são obrigatórios" });
@@ -414,12 +415,12 @@ app.post("/avaliacoes", async (req, res) => {
 
   try {
     const [result] = await db.query(
-      `INSERT INTO avaliacoes (instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone]
+      `INSERT INTO avaliacoes (instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone, ip, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [instrutor_id, estrelas, comentario, primeiro_nome, sobrenome, telefone, ip, "pendente"]
     );
 
-    res.json({ mensagem: "Avaliação registrada com sucesso!", id: result.insertId });
+    res.json({ mensagem: "Avaliação registrada com sucesso e aguardando aprovação!", id: result.insertId });
   } catch (err) {
     console.error("❌ Erro ao salvar avaliação:", err.message || err);
     res.status(500).json({ erro: "Erro ao salvar avaliação" });
@@ -441,6 +442,30 @@ app.get("/instrutores/avaliacoes", async (req, res) => {
   } catch (err) {
     console.error("❌ Erro ao calcular médias:", err.message || err);
     res.status(500).json({ erro: "Erro ao calcular médias" });
+  }
+});
+
+// 📌 Aceitar avaliação (muda status para 'aceita')
+app.patch("/avaliacoes/aceitar/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query("UPDATE avaliacoes SET status = 'aceita' WHERE id = ?", [id]);
+    res.json({ mensagem: "Avaliação aceita com sucesso!" });
+  } catch (err) {
+    console.error("❌ Erro ao aceitar avaliação:", err.message || err);
+    res.status(500).json({ erro: "Erro ao aceitar avaliação" });
+  }
+});
+
+// 📌 Recusar avaliação (muda status para 'rejeitada')
+app.delete("/avaliacoes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query("UPDATE avaliacoes SET status = 'rejeitada' WHERE id = ?", [id]);
+    res.json({ mensagem: "Avaliação rejeitada." });
+  } catch (err) {
+    console.error("❌ Erro ao recusar avaliação:", err.message || err);
+    res.status(500).json({ erro: "Erro ao recusar avaliação" });
   }
 });
 

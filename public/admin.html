@@ -8,11 +8,17 @@
 <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
-  <header class="topo">
-    <h1>Painel de Administração</h1>
-  </header>
+<header class="topo">
+  <h1>Painel de Administração</h1>
+  <nav class="menu-admin">
+    <button class="btn-nav" data-target="instrutores">Instrutores</button>
+    <button class="btn-nav" data-target="avaliacoes">Avaliações</button>
+  </nav>
+</header>
 
   <main>
+  <!-- Tela de Instrutores -->
+  <section id="tela-instrutores" class="tela ativa">
     <!-- Lista de instrutores pendentes -->
     <section class="lista-instrutores">
       <h2>Solicitações Pendentes</h2>
@@ -64,7 +70,49 @@
         <tbody id="tabelaAceitos"></tbody>
       </table>
     </section>
-  </main>
+  </section>
+
+  <!-- Tela de Avaliações -->
+  <section id="tela-avaliacoes" class="tela">
+    <section class="lista-avaliacoes">
+      <h2>Avaliações Pendentes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Instrutor</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Telefone</th>
+            <th>Estrelas</th>
+            <th>Comentário</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAvaliacoesPendentes"></tbody>
+      </table>
+    </section>
+
+    <section class="lista-avaliacoes">
+      <h2>Avaliações Aceitas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Instrutor</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>IP</th>
+            <th>Telefone</th>
+            <th>Estrelas</th>
+            <th>Comentário</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAvaliacoesAceitas"></tbody>
+      </table>
+    </section>
+  </section>
+</main>
 
   <script>
 async function carregarInstrutores() {
@@ -81,7 +129,6 @@ async function carregarInstrutores() {
   tabelaAceitos.innerHTML = "";
 
   instrutores.forEach(instrutor => {
-    // 🔎 Cronômetro de mensalidade
     let cronometroHtml = "";
     if (instrutor.status === "aceito") {
       if (instrutor.data_pagamento) {
@@ -116,30 +163,10 @@ async function carregarInstrutores() {
         <td>${instrutor.cidade}</td>
         <td>${instrutor.estado}</td>
         <td>${instrutor.telefone}</td>
-        <td>
-          ${instrutor.selfie ? `<img src="${instrutor.selfie}" width="80"><br>` : ""}
-          <input type="file" id="selfie-${instrutor.id}" class="input-file upload-selfie" data-id="${instrutor.id}">
-          <label for="selfie-${instrutor.id}" class="btn-minimal">Escolher</label>
-          <button class="btn-minimal btn-secondary atualizar-selfie" data-id="${instrutor.id}">Mudar</button>
-        </td>
-        <td>
-          ${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}
-          <input type="file" id="comprovante-${instrutor.id}" class="input-file upload-comprovante" data-id="${instrutor.id}">
-          <label for="comprovante-${instrutor.id}" class="btn-minimal">Escolher</label>
-          <button class="btn-minimal btn-secondary atualizar-comprovante" data-id="${instrutor.id}">Mudar</button>
-        </td>
-        <td>
-          ${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}
-          <input type="file" id="cnh-${instrutor.id}" class="input-file upload-cnh" data-id="${instrutor.id}">
-          <label for="cnh-${instrutor.id}" class="btn-minimal">Escolher</label>
-          <button class="btn-minimal btn-secondary atualizar-cnh" data-id="${instrutor.id}">Mudar</button>
-        </td>
-        <td>
-          ${instrutor.certificado ? `<img src="${instrutor.certificado}" width="80"><br>` : ""}
-          <input type="file" id="certificado-${instrutor.id}" class="input-file upload-certificado" data-id="${instrutor.id}">
-          <label for="certificado-${instrutor.id}" class="btn-minimal">Escolher</label>
-          <button class="btn-minimal btn-secondary atualizar-certificado" data-id="${instrutor.id}">Mudar</button>
-        </td>
+        <td>${instrutor.selfie ? `<img src="${instrutor.selfie}" width="80"><br>` : ""}</td>
+        <td>${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}</td>
+        <td>${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}</td>
+        <td>${instrutor.certificado ? `<img src="${instrutor.certificado}" width="80"><br>` : ""}</td>
         <td>${instrutor.categorias}</td>
         <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
           ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}
@@ -161,86 +188,89 @@ async function carregarInstrutores() {
     }
   });
 }
-  document.addEventListener("DOMContentLoaded", () => {
-    const tabela = document.querySelector("main");
 
-    tabela.addEventListener("click", async (e) => {
-      const id = e.target.dataset.id;
+async function carregarAvaliacoes() {
+  const resposta = await fetch("https://meuinstrutor.onrender.com/avaliacoes/todas");
+  if (!resposta.ok) {
+    alert("Erro ao carregar avaliações");
+    return;
+  }
+  const avaliacoes = await resposta.json();
 
-      // Aceitar
-      if (e.target.classList.contains("admitir")) {
-        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
-        const resultado = await resposta.json();
-        alert(resultado.message);
-        carregarInstrutores();
-      }
+  const tabelaPendentes = document.getElementById("tabelaAvaliacoesPendentes");
+  const tabelaAceitas = document.getElementById("tabelaAvaliacoesAceitas");
+  tabelaPendentes.innerHTML = "";
+  tabelaAceitas.innerHTML = "";
 
-      // Excluir
-      if (e.target.classList.contains("excluir")) {
-        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
-        const resultado = await resposta.json();
-        alert(resultado.message);
-        carregarInstrutores();
-      }
-
-      // Atualizar Selfie
-      if (e.target.classList.contains("atualizar-selfie")) {
-        const input = document.querySelector(`.upload-selfie[data-id="${id}"]`);
-        const file = input.files[0];
-        if (!file) { alert("Selecione uma selfie primeiro!"); return; }
-        const formData = new FormData();
-        formData.append("selfie", file);
-        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/selfie`, { method: "PUT", body: formData });
-        const resultado = await resposta.json();
-        alert(resultado.message);
-        carregarInstrutores();
-      }
-
-      // Atualizar Comprovante
-      if (e.target.classList.contains("atualizar-comprovante")) {
-        const input = document.querySelector(`.upload-comprovante[data-id="${id}"]`);
-        const file = input.files[0];
-        if (!file) { alert("Selecione um comprovante primeiro!"); return; }
-        const formData = new FormData();
-        formData.append("comprovante", file);
-        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/comprovante`, { method: "PUT", body: formData });
-        const resultado = await resposta.json();
-        alert(resultado.message);
-        carregarInstrutores();
-      }
-
-      // Atualizar CNH
-      if (e.target.classList.contains("atualizar-cnh")) {
-        const input = document.querySelector(`.upload-cnh[data-id="${id}"]`);
-        const file = input.files[0];
-        if (!file) { alert("Selecione uma CNH primeiro!"); return; }
-        const formData = new FormData();
-        formData.append("cnh", file);
-        const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/cnh`, { method: "PUT", body: formData });
-        const resultado = await resposta.json();
-        alert(resultado.message);
-        carregarInstrutores();
-      }
-
-      // Atualizar Certificado
-if (e.target.classList.contains("atualizar-certificado")) {
-  const input = document.querySelector(`.upload-certificado[data-id="${id}"]`);
-  const file = input.files[0];
-  if (!file) { alert("Selecione um certificado primeiro!"); return; }
-  const formData = new FormData();
-  formData.append("certificado", file);
-  const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}/certificado`, { 
-    method: "PUT", 
-    body: formData 
+  avaliacoes.forEach(av => {
+    const linha = `
+      <tr>
+        <td>${av.instrutor_nome}</td>
+        <td>${av.primeiro_nome}</td>
+        <td>${av.sobrenome}</td>
+        <td>${av.telefone}</td>
+        <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
+        <td>${av.comentario}</td>
+        <td>${av.ip}</td>
+        <td>${av.status}</td>
+        <td>
+          ${av.status === "pendente"
+            ? `<button class="aceitar-av" data-id="${av.id}">Aceitar</button>
+               <button class="recusar-av" data-id="${av.id}">Recusar</button>`
+            : ""}
+        </td>
+      </tr>
+    `;
+    if (av.status === "pendente") {
+      tabelaPendentes.innerHTML += linha;
+    } else {
+      tabelaAceitas.innerHTML += linha;
+    }
   });
-  const resultado = await resposta.json();
-  alert(resultado.message);
-  carregarInstrutores();
 }
-    });
 
-    carregarInstrutores();
+document.addEventListener("DOMContentLoaded", () => {
+  const tabela = document.querySelector("main");
+
+  tabela.addEventListener("click", async (e) => {
+    const id = e.target.dataset.id;
+
+    // Aceitar instrutor
+    if (e.target.classList.contains("admitir")) {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/aceitar/${id}`, { method: "PUT" });
+      const resultado = await resposta.json();
+      alert(resultado.message);
+      carregarInstrutores();
+    }
+
+    // Excluir instrutor
+    if (e.target.classList.contains("excluir")) {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/instrutores/${id}`, { method: "DELETE" });
+      const resultado = await resposta.json();
+      alert(resultado.message);
+      carregarInstrutores();
+    }
+
+    // Aceitar avaliação
+    if (e.target.classList.contains("aceitar-av")) {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/aceitar/${id}`, { method: "PATCH" });
+      const resultado = await resposta.json();
+      alert(resultado.message);
+      carregarAvaliacoes();
+    }
+
+    // Recusar avaliação
+    if (e.target.classList.contains("recusar-av")) {
+      const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${id}`, { method: "DELETE" });
+      const resultado = await resposta.json();
+      alert(resultado.message);
+      carregarAvaliacoes();
+    }
   });
-  </script>
+
+  carregarInstrutores();
+  carregarAvaliacoes();
+});
+</script>
 </body>
 </html>
