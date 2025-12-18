@@ -790,17 +790,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let estrelaSelecionada = 0;
 
   // Abrir modal ao clicar no botão
-  document.body.addEventListener("click", async (e) => {
-    if (e.target.classList.contains("btn-avaliar")) {
-      const instrutorId = e.target.getAttribute("data-id");
-      modal.setAttribute("data-instrutor-id", instrutorId);
+document.body.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".btn-avaliar"); // pega o botão mesmo se clicar no ícone
+  if (btn) {
+    const instrutorId = btn.getAttribute("data-id");
+    modal.setAttribute("data-instrutor-id", instrutorId);
 
-      // Carregar avaliações existentes
-      await carregarAvaliacoes(instrutorId);
+    await carregarAvaliacoes(instrutorId);
 
-      modal.style.display = "flex"; // usa flex para centralizar
-    }
-  });
+    modal.style.display = "flex"; // abre modal
+  }
+});
 
   // Fechar modal
   closeBtn.addEventListener("click", () => {
