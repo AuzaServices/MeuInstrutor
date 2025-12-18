@@ -283,6 +283,7 @@
 
 async function buscarInstrutor(event) {
   event.preventDefault();
+
   const estado = document.getElementById("estado").selectedOptions[0].text;
   const cidade = document.getElementById("cidade").value;
   const categoria = document.getElementById("categoria").value;
@@ -303,7 +304,7 @@ async function buscarInstrutor(event) {
     // Monta os cards ou mensagem de vazio
     let cardsHtml = "";
 
-    if (instrutores.length === 0) {
+    if (!instrutores || instrutores.length === 0) {
       // Mensagem quando não há instrutores
       cardsHtml = `
         <div class="mensagem-vazia">
@@ -313,38 +314,39 @@ async function buscarInstrutor(event) {
       `;
     } else {
       instrutores.forEach(instrutor => {
-        const nomes = instrutor.nome.split(" ");
+        const nomes = instrutor.nome ? instrutor.nome.split(" ") : [];
         const primeiroNome = nomes[0] || "";
         const segundoNome = nomes[1] || "";
         const telefone = instrutor.telefone ? instrutor.telefone.replace(/\D/g, "") : "";
         const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
         const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
+
+        // 👉 Calcula quantidade e média de avaliações
         const totalAvaliacoes = instrutor.avaliacoes ? instrutor.avaliacoes.length : 0;
         const mediaEstrelas = totalAvaliacoes > 0
-        ? (instrutor.avaliacoes.reduce((acc, av) => acc + av.estrelas, 0) / totalAvaliacoes).toFixed(1)
-        : "N/A";
+          ? (instrutor.avaliacoes.reduce((acc, av) => acc + (av.estrelas || 0), 0) / totalAvaliacoes).toFixed(1)
+          : "N/A";
 
-cardsHtml += `
-  <div class="card-instrutor">
-    <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-    <div class="conteudo">
-      <h3>${primeiroNome} ${segundoNome}</h3>
-      <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+        cardsHtml += `
+          <div class="card-instrutor">
+            <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+            <div class="conteudo">
+              <h3>${primeiroNome} ${segundoNome}</h3>
+              <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
 
-      <!-- Média de estrelas e total de avaliações -->
-      <p class="media-estrelas">
-        ⭐ Média: ${mediaEstrelas} (${totalAvaliacoes} avaliações)
-      </p>
+              <!-- Média de estrelas e total de avaliações -->
+              <p class="media-estrelas">
+                ⭐ Média: ${mediaEstrelas} (${totalAvaliacoes} avaliações)
+              </p>
 
-      <div class="acoes">
-        <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-        <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
-      </div>
-    </div>
-  </div>
-`;
+              <div class="acoes">
+                <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+                <button class="btn-avaliar" data-id="${instrutor.id}">⭐ Avaliar</button>
+              </div>
+            </div>
+          </div>
+        `;
       });
-
     }
 
     // Injeta nos containers de resultado
@@ -354,13 +356,14 @@ cardsHtml += `
       `<div class="cards-container">${cardsHtml}</div>`;
 
   } catch (erro) {
-    console.error("Erro ao buscar instrutores:", erro);
+    console.error("❌ Erro ao buscar instrutores:", erro);
     document.getElementById("resultado-mobile").innerHTML =
       `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
     document.getElementById("resultado-desktop").innerHTML =
       `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
   }
 }
+
 function carregarFormularioInstrutor() {
   document.getElementById("titulo-form").innerText = "Cadastro de Instrutor";
   document.getElementById("form-area").innerHTML = `
@@ -869,11 +872,17 @@ async function carregarAvaliacoes(instrutorId) {
     // Debug: ver o que vem da API
     console.log("Avaliações recebidas:", avaliacoes);
 
+    // Elementos de média e quantidade (protege contra null)
+    const mediaEl = document.getElementById("media-avaliacoes");
+    const quantidadeEl = document.getElementById("quantidade-avaliacoes");
+
     // Se não houver avaliações
     if (!avaliacoes || avaliacoes.length === 0) {
       lista.innerHTML = "<p class='sem-avaliacoes'>Esse instrutor ainda não recebeu nenhuma avaliação.</p>";
-      document.getElementById("media-avaliacoes").textContent = "0.0";
-      document.getElementById("quantidade-avaliacoes").textContent = "0";
+
+      if (mediaEl) mediaEl.textContent = "0.0";
+      if (quantidadeEl) quantidadeEl.textContent = "0";
+
       return;
     }
 
@@ -882,9 +891,9 @@ async function carregarAvaliacoes(instrutorId) {
     const somaEstrelas = avaliacoes.reduce((acc, av) => acc + av.estrelas, 0);
     const media = (somaEstrelas / quantidade).toFixed(1);
 
-    // Atualiza no HTML
-    document.getElementById("media-avaliacoes").textContent = media;
-    document.getElementById("quantidade-avaliacoes").textContent = quantidade;
+    // Atualiza no HTML (só se os elementos existirem)
+    if (mediaEl) mediaEl.textContent = media;
+    if (quantidadeEl) quantidadeEl.textContent = quantidade;
 
     // Renderiza cada avaliação
     avaliacoes.forEach(av => {
