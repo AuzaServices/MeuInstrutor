@@ -872,7 +872,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const resposta = await fetch(`https://meuinstrutor.onrender.com/avaliacoes/${instrutorId}`);
       if (!resposta.ok) {
         const lista = document.getElementById("comentarios-lista");
-        lista.innerHTML = "<p class='sem-avaliacoes'>Esse instrutor ainda não recebeu nenhuma avaliação aprovada.</p>";
+        lista.innerHTML = "<p class='sem-avaliacoes'>Esse instrutor ainda não recebeu nenhuma avaliação.</p>";
 
         const mediaEl = document.getElementById("media-avaliacoes");
         const quantidadeEl = document.getElementById("quantidade-avaliacoes");

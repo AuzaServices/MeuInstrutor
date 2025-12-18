@@ -6,6 +6,54 @@
   <title>Sobre Nós - Instrutor Pro</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    /* Layout da seção Sobre Nós */
+    .sobre-nos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 3rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .sobre-nos img {
+      width: 50%;
+      max-width: 600px;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .sobre-nos-texto {
+      flex: 1;
+    }
+
+    .sobre-nos-texto h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .sobre-nos-texto p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Responsivo para mobile */
+    @media (max-width: 768px) {
+      .sobre-nos {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .sobre-nos img {
+        width: 100%;
+        margin-bottom: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="topo">
@@ -22,10 +70,22 @@
     </nav> 
   </header>
 
-  <main>
-    <h1>Sobre Nós</h1>
-    <p>Aqui você pode contar a história da plataforma, missão, valores e objetivos.</p>
-  </main>
+  <!-- Seção Sobre Nós -->
+  <section class="sobre-nos">
+    <img src="img2.png" alt="Instrutores em ação" />
+    <div class="sobre-nos-texto">
+      <h1>Sobre Nós</h1>
+      <p>
+        O Instrutor Pro nasceu com a missão de conectar alunos a instrutores credenciados de forma prática, segura e transparente. 
+        Nossa plataforma valoriza a confiança, a qualidade e a proximidade, oferecendo uma experiência única para quem busca aprender 
+        e para quem deseja ensinar.
+      </p>
+      <p>
+        Trabalhamos com dedicação para garantir que cada aluno encontre o instrutor ideal, e que cada instrutor tenha as melhores 
+        oportunidades de compartilhar seu conhecimento.
+      </p>
+    </div>
+  </section>
 
   <section id="contato" class="institucional-section scroll-reveal">
   <div class="institucional-grid">
@@ -52,8 +112,8 @@
     <div class="institucional-col">
       <h4>Institucional</h4>
       <ul>
-        <li><a href="/politicas-de-privacidade" target="_blank">Política de Privacidade</a></li>
-        <li><a href="/termos-de-uso" target="_blank">Termos de Uso</a></li>
+        <li><a href="/politica.html" target="_blank">Política de Privacidade</a></li>
+        <li><a href="/termos.html" target="_blank">Termos de Uso</a></li>
       </ul>
     </div>
   </div>
@@ -75,29 +135,27 @@
 </div>
 </section>
 
-<!-- Footer principal -->
-<footer>
-  © 2025 Achei Instrutor - Todos os direitos reservados
-</footer>
+  <!-- Footer -->
+  <footer>
+    © 2025 Achei Instrutor - Todos os direitos reservados
+  </footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".menu-toggle");
-  const menu = document.querySelector("nav.menu");
+      const toggle = document.querySelector(".menu-toggle");
+      const menu = document.querySelector("nav.menu");
 
-  // abre/fecha ao clicar no hambúrguer
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita fechar imediatamente
-    menu.classList.toggle("active");
-  });
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("active");
+      });
 
-  // fecha ao clicar fora do menu
-  document.addEventListener("click", (e) => {
-    if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
-      menu.classList.remove("active");
-    }
-  });
-});
+      document.addEventListener("click", (e) => {
+        if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          menu.classList.remove("active");
+        }
+      });
+    });
   </script>
 </body>
 </html>
