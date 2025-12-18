@@ -461,19 +461,6 @@ app.patch("/avaliacoes/aceitar/:id", async (req, res) => {
   }
 });
 
-// 📌 Recusar avaliação (muda status para 'rejeitada')
-app.delete("/avaliacoes/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    await db.query("UPDATE avaliacoes SET status = 'rejeitada' WHERE id = ?", [id]);
-    res.json({ mensagem: "Avaliação rejeitada." });
-  } catch (err) {
-    console.error("❌ Erro ao recusar avaliação:", err.message || err);
-    res.status(500).json({ erro: "Erro ao recusar avaliação" });
-  }
-});
-
-// 📌 Buscar todas as avaliações (admin)
 app.get("/avaliacoes/todas", async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -486,6 +473,18 @@ app.get("/avaliacoes/todas", async (req, res) => {
   } catch (err) {
     console.error("❌ Erro ao buscar todas as avaliações:", err.message || err);
     res.status(500).json({ erro: "Erro ao buscar todas as avaliações" });
+  }
+});
+
+// 📌 Recusar avaliação (muda status para 'rejeitada')
+app.delete("/avaliacoes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query("UPDATE avaliacoes SET status = 'rejeitada' WHERE id = ?", [id]);
+    res.json({ mensagem: "Avaliação rejeitada." });
+  } catch (err) {
+    console.error("❌ Erro ao recusar avaliação:", err.message || err);
+    res.status(500).json({ erro: "Erro ao recusar avaliação" });
   }
 });
 
