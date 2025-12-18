@@ -187,6 +187,7 @@ app.put("/instrutores/aceitar/:id", async (req, res) => {
 
 // 📌 Listar instrutores aceitos com filtro
 // 📌 Listar instrutores aceitos com filtro
+// 📌 Listar instrutores aceitos com filtro + média e quantidade de avaliações
 app.get("/instrutores/aceitos", async (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
 
@@ -194,23 +195,35 @@ app.get("/instrutores/aceitos", async (req, res) => {
     return res.status(400).json({ error: "Cidade e estado são obrigatórios" });
   }
 
-  let sql = "SELECT * FROM instrutores WHERE status = 'aceito' AND cidade = ? AND estado = ?";
+  // Base SQL com JOIN na tabela de avaliações
+  let sql = `
+    SELECT i.*, 
+           COALESCE(AVG(a.estrelas), 0) AS media_estrelas,
+           COUNT(a.id) AS total_avaliacoes
+    FROM instrutores i
+    LEFT JOIN avaliacoes a ON a.instrutor_id = i.id
+    WHERE i.status = 'aceito' AND i.cidade = ? AND i.estado = ?
+  `;
   const params = [cidade, estado];
 
+  // Filtro de sexo
   if (sexo && sexo.toLowerCase() !== "sem-preferencia") {
-    // Normaliza o valor recebido
     let filtroSexo = sexo.toLowerCase();
     if (filtroSexo === "masculino") filtroSexo = "M";
     if (filtroSexo === "feminino") filtroSexo = "F";
 
-    sql += " AND sexo = ?";
+    sql += " AND i.sexo = ?";
     params.push(filtroSexo);
   }
 
+  // Filtro de categorias
   if (categorias) {
-    sql += " AND UPPER(categorias) LIKE ?";
+    sql += " AND UPPER(i.categorias) LIKE ?";
     params.push(`%${categorias.toUpperCase()}%`);
   }
+
+  // Agrupamento para calcular AVG e COUNT corretamente
+  sql += " GROUP BY i.id";
 
   try {
     const [results] = await db.query(sql, params);
