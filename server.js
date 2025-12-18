@@ -29,14 +29,16 @@ const db = mysql.createPool({
 
 
 // Testa a conexão inicial
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error("❌ Erro ao conectar no MySQL:", err);
-    return;
+// Testa a conexão inicial
+(async () => {
+  try {
+    const connection = await db.getConnection();
+    console.log("✅ Conectado ao MySQL!");
+    connection.release();
+  } catch (err) {
+    console.error("❌ Erro ao conectar no MySQL:", err.message || err);
   }
-  console.log("✅ Conectado ao MySQL!");
-  connection.release();
-});
+})();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
