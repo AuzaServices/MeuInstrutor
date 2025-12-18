@@ -293,7 +293,14 @@ async function buscarInstrutor(event) {
     const resposta = await fetch(
       `https://meuinstrutor.onrender.com/instrutores/aceitos?cidade=${cidade}&estado=${estado}&sexo=${sexo}&categorias=${categoria}`
     );
-    const instrutores = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(`Erro ${resposta.status}: ${resposta.statusText}`);
+    }
+
+    const data = await resposta.json();
+    // garante que seja array
+    const instrutores = Array.isArray(data) ? data : [];
 
     // Atualiza textos informativos
     document.getElementById("filtro-info").innerText =
@@ -304,8 +311,7 @@ async function buscarInstrutor(event) {
     // Monta os cards ou mensagem de vazio
     let cardsHtml = "";
 
-    if (!instrutores || instrutores.length === 0) {
-      // Mensagem quando não há instrutores
+    if (instrutores.length === 0) {
       cardsHtml = `
         <div class="mensagem-vazia">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -321,40 +327,33 @@ async function buscarInstrutor(event) {
         const linkWhats = telefone ? `https://wa.me/55${telefone}` : "#";
         const selfieUrl = instrutor.selfie || "https://res.cloudinary.com/dzwkr47ib/image/upload/v1234567890/placeholder.jpg";
 
-        // 👉 Usa os campos já calculados pelo back
         const totalAvaliacoes = instrutor.total_avaliacoes || 0;
-        const mediaEstrelas = totalAvaliacoes > 0
-          ? Number(instrutor.media_estrelas)
-          : 0;
+        const mediaEstrelas = totalAvaliacoes > 0 ? Number(instrutor.media_estrelas) : 0;
 
-        // Arredonda a média para inteiro e gera estrelas visuais
-const estrelasInt = Math.round(mediaEstrelas);
-const estrelasHtml =
-  "<span class='estrela cheia'>★</span>".repeat(estrelasInt) +
-  "<span class='estrela vazia'>☆</span>".repeat(5 - estrelasInt);
+        const estrelasInt = Math.round(mediaEstrelas);
+        const estrelasHtml =
+          "<span class='estrela cheia'>★</span>".repeat(estrelasInt) +
+          "<span class='estrela vazia'>☆</span>".repeat(5 - estrelasInt);
 
-cardsHtml += `
-  <div class="card-instrutor">
-    <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
-    <div class="conteudo">
-      <h3>${primeiroNome} ${segundoNome}</h3>
-      <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
-
-      <!-- Estrelas visuais e quantidade -->
-      <p class="media-estrelas">
-        ${estrelasHtml} <br>
-        (${totalAvaliacoes} avaliações)
-      </p>
-
-<div class="acoes">
-  <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
-  <button class="btn-avaliar" data-id="${instrutor.id}" title="Avaliar">
-    <i class="fa-regular fa-comment"></i>
-  </button>
-</div>
-    </div>
-  </div>
-`;
+        cardsHtml += `
+          <div class="card-instrutor">
+            <img src="${selfieUrl}" alt="Foto de ${instrutor.nome}" class="foto-instrutor">
+            <div class="conteudo">
+              <h3>${primeiroNome} ${segundoNome}</h3>
+              <p class="categorias">Categoria(s): ${instrutor.categorias || "Não informado"}</p>
+              <p class="media-estrelas">
+                ${estrelasHtml} <br>
+                (${totalAvaliacoes} avaliações)
+              </p>
+              <div class="acoes">
+                <a href="${linkWhats}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">WhatsApp</a>
+                <button class="btn-avaliar" data-id="${instrutor.id}" title="Avaliar">
+                  <i class="fa-regular fa-comment"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
       });
     }
 
@@ -366,10 +365,9 @@ cardsHtml += `
 
   } catch (erro) {
     console.error("❌ Erro ao buscar instrutores:", erro);
-    document.getElementById("resultado-mobile").innerHTML =
-      `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
-    document.getElementById("resultado-desktop").innerHTML =
-      `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
+    const erroHtml = `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
+    document.getElementById("resultado-mobile").innerHTML = erroHtml;
+    document.getElementById("resultado-desktop").innerHTML = erroHtml;
   }
 }
 
