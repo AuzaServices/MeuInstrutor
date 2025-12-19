@@ -582,7 +582,13 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       throw new Error(resultado.error || "Erro no servidor");
     }
 
-    alert(resultado.message);
+    const modal = document.getElementById("modalComentario");
+modal.querySelector("h2").textContent = "Cadastro enviado!";
+modal.querySelector("p").textContent = resultado.message;
+modal.style.display = "flex";
+
+document.getElementById("formInstrutor").reset();
+proximaEtapa(1);
     document.getElementById("formInstrutor").reset();
     proximaEtapa(1);
   } catch (error) {
@@ -997,6 +1003,36 @@ document.querySelector("#modalComentario .fechar").addEventListener("click", () 
 // Fechar ao clicar fora
 window.addEventListener("click", (e) => {
   const modal = document.getElementById("modalComentario");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+</script>
+
+<!-- Modal de sucesso -->
+<div id="modalSucesso" class="modal">
+  <div class="modal-conteudo">
+    <span class="fechar">&times;</span>
+    <div class="icone-check">
+      <!-- SVG de check verde redondo -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="#2ecc71"/>
+        <path d="M9 12l2 2l4-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Cadastro realizado!</h2>
+    <p>Em até 24h uma equipe entrará em contato pelo WhatsApp para dar prosseguimento.</p>
+  </div>
+</div>
+ 
+<script>
+document.querySelector("#modalSucesso .fechar").addEventListener("click", () => {
+  document.getElementById("modalSucesso").style.display = "none";
+});
+
+// Fechar ao clicar fora
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("modalSucesso");
   if (e.target === modal) {
     modal.style.display = "none";
   }
