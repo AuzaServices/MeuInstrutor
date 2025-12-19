@@ -36,7 +36,6 @@
             <th>CNH</th>
             <th>Certificado</th>
             <th>Categoria</th>
-            <th>Veículo Ensino</th>
             <th>Status</th>
             <th>Mensalidade</th>
             <th>Ações</th>
@@ -63,7 +62,6 @@
             <th>CNH</th>
             <th>Certificado</th>
             <th>Categoria</th>
-            <th>Veículo Ensino</th>
             <th>Status</th>
             <th>Mensalidade</th>
             <th>Ações</th>
@@ -174,7 +172,6 @@ async function carregarInstrutores() {
           <td>${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}</td>
           <td>${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}</td>
           <td>${instrutor.certificado ? `<img src="${instrutor.certificado}" width="80"><br>` : ""}</td>
-          <td>${instrutor.veiculoEnsino || "-"}</td>
           <td>${instrutor.categorias}</td>
           <td style="color:${instrutor.status === "aceito" ? "green" : "black"}; font-weight:bold;">
             ${instrutor.status === "aceito" ? "✔ Aceito" : "Pendente"}

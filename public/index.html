@@ -486,23 +486,13 @@ function carregarFormularioInstrutor() {
     <span class="upload-check" id="check-certificado"></span>
 
     <h4>Especializações de ensino:</h4>
-<div class="categorias">
-  <label>
-    <input type="checkbox" name="categoria" value="A"> A
-  </label>
-  <label>
-    <input type="checkbox" name="categoria" value="B"> B
-  </label>
-  <label>
-    <input type="checkbox" name="categoria" value="C"> C
-  </label>
-  <label>
-    <input type="checkbox" name="categoria" value="D"> D
-  </label>
-  <label>
-    <input type="checkbox" name="categoria" value="E"> E
-  </label>
-</div>
+    <div class="categorias">
+      <label><input type="checkbox" name="categoria" value="A"> A</label>
+      <label><input type="checkbox" name="categoria" value="B"> B</label>
+      <label><input type="checkbox" name="categoria" value="C"> C</label>
+      <label><input type="checkbox" name="categoria" value="D"> D</label>
+      <label><input type="checkbox" name="categoria" value="E"> E</label>
+    </div>
 
     <button type="button" onclick="voltarEtapa(4)">Voltar</button>
     <button type="submit">Enviar</button>
@@ -599,7 +589,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
 
-  // 🔑 Estado
+  // 🔑 Aqui está a correção
   const estadoSelect = document.getElementById("estadoInstrutor");
   const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
   formData.append("estado", estadoNome);
@@ -609,15 +599,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
   formData.append("cnh", document.getElementById("cnh").files[0]);
   formData.append("certificado", document.getElementById("certificado").files[0]);
-
-  // ✅ Categorias
   formData.append("categorias", categoriasSelecionadas.join(","));
-
-  // ✅ Sim/Não (radio)
-  const veiculoEnsino = document.querySelector('input[name="veiculoEnsino"]:checked');
-  if (veiculoEnsino) {
-    formData.append("veiculoEnsino", veiculoEnsino.value);
-  }
 
   try {
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
@@ -631,11 +613,13 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       throw new Error(resultado.error || "Erro no servidor");
     }
 
-    const modal = document.getElementById("modalSucesso");
-    modal.querySelector("h2").textContent = "Cadastro realizado!";
-    modal.querySelector("p").textContent = "Em até 24h entraremos em contato pelo WhatsApp para dar prosseguimento.";
-    modal.style.display = "flex";
+const modal = document.getElementById("modalSucesso");
+modal.querySelector("h2").textContent = "Cadastro realizado!";
+modal.querySelector("p").textContent = "Em até 24h entraremos em contato pelo WhatsApp para dar prosseguimento."
+modal.style.display = "flex";
 
+document.getElementById("formInstrutor").reset();
+proximaEtapa(1);
     document.getElementById("formInstrutor").reset();
     proximaEtapa(1);
   } catch (error) {
@@ -643,7 +627,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
     alert("Erro ao cadastrar instrutor: " + error.message);
   }
 });
-    }
+}
 
     // Navegação entre etapas
     function proximaEtapa(n) {
@@ -933,10 +917,6 @@ if (resposta.ok) {
         return;
       }
 
-        const info = document.getElementById("info-complementar");
-  info.textContent = `Informações complementares: O instrutor possui veículo para ensino? ${instrutor.veiculoEnsino === "sim" ? "Sim" : "Não"}`;
-
-
       const avaliacoes = await resposta.json();
       const lista = document.getElementById("comentarios-lista");
       lista.innerHTML = "";
@@ -993,11 +973,6 @@ if (resposta.ok) {
     <h2>Avaliações do(a) Instrutor(a)</h2>
 
     <div id="comentarios-lista"></div>
-
-    <!-- 🔑 Informação complementar -->
-    <div id="info-complementar" style="margin:10px 0; font-weight:bold; color:#333;">
-      <!-- Aqui o JS vai inserir "Sim" ou "Não" -->
-    </div>
 
     <h3>Deixe sua avaliação</h3>
     <div class="modal-estrelas">
