@@ -8,6 +8,16 @@
 <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
+
+<div id="login-admin">
+  <div class="login-box">
+    <h2>Login do Administrador</h2>
+    <input type="password" id="senhaAdmin" placeholder="Digite a senha" />
+    <button onclick="validarSenha()">Entrar</button>
+    <p id="erroSenha"></p>
+  </div>
+</div>
+
 <header class="topo">
   <h1>Painel de Administração</h1>
   <nav class="menu-admin">
@@ -321,5 +331,25 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarInstrutores();
 });
 </script>
+
+<script>
+  function validarSenha() {
+    const senha = document.getElementById("senhaAdmin").value;
+    const senhaCorreta = "achei3214"; // 🔑 Defina aqui a senha
+
+    if (senha === senhaCorreta) {
+      document.getElementById("login-admin").style.display = "none"; // esconde tela de login
+      document.querySelector("main").style.display = "block"; // mostra painel
+    } else {
+      document.getElementById("erroSenha").textContent = "Senha incorreta!";
+    }
+  }
+
+  // 🔒 Oculta o painel até login
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("main").style.display = "none";
+  });
+</script>
+
 </body>
 </html>
