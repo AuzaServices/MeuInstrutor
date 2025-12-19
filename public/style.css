@@ -1240,21 +1240,15 @@ hr {
 }
 
 .btn-avaliar {
-  background: none;   /* sem fundo */
-  border: none;       /* sem borda */
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 0;         /* remove espaçamento extra */
+  color: #2222; /* azul profissional */
+  transition: color 0.3s ease;
 }
 
-.btn-avaliar i {
-  font-size: 1.4rem;  /* tamanho do balão */
-  color: #000;        /* preto minimalista */
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.btn-avaliar:hover i {
-  transform: scale(1.2); /* cresce levemente no hover */
-  color: #333;           /* muda o tom do preto */
+.btn-avaliar:hover {
+  color: #2222; /* tom mais escuro no hover */
 }
 
 .modal {
