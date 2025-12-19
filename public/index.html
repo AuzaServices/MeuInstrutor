@@ -969,5 +969,38 @@ document.getElementById("comentario").addEventListener("input", e => {
 });
 </script>
 
+<!-- Modal -->
+<div id="modalComentario" class="modal">
+  <div class="modal-conteudo">
+    <span class="fechar">&times;</span>
+    <div class="icone-relogio">
+      <!-- Ícone SVG de relógio -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="orange" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="orange" stroke-width="2" fill="none"/>
+        <line x1="12" y1="12" x2="12" y2="7" stroke="orange" stroke-width="2" stroke-linecap="round"/>
+        <line x1="12" y1="12" x2="16" y2="12" stroke="orange" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h2>Comentário enviado!</h2>
+    <p>Seu comentário foi levado para análise e em até 24 horas será revisado e postado.</p>
+  </div>
+</div>
+
+<script>
+  // Fechar modal de comentário
+  const modalComentario = document.getElementById("modalComentario");
+  const fecharBtn = document.querySelector(".fechar");
+
+  fecharBtn.onclick = function() {
+    modalComentario.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modalComentario) {
+      modalComentario.style.display = "none";
+    }
+  }
+</script>
+
 </body>
 </html>
