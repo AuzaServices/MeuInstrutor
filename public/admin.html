@@ -161,7 +161,13 @@ async function carregarInstrutores() {
           <td>${instrutor.cpf}</td>
           <td>${instrutor.cidade}</td>
           <td>${instrutor.estado}</td>
-          <td>${instrutor.telefone}</td>
+          <td>
+  ${instrutor.telefone 
+    ? `<a href="https://wa.me/55${instrutor.telefone.replace(/\D/g,'')}" 
+         target="_blank" 
+         class="btn-whatsapp">WhatsApp</a>` 
+    : "-"}
+</td>
           <td>${instrutor.selfie ? `<img src="${instrutor.selfie}" width="80"><br>` : ""}</td>
           <td>${instrutor.comprovante_residencia ? `<img src="${instrutor.comprovante_residencia}" width="80"><br>` : ""}</td>
           <td>${instrutor.cnh ? `<img src="${instrutor.cnh}" width="80"><br>` : ""}</td>
@@ -210,7 +216,13 @@ async function carregarAvaliacoes() {
           <td>${av.primeiro_nome}</td>
           <td>${av.sobrenome}</td>
           <td>${av.ip || "-"}</td>
-          <td>${av.telefone}</td>
+          <td>
+  ${av.telefone 
+    ? `<a href="https://wa.me/55${av.telefone.replace(/\D/g,'')}" 
+         target="_blank" 
+         class="btn-whatsapp">WhatsApp</a>` 
+    : "-"}
+</td>
           <td>${"★".repeat(av.estrelas)}${"☆".repeat(5-av.estrelas)}</td>
           <td>${av.comentario}</td>
           <td>${av.status}</td>

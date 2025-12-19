@@ -113,3 +113,18 @@ form input, form select {
   color: #fff;
   font-weight: bold;
 }
+
+.btn-whatsapp {
+  display: inline-block;
+  padding: 6px 10px;
+  background-color: #25D366;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1ebe5d;
+}
