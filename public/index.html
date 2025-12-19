@@ -449,47 +449,25 @@ function carregarFormularioInstrutor() {
     <button type="button" onclick="validarEAvancar(3,4)">Próximo</button>
   </div>
 
-  <!-- Etapa 4: Identificação Veicular -->
-  <div class="etapa" id="etapa4" style="display:none;">
-    <h4>Identificação Veicular</h4>
+<!-- Etapa 4: Identificação Veicular -->
+<div class="etapa" id="etapa4" style="display:none;">
+  <h4>Identificação Veicular</h4>
 
-    <label>Possui veículo próprio para ensino?</label>
-    <div>
-      <label><input type="radio" name="veiculoEnsino" value="sim" onclick="mostrarVeiculos()"> Sim</label>
-      <label><input type="radio" name="veiculoEnsino" value="nao" onclick="ocultarVeiculos()"> Não possuo (usar veículo do aluno)</label>
-    </div>
-
-    <!-- Container de veículos -->
-    <div id="veiculos-container" style="display:none; margin-top:10px;">
-      <div class="veiculo" id="veiculo-1">
-        <label>Foto do veículo:</label>
-        <input type="file" name="fotoVeiculo1" accept="image/*" required>
-        
-        <label>Marca:</label>
-        <input type="text" name="marca1" required>
-        
-        <label>Modelo:</label>
-        <input type="text" name="modelo1" required>
-        
-        <label>Cor:</label>
-        <input type="text" name="cor1" required>
-        
-        <label>Ano:</label>
-        <input type="number" name="ano1" min="1900" max="2099" required>
-        
-        <label>Câmbio:</label>
-        <select name="cambio1" required>
-          <option value="">Selecione</option>
-          <option value="Manual">Manual</option>
-          <option value="Automatico">Automático</option>
-        </select>
-      </div>
-      <button type="button" id="add-veiculo" onclick="adicionarVeiculo()">+ Adicionar outro veículo</button>
-    </div>
-
-    <button type="button" onclick="voltarEtapa(3)">Voltar</button>
-    <button type="button" onclick="validarEAvancar(4,5)">Próximo</button>
+  <label>Possui veículo próprio para ensino?</label>
+  <div class="radio-group">
+    <label class="radio-btn">
+      <input type="radio" name="veiculoEnsino" value="sim" required>
+      <span>Sim</span>
+    </label>
+    <label class="radio-btn">
+      <input type="radio" name="veiculoEnsino" value="nao" required>
+      <span>Não (usar veículo do aluno)</span>
+    </label>
   </div>
+
+  <button type="button" onclick="voltarEtapa(3)">Voltar</button>
+  <button type="button" onclick="validarEAvancar(4,5)">Próximo</button>
+</div>
 
   <!-- Etapa 5: CNH, Certificado e Categorias -->
   <div class="etapa" id="etapa5" style="display:none;">
@@ -508,13 +486,23 @@ function carregarFormularioInstrutor() {
     <span class="upload-check" id="check-certificado"></span>
 
     <h4>Especializações de ensino:</h4>
-    <div class="categorias">
-      <label><input type="checkbox" name="categoria" value="A"> A</label>
-      <label><input type="checkbox" name="categoria" value="B"> B</label>
-      <label><input type="checkbox" name="categoria" value="C"> C</label>
-      <label><input type="checkbox" name="categoria" value="D"> D</label>
-      <label><input type="checkbox" name="categoria" value="E"> E</label>
-    </div>
+<div class="categorias">
+  <label>
+    <input type="checkbox" name="categoria" value="A"> A
+  </label>
+  <label>
+    <input type="checkbox" name="categoria" value="B"> B
+  </label>
+  <label>
+    <input type="checkbox" name="categoria" value="C"> C
+  </label>
+  <label>
+    <input type="checkbox" name="categoria" value="D"> D
+  </label>
+  <label>
+    <input type="checkbox" name="categoria" value="E"> E
+  </label>
+</div>
 
     <button type="button" onclick="voltarEtapa(4)">Voltar</button>
     <button type="submit">Enviar</button>
@@ -611,7 +599,7 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("sexo", document.getElementById("sexoInstrutor").value);
   formData.append("cidade", document.getElementById("cidadeInstrutor").value);
 
-  // 🔑 Aqui está a correção
+  // 🔑 Estado
   const estadoSelect = document.getElementById("estadoInstrutor");
   const estadoNome = estadoSelect.options[estadoSelect.selectedIndex].text;
   formData.append("estado", estadoNome);
@@ -621,7 +609,15 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
   formData.append("comprovante", document.getElementById("comprovante").files[0]);
   formData.append("cnh", document.getElementById("cnh").files[0]);
   formData.append("certificado", document.getElementById("certificado").files[0]);
+
+  // ✅ Categorias
   formData.append("categorias", categoriasSelecionadas.join(","));
+
+  // ✅ Sim/Não (radio)
+  const veiculoEnsino = document.querySelector('input[name="veiculoEnsino"]:checked');
+  if (veiculoEnsino) {
+    formData.append("veiculoEnsino", veiculoEnsino.value);
+  }
 
   try {
     const resposta = await fetch("https://meuinstrutor.onrender.com/instrutores", {
@@ -635,13 +631,11 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       throw new Error(resultado.error || "Erro no servidor");
     }
 
-const modal = document.getElementById("modalSucesso");
-modal.querySelector("h2").textContent = "Cadastro realizado!";
-modal.querySelector("p").textContent = "Em até 24h entraremos em contato pelo WhatsApp para dar prosseguimento."
-modal.style.display = "flex";
+    const modal = document.getElementById("modalSucesso");
+    modal.querySelector("h2").textContent = "Cadastro realizado!";
+    modal.querySelector("p").textContent = "Em até 24h entraremos em contato pelo WhatsApp para dar prosseguimento.";
+    modal.style.display = "flex";
 
-document.getElementById("formInstrutor").reset();
-proximaEtapa(1);
     document.getElementById("formInstrutor").reset();
     proximaEtapa(1);
   } catch (error) {
@@ -649,7 +643,7 @@ proximaEtapa(1);
     alert("Erro ao cadastrar instrutor: " + error.message);
   }
 });
-}
+    }
 
     // Navegação entre etapas
     function proximaEtapa(n) {
@@ -939,6 +933,10 @@ if (resposta.ok) {
         return;
       }
 
+        const info = document.getElementById("info-complementar");
+  info.textContent = `Informações complementares: O instrutor possui veículo para ensino? ${instrutor.veiculoEnsino === "sim" ? "Sim" : "Não"}`;
+
+
       const avaliacoes = await resposta.json();
       const lista = document.getElementById("comentarios-lista");
       lista.innerHTML = "";
@@ -995,6 +993,11 @@ if (resposta.ok) {
     <h2>Avaliações do(a) Instrutor(a)</h2>
 
     <div id="comentarios-lista"></div>
+
+    <!-- 🔑 Informação complementar -->
+    <div id="info-complementar" style="margin:10px 0; font-weight:bold; color:#333;">
+      <!-- Aqui o JS vai inserir "Sim" ou "Não" -->
+    </div>
 
     <h3>Deixe sua avaliação</h3>
     <div class="modal-estrelas">
@@ -1091,59 +1094,69 @@ window.addEventListener("click", (e) => {
   }
 });
 
-let veiculoCount = 1;
-
-// Mostra container de veículos quando seleciona "Sim"
-function mostrarVeiculos() {
-  document.getElementById("veiculos-container").style.display = "block";
-}
-
-// Oculta container de veículos quando seleciona "Não"
-function ocultarVeiculos() {
-  document.getElementById("veiculos-container").style.display = "none";
-}
-
-// Adiciona novo bloco de veículo (até 5)
-function adicionarVeiculo() {
-  if (veiculoCount >= 5) {
-    alert("Você pode adicionar no máximo 5 veículos.");
-    return;
+function validarEAvancar(etapaAtual, proximaEtapa) {
+  if (validarEtapa(etapaAtual)) {
+    document.getElementById("etapa" + etapaAtual).style.display = "none";
+    document.getElementById("etapa" + proximaEtapa).style.display = "block";
   }
-
-  veiculoCount++;
-  const container = document.getElementById("veiculos-container");
-  const novoVeiculo = document.createElement("div");
-  novoVeiculo.classList.add("veiculo");
-  novoVeiculo.id = "veiculo-" + veiculoCount;
-
-  novoVeiculo.innerHTML = `
-    <label>Foto do veículo:</label>
-    <input type="file" name="fotoVeiculo${veiculoCount}" accept="image/*" required>
-    
-    <label>Marca:</label>
-    <input type="text" name="marca${veiculoCount}" required>
-    
-    <label>Modelo:</label>
-    <input type="text" name="modelo${veiculoCount}" required>
-    
-    <label>Cor:</label>
-    <input type="text" name="cor${veiculoCount}" required>
-    
-    <label>Ano:</label>
-    <input type="number" name="ano${veiculoCount}" min="1900" max="2099" required>
-    
-    <label>Câmbio:</label>
-    <select name="cambio${veiculoCount}" required>
-      <option value="">Selecione</option>
-      <option value="Manual">Manual</option>
-      <option value="Automatico">Automático</option>
-    </select>
-  `;
-
-  // Insere antes do botão de adicionar
-  container.insertBefore(novoVeiculo, document.getElementById("add-veiculo"));
 }
 
+function voltarEtapa(etapaAnterior) {
+  document.querySelectorAll(".etapa").forEach(div => div.style.display = "none");
+  document.getElementById("etapa" + etapaAnterior).style.display = "block";
+}
+
+function validarEtapa(etapaAtual) {
+  const etapa = document.getElementById("etapa" + etapaAtual);
+  const inputs = etapa.querySelectorAll("input, select");
+  let valido = true;
+
+  inputs.forEach(input => {
+    if (input.hasAttribute("required")) {
+      if (input.type === "file") {
+        if (input.files.length === 0) {
+          valido = false;
+          input.style.border = "2px solid red";
+        } else {
+          input.style.border = "";
+        }
+      } else if (input.type === "radio") {
+        const radios = etapa.querySelectorAll(`input[name="${input.name}"]`);
+        if (![...radios].some(r => r.checked)) {
+          valido = false;
+        }
+      } else {
+        if (!input.value) {
+          valido = false;
+          input.style.border = "2px solid red";
+        } else {
+          input.style.border = "";
+        }
+      }
+    }
+  });
+
+  return valido;
+}
+
+// ✔ verde após upload
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('#formInstrutor input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const checkSpan = document.getElementById('check-' + this.id);
+      if (checkSpan) {
+        if (this.files.length > 0) {
+          checkSpan.textContent = "✔";
+          checkSpan.style.display = "inline";
+          checkSpan.style.color = "#2ecc71";
+        } else {
+          checkSpan.textContent = "";
+          checkSpan.style.display = "none";
+        }
+      }
+    });
+  });
+});
 </script>
 
 </body>

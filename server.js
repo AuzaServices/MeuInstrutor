@@ -133,7 +133,9 @@ app.post("/instrutores", upload.fields([
 
     // ✅ Salva no banco usando async/await
     await db.query(
-      "INSERT INTO instrutores (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')",
+      `INSERT INTO instrutores 
+      (nome, email, cpf, sexo, cidade, estado, telefone, selfie, comprovante_residencia, cnh, certificado, categorias, veiculoEnsino, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')`,
       [
         req.body.nome,
         req.body.email,
@@ -146,7 +148,8 @@ app.post("/instrutores", upload.fields([
         uploads.comprovante,
         uploads.cnh,
         uploads.certificado,
-        req.body.categorias
+        req.body.categorias,
+        req.body.veiculoEnsino   // 🔑 agora salva o Sim/Não
       ]
     );
 
@@ -187,8 +190,6 @@ app.put("/instrutores/aceitar/:id", async (req, res) => {
   }
 });
 
-// 📌 Listar instrutores aceitos com filtro
-// 📌 Listar instrutores aceitos com filtro
 // 📌 Listar instrutores aceitos com filtro + média e quantidade de avaliações
 app.get("/instrutores/aceitos", async (req, res) => {
   const { cidade, estado, sexo, categorias } = req.query;
