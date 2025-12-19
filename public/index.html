@@ -364,7 +364,7 @@ async function buscarInstrutor(event) {
       `<div class="cards-container">${cardsHtml}</div>`;
 
   } catch (erro) {
-    console.error("❌ Erro ao buscar instrutores:", erro);
+    console.error("❌ Erro ao buscar instrutores, clique novamente em Buscar:", erro);
     const erroHtml = `<div class="mensagem-vazia"><p>Erro ao carregar instrutores</p></div>`;
     document.getElementById("resultado-mobile").innerHTML = erroHtml;
     document.getElementById("resultado-desktop").innerHTML = erroHtml;
