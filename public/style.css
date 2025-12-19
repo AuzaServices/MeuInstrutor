@@ -1298,3 +1298,30 @@ hr {
   from {opacity: 0; transform: scale(0.9);}
   to {opacity: 1; transform: scale(1);}
 }
+
+@media (max-width: 480px) {
+  .modal-conteudo {
+    max-width: 90%;   /* ocupa quase toda a largura */
+    padding: 20px;    /* menos espaço interno */
+    font-size: 14px;  /* texto menor */
+  }
+
+  .icone-relogio svg {
+    width: 40px;      /* ícone menor */
+    height: 40px;
+  }
+
+  .fechar {
+    font-size: 20px;  /* botão fechar menor */
+    top: 5px;
+    right: 10px;
+  }
+
+  .modal-conteudo h2 {
+    font-size: 18px;  /* título mais compacto */
+  }
+
+  .modal-conteudo p {
+    font-size: 13px;  /* mensagem mais enxuta */
+  }
+}
