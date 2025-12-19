@@ -150,7 +150,7 @@ app.post("/instrutores", upload.fields([
       ]
     );
 
-    res.json({ message: "Instrutor cadastrado com sucesso!" });
+    res.json({ message: "Em até 24h uma equipe entrará em contato pelo WhatsApp para dar prosseguimento." });
   } catch (error) {
     console.error("❌ Erro ao cadastrar instrutor:", error.message || error);
     res.status(500).json({ error: error.message || String(error) });

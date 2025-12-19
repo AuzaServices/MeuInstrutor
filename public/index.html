@@ -582,9 +582,9 @@ document.getElementById("formInstrutor").addEventListener("submit", async functi
       throw new Error(resultado.error || "Erro no servidor");
     }
 
-    const modal = document.getElementById("modalComentario");
-modal.querySelector("h2").textContent = "Cadastro enviado!";
-modal.querySelector("p").textContent = resultado.message;
+const modal = document.getElementById("modalSucesso");
+modal.querySelector("h2").textContent = "Cadastro realizado!";
+modal.querySelector("p").textContent = "Uma equipe entrará em contato pelo WhatsApp para dar prosseguimento.";
 modal.style.display = "flex";
 
 document.getElementById("formInstrutor").reset();
