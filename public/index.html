@@ -849,15 +849,16 @@ document.addEventListener("DOMContentLoaded", () => {
         })
       });
 
-      if (resposta.ok) {
-        alert("Avaliação enviada e aguarda aprovação do administrador.");
-        form.reset();
-        estrelas.forEach(s => s.classList.remove("selecionada"));
-        estrelaSelecionada = 0;
-        // ❌ Não recarrega lista aqui, só admin decide
-      } else {
-        alert("Erro ao salvar avaliação.");
-      }
+if (resposta.ok) {
+  document.getElementById("modalComentario").style.display = "flex";
+  form.reset();
+  estrelas.forEach(s => s.classList.remove("selecionada"));
+  estrelaSelecionada = 0;
+} else {
+  document.getElementById("modalComentario").querySelector("h2").textContent = "Erro!";
+  document.getElementById("modalComentario").querySelector("p").textContent = "Erro ao salvar avaliação.";
+  document.getElementById("modalComentario").style.display = "flex";
+}
     } catch (err) {
       console.error(err);
       alert("Falha na conexão com o servidor.");
@@ -988,18 +989,18 @@ document.getElementById("comentario").addEventListener("input", e => {
 
 <script>
   // Fechar modal de comentário
-  const modalComentario = document.getElementById("modalComentario");
-  const fecharBtn = document.querySelector(".fechar");
+// Fechar modal
+document.querySelector("#modalComentario .fechar").addEventListener("click", () => {
+  document.getElementById("modalComentario").style.display = "none";
+});
 
-  fecharBtn.onclick = function() {
-    modalComentario.style.display = "none";
+// Fechar ao clicar fora
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("modalComentario");
+  if (e.target === modal) {
+    modal.style.display = "none";
   }
-
-  window.onclick = function(event) {
-    if (event.target == modalComentario) {
-      modalComentario.style.display = "none";
-    }
-  }
+});
 </script>
 
 </body>
