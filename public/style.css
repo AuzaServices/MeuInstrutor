@@ -1393,3 +1393,21 @@ hr {
     right: 10px;
   }
 }
+
+.veiculo {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* duas colunas */
+  gap: 12px 20px; /* espaçamento entre linhas e colunas */
+  margin-bottom: 20px;
+}
+
+.veiculo label {
+  display: block;
+  font-weight: 500;
+}
+
+.veiculo input,
+.veiculo select {
+  width: 100%;
+  padding: 6px;
+}
