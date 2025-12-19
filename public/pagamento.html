@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento - AcheiInstrutor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    
+
+    /* Cabeçalho */
+    .header {
+      background: #000000;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header .nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .header .nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Conteúdo principal */
+    .container {
+      flex: 1;
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #222;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .pix-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .pix-input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      font-size: 14px;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    .pix-input:focus {
+      outline: none;
+    }
+
+    .copy-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      background: #0056b3;
+    }
+
+    .copy-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    .info {
+      font-size: 14px;
+      text-align: center;
+      color: #555;
+    }
+
+    /* Rodapé */
+    .footer {
+      background: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 14px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header .nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="topo">
+    <div class="logo">
+      <img src="logo.png" alt="Achei Instrutor" />
+      <span>Achei Instrutor</span>
+    </div>
+    <button class="menu-toggle">☰</button>
+    <nav class="menu">
+      <a href="index.html">Início</a>
+      <a href="contato.html">Suporte</a>
+    </nav> 
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <h1>Pagamento Seguro</h1>
+    <p>Assinatura mensal de R$14,99<br>Cancelamento a qualquer momento</p>
+
+    <div class="pix-box">
+      <input type="text" id="pixCode" class="pix-input" readonly
+        value="00020126610014BR.GOV.BCB.PIX0121andrielysom@gmail.com0214Acheiinstrutor520400005303986540514.995802BR5925ANDRIELYSON DAVID NASCIME6009HORIZONTE62180514Acheiinstrutor6304764E">
+      <button class="copy-btn" onclick="copiarPix()">
+        <!-- Ícone minimalista de copiar -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 
+          1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 
+          16H8V7h11v14z"/>
+        </svg>
+        Copiar
+      </button>
+    </div>
+
+    <p class="info">Utilize o código acima para realizar o pagamento via PIX.</p>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <p>&copy; 2025 Achei Instrutor. Todos os direitos reservados.</p>
+    <p><a href="politica.html">Política de Privacidade</a> | <a href="termos.html">Termos de Uso</a></p>
+  </footer>
+
+  <script>
+    function copiarPix() {
+      const pixInput = document.getElementById("pixCode");
+      pixInput.select();
+      pixInput.setSelectionRange(0, 99999); // compatível com mobile
+      navigator.clipboard.writeText(pixInput.value).then(() => {
+        alert("Código PIX copiado com sucesso.");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.querySelector(".menu-toggle");
+      const menu = document.querySelector("nav.menu");
+
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("active");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (menu.classList.contains("active") && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          menu.classList.remove("active");
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
