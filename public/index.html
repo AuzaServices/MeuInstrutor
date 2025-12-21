@@ -198,29 +198,26 @@
 <script>
 async function atualizarContador() {
   try {
-    const response = await fetch('/instrutores/todos');
+    const response = await fetch('/instrutores/aceitos');
     if (!response.ok) throw new Error("Endpoint não encontrado");
 
     const data = await response.json();
-    const total = data.length; // conta quantos instrutores vieram
+    const total = data.length; // conta apenas os aceitos
 
     document.getElementById('contador').textContent = total;
 
     if (total < 100) {
       document.getElementById('mensagem').textContent =
-        `Ainda faltam ${100 - total} vagas gratuitas. A mensalidade só começa quando atingirmos 100 instrutores.`;
+        `Ainda faltam ${100 - total} vagas gratuitas. A mensalidade só começa quando atingirmos 100 instrutores aceitos.`;
     } else {
       document.getElementById('mensagem').textContent =
-        "Atingimos 100 instrutores cadastrados. A mensalidade de R$14,99/mês já está em vigor.";
+        "Atingimos 100 instrutores aceitos. A mensalidade de R$14,99/mês já está em vigor.";
     }
   } catch (error) {
     console.error("Erro ao buscar contador:", error);
     document.getElementById('mensagem').textContent = "Erro ao carregar contador.";
   }
 }
-
-atualizarContador();
-setInterval(atualizarContador, 30000);
 </script>
 
 <!-- Sessão: Conexões e Informações -->
