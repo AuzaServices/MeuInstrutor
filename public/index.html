@@ -198,11 +198,11 @@
 <script>
 async function atualizarContador() {
   try {
-    const response = await fetch('/instrutores/aceitos');
+    const response = await fetch('https://meuinstrutor.onrender.com/instrutores/totalAceitos');
     if (!response.ok) throw new Error("Endpoint não encontrado");
 
     const data = await response.json();
-    const total = data.length; // conta apenas os aceitos
+    const total = data.total;
 
     document.getElementById('contador').textContent = total;
 
@@ -218,6 +218,9 @@ async function atualizarContador() {
     document.getElementById('mensagem').textContent = "Erro ao carregar contador.";
   }
 }
+
+atualizarContador();
+setInterval(atualizarContador, 30000);
 </script>
 
 <!-- Sessão: Conexões e Informações -->

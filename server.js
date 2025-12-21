@@ -236,6 +236,19 @@ app.get("/instrutores/aceitos", async (req, res) => {
   }
 });
 
+// Rota que retorna apenas o total de instrutores aceitos
+app.get("/instrutores/totalAceitos", async (req, res) => {
+  try {
+    const [results] = await db.query(
+      "SELECT COUNT(*) AS total FROM instrutores WHERE status = 'aceito'"
+    );
+    res.json({ total: results[0].total });
+  } catch (err) {
+    console.error("❌ Erro ao contar instrutores aceitos:", err.message || err);
+    res.status(500).json({ error: "Erro ao buscar total de instrutores aceitos" });
+  }
+});
+
 // 📌 Listar todos os instrutores (pendentes e aceitos)
 // 📌 Listar todos os instrutores (pendentes e aceitos)
 app.get("/instrutores/todos", async (req, res) => {
