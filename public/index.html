@@ -198,22 +198,24 @@
 <script>
 async function atualizarContador() {
   try {
-    const response = await fetch('/api/instrutores/total');
+    const response = await fetch('/instrutores/todos');
+    if (!response.ok) throw new Error("Endpoint não encontrado");
+
     const data = await response.json();
-    const total = data.total;
+    const total = data.length; // conta quantos instrutores vieram
 
     document.getElementById('contador').textContent = total;
 
     if (total < 100) {
-      document.getElementById('mensagem').textContent = 
-        `Ainda faltam ${100 - total} vagas gratuitas. Aproveite antes que comece a cobrança da mensalidade!`;
+      document.getElementById('mensagem').textContent =
+        `Ainda faltam ${100 - total} vagas gratuitas. A mensalidade só começa quando atingirmos 100 instrutores.`;
     } else {
-      document.getElementById('mensagem').textContent = 
+      document.getElementById('mensagem').textContent =
         "Atingimos 100 instrutores cadastrados. A mensalidade de R$14,99/mês já está em vigor.";
     }
   } catch (error) {
     console.error("Erro ao buscar contador:", error);
-    document.getElementById('mensagem').textContent = "Não foi possível carregar os dados.";
+    document.getElementById('mensagem').textContent = "Erro ao carregar contador.";
   }
 }
 
