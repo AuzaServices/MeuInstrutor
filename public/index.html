@@ -152,18 +152,74 @@
     cliente e instrutor no quesito de valores.
   </p>
   <p>
-    Para se manter visível na plataforma, é cobrada apenas uma taxa simbólica de <strong>R$ 14,99 por mês</strong>.
+    Importante: <strong>as cobranças da mensalidade de R$ 14,99 só começam após atingirmos 100 instrutores cadastrados</strong>.
+    Até lá, o cadastro e a participação são totalmente gratuitos para os pioneiros da plataforma.
+  </p>
+  <p>
     Todo o dinheiro arrecadado pelo instrutor durante o mês é <strong>100% dele</strong>, sem qualquer retenção
     ou comissão por parte da plataforma.
   </p>
   <p>
     Após o cadastro e envio dos documentos, nossa equipe leva em torno de <strong>24 horas</strong> para analisar
-    e verificar se está tudo de acordo. Logo após a aprovação, a empresa entrará em contato solicitando
-    o pagamento da taxa mensal de R$ 14,99. Com o pagamento confirmado, o instrutor passa a aparecer
-    nos filtros da cidade em que foi cadastrado, tornando-se visível para os alunos que buscam
-    profissionais credenciados.
+    e verificar se está tudo de acordo. Logo após a aprovação, o instrutor passa a aparecer nos filtros da cidade
+    em que foi cadastrado, tornando-se visível para os alunos que buscam profissionais credenciados.
   </p>
+
+  <!-- Contador -->
+  <div class="contador-container">
+    <h3>Instrutores já cadastrados</h3>
+    <div id="contador" class="contador">0</div>
+    <p id="mensagem"></p>
+  </div>
 </section>
+
+<style>
+  .contador-container {
+    margin-top: 30px;
+    text-align: center;
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .contador {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ff6600; /* laranja em destaque */
+    margin: 10px 0;
+  }
+  #mensagem {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #ccc;
+  }
+</style>
+
+<script>
+async function atualizarContador() {
+  try {
+    const response = await fetch('/api/instrutores/total');
+    const data = await response.json();
+    const total = data.total;
+
+    document.getElementById('contador').textContent = total;
+
+    if (total < 100) {
+      document.getElementById('mensagem').textContent = 
+        `Ainda faltam ${100 - total} vagas gratuitas. Aproveite antes que comece a cobrança da mensalidade!`;
+    } else {
+      document.getElementById('mensagem').textContent = 
+        "Atingimos 100 instrutores cadastrados. A mensalidade de R$14,99/mês já está em vigor.";
+    }
+  } catch (error) {
+    console.error("Erro ao buscar contador:", error);
+    document.getElementById('mensagem').textContent = "Não foi possível carregar os dados.";
+  }
+}
+
+atualizarContador();
+setInterval(atualizarContador, 30000);
+</script>
 
 <!-- Sessão: Conexões e Informações -->
 <!-- Sessão: Redes sociais e políticas -->
