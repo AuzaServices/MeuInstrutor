@@ -110,7 +110,6 @@ app.post("/instrutores", upload.fields([
   try {
     // 🔎 Validação antes de enviar pro Cloudinary
     const totalUploads = Object.keys(req.files).length;
-
     if (totalUploads !== 4) {
       return res.status(400).json({ error: "É obrigatório enviar exatamente 4 arquivos (selfie, comprovante, cnh e certificado)." });
     }
@@ -122,6 +121,12 @@ app.post("/instrutores", upload.fields([
       if (!req.files[field][0].mimetype.startsWith("image/")) {
         return res.status(400).json({ error: `O arquivo de ${field} deve ser uma imagem.` });
       }
+    }
+
+    // ✅ Verificação de CPF duplicado
+    const [rows] = await db.query("SELECT id FROM instrutores WHERE cpf = ?", [req.body.cpf]);
+    if (rows.length > 0) {
+      return res.status(400).json({ error: "Já existe um instrutor cadastrado com este CPF." });
     }
 
     // ✅ Uploads para o Cloudinary
